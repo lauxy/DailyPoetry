@@ -21,9 +21,16 @@
                         <Button Content="删除记录"
                                 Name="DeleteButton"
                                 VerticalAlignment="Center"
-                                HorizontalAlignment="Right"/>
-
+                                HorizontalAlignment="Right"
+                                Click="DeleteButton_Click"/>
                     </StackPanel>
+                    
+                    <StackPanel>
+                        <ListView Name="RecordListView">
+                            
+                        </ListView>
+                    </StackPanel>
+                    
 
                 </StackPanel>
             </PivotItem>

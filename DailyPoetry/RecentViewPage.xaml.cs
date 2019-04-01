@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,6 +27,20 @@ namespace DailyPoetry
         public RecentViewPage()
         {
             this.InitializeComponent();
+            GenerateRecordingList();
+        }
+
+        /// <summary>
+        /// 读日志文件，生成记录列表
+        /// </summary>
+        private void GenerateRecordingList()
+        {
+            foreach (var line in File.ReadLines("./Logs/sample.txt", Encoding.UTF8))
+            {
+                ListViewItem item = new ListViewItem();
+                item.Content = line;
+                RecordListView.Items.Add(item);
+            }
         }
 
         /// <summary>
@@ -47,5 +63,16 @@ namespace DailyPoetry
 
         }
 
+        /// <summary>
+        /// 删除最近浏览的记录信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+       
     }
 }
