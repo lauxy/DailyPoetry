@@ -5,10 +5,55 @@
     xmlns:local="using:DailyPoetry"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
+    mc:Ignorable="d" Opacity="1"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <NavigationView x:Name="NavView" 
+                        IsSettingsVisible="True" 
+                        IsTabStop="False"  
+                        IsPaneOpen="True"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"
+                        SelectionChanged="NavView_OnSelectionChanged"
+                        BackRequested="NavView_BackRequested"
+                        >
+            <NavigationView.PaneHeader>
+                <TextBlock Text="每日诗词 Daily Peotry"
+                           FontSize="20"
+                           Foreground="Gray"
+                           FontFamily="MV Boli"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"
+                           />
+            </NavigationView.PaneHeader>
+
+            <NavigationView.MenuItems>
+                <NavigationViewItem Icon="Find" Content="搜索" Tag="search" />
+                <NavigationViewItem Icon="CalendarReply" Content="每日推荐" Tag="dailyRecmd" />
+                <NavigationViewItem Icon="People" Content="朋友" Tag="friends" />
+                <NavigationViewItem Icon="Comment" Content="今日热评" Tag="comments" />
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="我的诗词" Foreground="Gray" />
+                <NavigationViewItem Icon="Clock" Content="最近浏览" Tag="browse" />
+                <NavigationViewItem Icon="Flag" Content="诗词大会" Tag="game" />
+                <NavigationViewItem Icon="Edit" Content="我的创作" Tag="works" />
+                <NavigationViewItem Icon="OutlineStar" Content="我喜欢的诗词" Tag="favorite"/>
+            </NavigationView.MenuItems>
+
+            <NavigationView.PaneFooter>
+                <NavigationViewItem Icon="Contact" Content="个人中心" />
+            </NavigationView.PaneFooter>
+
+            <ScrollViewer>
+                <Frame x:Name="ContentFrame" Padding="12,0,12,24" IsTabStop="True"
+                       NavigationFailed="ContentFrame_NavigationFailed"/>
+            </ScrollViewer>
+
+        </NavigationView>
+
 
     </Grid>
 </Page>

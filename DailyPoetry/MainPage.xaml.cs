@@ -26,5 +26,38 @@ namespace DailyPoetry
         {
             this.InitializeComponent();
         }
+
+        private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+
+        }
+
+        private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        private void NavView_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                ContentFrame.Navigate(typeof(SettingsPage));
+            }
+            else
+            {
+                NavigationViewItem item = args.SelectedItem as NavigationViewItem;
+                switch (item.Tag)
+                {
+                    case "search":
+                        ContentFrame.Navigate(typeof(SearchPage));
+                        break;
+                    case "browse":
+                        ContentFrame.Navigate(typeof(RecentViewPage));
+                        break;
+                }
+                
+            }
+        }
     }
 }
+

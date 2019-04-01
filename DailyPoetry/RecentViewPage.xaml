@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="DailyPoetry.RecentViewPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DailyPoetry"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel>
+
+        <Pivot x:Name="rootPivot" Title="最近浏览" Margin="24,32,0,0" Foreground="Gray">
+
+            <PivotItem Header="诗词">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Content="全选"
+                                  Checked="CheckBox_Checked"   
+                                  Unchecked="CheckBox_Unchecked" />
+                        <Button Content="删除记录"
+                                Name="DeleteButton"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"/>
+
+                    </StackPanel>
+
+                </StackPanel>
+            </PivotItem>
+
+            <PivotItem Header="好友动态">
+                <StackPanel>
+                    <TextBlock Text="Content of section 2."/>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
+
+    </StackPanel>
+
+</Page>
