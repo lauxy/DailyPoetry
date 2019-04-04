@@ -77,8 +77,11 @@ namespace DailyPoetry
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             //测试更换壁纸
+            //ChangeWallpaper changer = new ChangeWallpaper();
+            //bool x = await changer.SetWallpaperAsync("Buildings.jpg");
             ChangeWallpaper changer = new ChangeWallpaper();
-            bool x = await changer.SetWallpaperAsync("Buildings.jpg");
+            bool x = await changer.WallpaperChanger();
+
             if (x == true)
             {
                 TestArea.Text = Application.Current.ToString();

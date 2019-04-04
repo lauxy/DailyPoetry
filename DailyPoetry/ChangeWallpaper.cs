@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Storage;
 using System;
+using System.Numerics;
 
 namespace DailyPoetry
 {
@@ -19,6 +20,35 @@ namespace DailyPoetry
                 success = await profileSettings.TrySetWallpaperImageAsync(file);
             }
             return success;
+        }
+
+        /// <summary>
+        /// 按照指定的文件名更换壁纸
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public async Task<bool> WallpaperChanger(String filename)
+        {
+            bool isSucceed = await SetWallpaperAsync(filename);
+            return isSucceed;
+        }
+
+        /// <summary>
+        /// 随机更换壁纸（重载）
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> WallpaperChanger()
+        {
+            string[] fileList = System.IO.Directory.GetFileSystemEntries("Wallpapers/");
+            for(int i = 0; i < fileList.Length; ++i)
+            {
+                fileList[i] = 
+                    fileList[i].Substring(fileList[i].IndexOf("/")+1, fileList[i].Length - fileList[i].IndexOf("/")-1);
+            }
+            Random random = new Random();
+            int r = random.Next(0, fileList.Length);
+            bool isSucceed = await SetWallpaperAsync(fileList[r]);
+            return isSucceed;
         }
     }
 }
