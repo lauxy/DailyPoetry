@@ -45,7 +45,8 @@ namespace DailyPoetry
                 fileList[i] = 
                     fileList[i].Substring(fileList[i].IndexOf("/")+1, fileList[i].Length - fileList[i].IndexOf("/")-1);
             }
-            Random random = new Random();
+            //提高随机数不重复概率的种子生成方法，在New Random(SeedParam)时候保证SeedParam是唯一的
+            Random random = new Random(int.Parse(DateTime.Now.ToString("HHmmssfff")));
             int r = random.Next(0, fileList.Length);
             bool isSucceed = await SetWallpaperAsync(fileList[r]);
             return isSucceed;
