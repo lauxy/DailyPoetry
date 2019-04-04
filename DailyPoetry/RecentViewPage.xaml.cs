@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using Microsoft.Win32;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -14,6 +18,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using static DailyPoetry.ChangeWallpaper;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -68,11 +73,20 @@ namespace DailyPoetry
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            //测试更换壁纸
+            ChangeWallpaper changer = new ChangeWallpaper();
+            bool x = await changer.SetWallpaperAsync("Buildings.jpg");
+            if (x == true)
+            {
+                TestArea.Text = Application.Current.ToString();
+            }
+            else TestArea.Text = "No";
         }
 
-       
     }
+
+      
 }

@@ -37,7 +37,8 @@
 
             <PivotItem Header="好友动态">
                 <StackPanel>
-                    <TextBlock Text="Content of section 2."/>
+                    <TextBlock Text="Content of section 2."
+                               Name="TestArea"/>
                 </StackPanel>
             </PivotItem>
         </Pivot>
