@@ -27,9 +27,14 @@ namespace DailyPoetry
             this.InitializeComponent();
         }
 
+        /// <summary>
+        /// NavigationView导航返回按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
-
+            throw new NotImplementedException();
         }
 
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)

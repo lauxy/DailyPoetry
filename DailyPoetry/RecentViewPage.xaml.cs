@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using static DailyPoetry.ChangeWallpaper;
+using DailyPoetry.Models;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -29,23 +30,13 @@ namespace DailyPoetry
     /// </summary>
     public sealed partial class RecentViewPage : Page
     {
+
+        private List<RecentView> RecentViews;
+
         public RecentViewPage()
         {
             this.InitializeComponent();
-            GenerateRecordingList();
-        }
-
-        /// <summary>
-        /// 读日志文件，生成记录列表
-        /// </summary>
-        private void GenerateRecordingList()
-        {
-            foreach (var line in File.ReadLines("./Logs/sample.txt", Encoding.UTF8))
-            {
-                ListViewItem item = new ListViewItem();
-                item.Content = line;
-                RecordListView.Items.Add(item);
-            }
+            RecentViews = RecentViewManager.GetRecentViews();
         }
 
         /// <summary>
@@ -73,7 +64,6 @@ namespace DailyPoetry
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             //测试更换壁纸
@@ -89,6 +79,31 @@ namespace DailyPoetry
             else TestArea.Text = "No";
         }
 
+        /// <summary>
+        /// 点击记录项执行的事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedItem = (RecentView)e.ClickedItem; //获取当前被点击的对象的引用
+
+        }
+
+        /// <summary>
+        /// 点击心形按钮，将item加入“我喜欢的诗词”中
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppBarToggleButton b = sender as AppBarToggleButton;
+            if (b != null)
+            {
+                throw new NotImplementedException();        
+
+            }
+        }
     }
 
       

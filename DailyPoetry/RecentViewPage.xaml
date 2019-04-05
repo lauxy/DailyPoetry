@@ -5,44 +5,80 @@
     xmlns:local="using:DailyPoetry"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:DailyPoetry.Models"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel>
+    <Page.Resources>
+        <DataTemplate x:DataType="data:RecentView" x:Key="RecentViewDataTemplate">
+            <StackPanel Orientation="Horizontal" Width="1920">
+                <AppBarToggleButton Name="{x:Bind RecentViewId}"
+                                    Label="SymbolIcon"
+                                    Width="30" 
+                                    Height="30"
+                                    Click="AppBarToggleButton_Click">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
 
-        <Pivot x:Name="rootPivot" Title="最近浏览" Margin="24,32,0,0" Foreground="Gray">
 
-            <PivotItem Header="诗词">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox Content="全选"
+                <TextBlock FontSize="16" Text="{x:Bind Title}" 
+                           FontWeight="Bold" 
+                           Margin="8,6,0,0"
+                           VerticalAlignment="Center"/>
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="14" 
+                               Text="{x:Bind Poet}" 
+                               Foreground="Gray" 
+                               Margin="36,6,0,0" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock FontSize="14" 
+                               Text="{x:Bind Content}" 
+                               Foreground="Gray" 
+                               Margin="24,6,0,0" 
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Pivot x:Name="rootPivot" Title="最近浏览" Margin="12,20,0,0" Foreground="Gray">
+        <PivotItem Header="诗词">
+            
+            <StackPanel Orientation="Vertical">
+                
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="全选"
                                   Checked="CheckBox_Checked"   
                                   Unchecked="CheckBox_Unchecked" />
-                        <Button Content="删除记录"
+                    <Button Content="删除记录"
                                 Name="DeleteButton"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Click="DeleteButton_Click"/>
-                    </StackPanel>
-                    
-                    <StackPanel>
-                        <ListView Name="RecordListView">
-                            
-                        </ListView>
-                    </StackPanel>
-                    
-
                 </StackPanel>
-            </PivotItem>
 
-            <PivotItem Header="好友动态">
                 <StackPanel>
-                    <TextBlock Text="Content of section 2."
-                               Name="TestArea"/>
+                    <GridView ItemsSource="{x:Bind RecentViews}" 
+                              IsItemClickEnabled="True" 
+                              ItemClick="GridView_ItemClick"
+                              ItemTemplate="{StaticResource RecentViewDataTemplate}">
+                    </GridView>
                 </StackPanel>
-            </PivotItem>
-        </Pivot>
 
-    </StackPanel>
+            </StackPanel>
+        </PivotItem>
+
+        <PivotItem Header="好友动态">
+            <StackPanel>
+                <TextBlock Text="Content of section 2."
+                               Name="TestArea"/>
+            </StackPanel>
+        </PivotItem>
+    </Pivot>
+
 
 </Page>

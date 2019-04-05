@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Models\DataContext.cs" />
     <Compile Include="Models\PoetryItem.cs" />
+    <Compile Include="Models\RecentView.cs" />
     <Compile Include="MyCreation.xaml.cs">
       <DependentUpon>MyCreation.xaml</DependentUpon>
     </Compile>
