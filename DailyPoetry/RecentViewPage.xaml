@@ -12,6 +12,9 @@
     <Page.Resources>
         <DataTemplate x:DataType="data:RecentView" x:Key="RecentViewDataTemplate">
             <StackPanel Orientation="Horizontal" Width="1920">
+                <TextBlock Text="{x:Bind RecentViewId}"
+                           VerticalAlignment="Center"
+                           Margin="0,7,0,0"/>
                 <AppBarToggleButton Name="{x:Bind RecentViewId}"
                                     Label="SymbolIcon"
                                     Width="30" 
@@ -27,7 +30,7 @@
                            FontWeight="Bold" 
                            Margin="8,6,0,0"
                            VerticalAlignment="Center"/>
-                
+
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontSize="14" 
                                Text="{x:Bind Poet}" 
@@ -40,7 +43,6 @@
                                Margin="24,6,0,0" 
                                VerticalAlignment="Center"/>
                 </StackPanel>
-                
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
@@ -49,12 +51,9 @@
         <PivotItem Header="诗词">
             
             <StackPanel Orientation="Vertical">
-                
+
                 <StackPanel Orientation="Horizontal">
-                    <CheckBox Content="全选"
-                                  Checked="CheckBox_Checked"   
-                                  Unchecked="CheckBox_Unchecked" />
-                    <Button Content="删除记录"
+                    <Button Content="全部清空"
                                 Name="DeleteButton"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"

@@ -66,6 +66,7 @@ namespace DailyPoetry
         /// <param name="e"></param>
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
+            
             //测试更换壁纸
             //ChangeWallpaper changer = new ChangeWallpaper();
             //bool x = await changer.SetWallpaperAsync("Buildings.jpg");

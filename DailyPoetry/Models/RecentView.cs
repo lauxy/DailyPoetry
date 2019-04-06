@@ -9,7 +9,7 @@ namespace DailyPoetry.Models
 {
     public class RecentView
     {
-        public string RecentViewId { get; set; } //最近浏览的ID
+        public int RecentViewId { get; set; } //最近浏览的ID
         public string Poet { get; set; }      //诗人姓名
         public string Title { get; set; }     //诗词的标题
         public string Content { get; set; }   //诗词的代表性内容
@@ -27,10 +27,10 @@ namespace DailyPoetry.Models
             {
                 string[] item = line.Split(" ");
                 recentViews.Add(new RecentView {
-                    RecentViewId = "LikeToggleButton" + id.ToString(),
+                    RecentViewId = id,
                     Poet = item[0],
                     Title = item[1],
-                    Content = item[2].Substring(0, 16) + "..."
+                    Content = item[2].Substring(0, 15) + "..."
                 });
                 
                 id++;
