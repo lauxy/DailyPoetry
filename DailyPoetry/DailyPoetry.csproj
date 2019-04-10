@@ -212,13 +212,11 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.3</Version>
     </PackageReference>
-<<<<<<< HEAD
     <PackageReference Include="MvvmLight">
       <Version>5.4.1.1</Version>
-=======
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.1</Version>
->>>>>>> 6da75649cf1853554add536f808e0a20adcb85e1
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
