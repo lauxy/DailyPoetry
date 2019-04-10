@@ -34,12 +34,11 @@
                 <NavigationViewItem Icon="Find" Content="搜索" Tag="search" />
                 <NavigationViewItem Icon="CalendarReply" Content="每日推荐" Tag="dailyRecmd" />
                 <NavigationViewItem Icon="People" Content="朋友" Tag="friends" />
-                <NavigationViewItem Icon="Comment" Content="今日热评" Tag="comments" />
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="我的诗词" Foreground="Gray" />
                 <NavigationViewItem Icon="Clock" Content="最近浏览" Tag="browse" />
                 <NavigationViewItem Icon="Flag" Content="诗词大会" Tag="game" />
-                <NavigationViewItem Icon="Edit" Content="我的创作" Tag="works" />
+                <NavigationViewItem Icon="Edit" Content="我的创作" Tag="creations" />
                 <NavigationViewItem Icon="OutlineStar" Content="我喜欢的诗词" Tag="favorite"/>
             </NavigationView.MenuItems>
 
@@ -48,7 +47,7 @@
             </NavigationView.PaneFooter>
 
             <ScrollViewer>
-                <Frame x:Name="ContentFrame" Padding="12,0,12,24" IsTabStop="True"
+                <Frame x:Name="ContentFrame" Padding="0,0,0,0" IsTabStop="True"
                        NavigationFailed="ContentFrame_NavigationFailed"/>
             </ScrollViewer>
 

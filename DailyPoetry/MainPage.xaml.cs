@@ -34,7 +34,11 @@ namespace DailyPoetry
         /// <param name="args"></param>
         private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+            if (ContentFrame.CanGoBack)
+            {
+                ContentFrame.GoBack();
+            }
         }
 
         private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
@@ -58,6 +62,9 @@ namespace DailyPoetry
                         break;
                     case "browse":
                         ContentFrame.Navigate(typeof(RecentViewPage));
+                        break;
+                    case "creations":
+                        ContentFrame.Navigate(typeof(MyCreation));
                         break;
                 }
                 

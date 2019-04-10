@@ -125,7 +125,7 @@
     </Compile>
     <Compile Include="Models\DataContext.cs" />
     <Compile Include="Models\PoetryItem.cs" />
-    <Compile Include="Models\RecentView.cs" />
+    <Compile Include="Models\RecentViewItem.cs" />
     <Compile Include="MyCreation.xaml.cs">
       <DependentUpon>MyCreation.xaml</DependentUpon>
     </Compile>
@@ -136,11 +136,18 @@
     <Compile Include="SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SearchResultPage.xaml.cs">
+      <DependentUpon>SearchResultPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\DatabaseService.cs" />
+    <Compile Include="Services\IRecentViewItemService.cs" />
+    <Compile Include="Services\RecentViewItemService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModel\RecentViewPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -149,8 +156,9 @@
     <None Include="DailyPoetry_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\404.png" />
     <Content Include="Assets\SearchPageBackground.jpg" />
-    <Content Include="Logs\sample.txt" />
+    <Content Include="Logs\RecentViews.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -162,6 +170,10 @@
     <Content Include="Wallpapers\AlpineSnow.jpg" />
     <Content Include="Wallpapers\AutumnScenery.jpg" />
     <Content Include="Wallpapers\Buildings.jpg" />
+    <Content Include="Wallpapers\MyCreationBg1.jpg" />
+    <Content Include="Wallpapers\MyCreationBg2.jpg" />
+    <Content Include="Wallpapers\MyCreationBg3.jpg" />
+    <Content Include="Wallpapers\MyCreationBg4.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -184,14 +196,29 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SearchResultPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
+      <Version>2.2.3</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.3</Version>
+    </PackageReference>
+<<<<<<< HEAD
+    <PackageReference Include="MvvmLight">
+      <Version>5.4.1.1</Version>
+=======
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.1</Version>
+>>>>>>> 6da75649cf1853554add536f808e0a20adcb85e1
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

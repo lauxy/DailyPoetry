@@ -6,11 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:DailyPoetry.Models"
+
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <DataTemplate x:DataType="data:RecentView" x:Key="RecentViewDataTemplate">
+        <DataTemplate x:DataType="data:RecentViewItem" x:Key="RecentViewDataTemplate">
             <StackPanel Orientation="Horizontal" Width="1920">
                 <TextBlock Text="{x:Bind RecentViewId}"
                            VerticalAlignment="Center"
@@ -57,15 +58,18 @@
                                 Name="DeleteButton"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
-                                Click="DeleteButton_Click"/>
-                </StackPanel>
+                            Command="{Binding DeleteCommand}"
+                                />
 
-                <StackPanel>
-                    <GridView ItemsSource="{x:Bind RecentViews}" 
+                </StackPanel>
+                <!--ItemSource = x:Bind RecentViews-->
+                <StackPanel  Name="panel1" >
+                    <GridView ItemsSource="{Binding RecentViewItems }" 
                               IsItemClickEnabled="True" 
                               ItemClick="GridView_ItemClick"
-                              ItemTemplate="{StaticResource RecentViewDataTemplate}">
-                    </GridView>
+                              ItemTemplate="{StaticResource RecentViewDataTemplate}"
+                              Name="RecentViewGridView"
+                              />
                 </StackPanel>
 
             </StackPanel>
@@ -73,8 +77,21 @@
 
         <PivotItem Header="好友动态">
             <StackPanel>
-                <TextBlock Text="Content of section 2."
-                               Name="TestArea"/>
+                <Image Source="/Assets/404.png"
+                       Height="300"
+                       Width="500"
+                       Margin="0,36,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+                <TextBlock Text="404页面找不到了"
+                           Foreground="Gray"
+                           FontSize="48"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="前方施工，敬请期待"
+                           Foreground="Gray"
+                           FontSize="28"
+                           Margin="0,24,0,0"
+                           HorizontalAlignment="Center"/>
             </StackPanel>
         </PivotItem>
     </Pivot>

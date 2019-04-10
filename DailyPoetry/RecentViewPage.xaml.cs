@@ -20,6 +20,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using static DailyPoetry.ChangeWallpaper;
 using DailyPoetry.Models;
+using Windows.Storage;
+using System.Collections.ObjectModel;
+using DailyPoetry.ViewModel;
+using DailyPoetry.Services;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -30,13 +34,14 @@ namespace DailyPoetry
     /// </summary>
     public sealed partial class RecentViewPage : Page
     {
-
-        private List<RecentView> RecentViews;
+        private IRecentViewItemService _recentViewItemService;
+        RecentViewPageViewModel recentViews;
 
         public RecentViewPage()
         {
             this.InitializeComponent();
-            RecentViews = RecentViewManager.GetRecentViews();
+            DataContext = ViewModelLocator.Instance.RecentViewPageViewModel;
+            //recentViews = new RecentViewPageViewModel(_recentViewItemService);
         }
 
         /// <summary>
@@ -64,21 +69,21 @@ namespace DailyPoetry
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-            //测试更换壁纸
-            //ChangeWallpaper changer = new ChangeWallpaper();
-            //bool x = await changer.SetWallpaperAsync("Buildings.jpg");
-            ChangeWallpaper changer = new ChangeWallpaper();
-            bool x = await changer.WallpaperChanger();
+        /// 
+        //private void DeleteRecentViews() =>
+        //    RecentViewGridView.SelectedItem as RecentView)
 
-            if (x == true)
-            {
-                TestArea.Text = Application.Current.ToString();
-            }
-            else TestArea.Text = "No";
-        }
+        //private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        //{
+            
+
+        //    //测试更换壁纸
+        //    //ChangeWallpaper changer = new ChangeWallpaper();
+        //    //bool x = await changer.SetWallpaperAsync("Buildings.jpg");
+
+        //    //ChangeWallpaper changer = new ChangeWallpaper();
+        //    //bool x = await changer.WallpaperChanger();
+        //}
 
         /// <summary>
         /// 点击记录项执行的事件
@@ -87,7 +92,7 @@ namespace DailyPoetry
         /// <param name="e"></param>
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var selectedItem = (RecentView)e.ClickedItem; //获取当前被点击的对象的引用
+            var selectedItem = (RecentViewItem)e.ClickedItem; //获取当前被点击的对象的引用
 
         }
 
@@ -105,6 +110,7 @@ namespace DailyPoetry
 
             }
         }
+        
     }
 
       

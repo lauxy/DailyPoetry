@@ -20,41 +20,11 @@ namespace DailyPoetry
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class MyCreation : Page
+    public sealed partial class SearchResultPage : Page
     {
-        public MyCreation()
+        public SearchResultPage()
         {
             this.InitializeComponent();
-        }
-
-        private void OpenButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BoldButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ItalicButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ColorButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Editor_GotFocus(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
