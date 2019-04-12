@@ -15,7 +15,7 @@ namespace DailyPoetry.Services
         List<RecentViewItem> recentViews;
 
         public RecentViewItemService() {
-            Debug.WriteLine("S Created");
+           // Debug.WriteLine("S Created");
         }
 
         /// <summary>

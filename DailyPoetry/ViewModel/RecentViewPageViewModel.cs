@@ -18,8 +18,6 @@ namespace DailyPoetry.ViewModel
         /// </summary>
         private IRecentViewItemService _recentViewItemService;
 
-       // RecentViewItemService obj = new RecentViewItemService();
-
         /// <summary>
         /// 构造函数。
         /// </summary>
@@ -28,7 +26,7 @@ namespace DailyPoetry.ViewModel
         {
             _recentViewItemService = recentViewItemService;
             RecentViewItems = _recentViewItemService.ListRecentViewItems();
-            Debug.WriteLine("VM Created");
+           // Debug.WriteLine("VM Created");
         }
 
         /// <summary>

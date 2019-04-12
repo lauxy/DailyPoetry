@@ -32,7 +32,7 @@
 
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Find" Content="搜索" Tag="search" />
-                <NavigationViewItem Icon="CalendarReply" Content="每日推荐" Tag="dailyRecmd" />
+                <NavigationViewItem Icon="CalendarReply" Content="每日推荐" Tag="recommend" />
                 <NavigationViewItem Icon="People" Content="朋友" Tag="friends" />
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="我的诗词" Foreground="Gray" />

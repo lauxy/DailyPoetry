@@ -34,14 +34,13 @@ namespace DailyPoetry
     /// </summary>
     public sealed partial class RecentViewPage : Page
     {
-        private IRecentViewItemService _recentViewItemService;
-        RecentViewPageViewModel recentViews;
-
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public RecentViewPage()
         {
             this.InitializeComponent();
             DataContext = ViewModelLocator.Instance.RecentViewPageViewModel;
-            //recentViews = new RecentViewPageViewModel(_recentViewItemService);
         }
 
         /// <summary>

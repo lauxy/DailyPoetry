@@ -17,11 +17,17 @@ namespace DailyPoetry
         public RecentViewPageViewModel RecentViewPageViewModel =>
             SimpleIoc.Default.GetInstance<RecentViewPageViewModel>();
 
+        public RecommendPageViewModel RecommendPageViewModel =>
+            SimpleIoc.Default.GetInstance<RecommendPageViewModel>();
+
         private ViewModelLocator()
         {
             SimpleIoc.Default.Register<IRecentViewItemService, RecentViewItemService>();
+            SimpleIoc.Default.Register<ITokenService, TokenService>();
+            SimpleIoc.Default.Register<IRecommendItemService, RecommendItemService>();
+            SimpleIoc.Default.Register<ILocalInfoService, LocalInfoService>();
             SimpleIoc.Default.Register<RecentViewPageViewModel>();
-            //SimpleIoc.Default.Register<RecentViewPageViewModel>();
+            SimpleIoc.Default.Register<RecommendPageViewModel>();
         }
 
     }

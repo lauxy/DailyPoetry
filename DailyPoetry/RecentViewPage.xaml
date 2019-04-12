@@ -58,13 +58,11 @@
                                 Name="DeleteButton"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
-                            Command="{Binding DeleteCommand}"
-                                />
-
+                            Command="{Binding DeleteCommand}"/>
                 </StackPanel>
-                <!--ItemSource = x:Bind RecentViews-->
+                
                 <StackPanel  Name="panel1" >
-                    <GridView ItemsSource="{Binding RecentViewItems }" 
+                    <GridView ItemsSource="{Binding RecentViewItems}" 
                               IsItemClickEnabled="True" 
                               ItemClick="GridView_ItemClick"
                               ItemTemplate="{StaticResource RecentViewDataTemplate}"
