@@ -48,9 +48,14 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Pivot x:Name="rootPivot" Title="最近浏览" Margin="12,20,0,0" Foreground="Gray">
+    <StackPanel>
+    <TextBlock Text="最近浏览"
+               Margin="20,28,0,0"
+               Foreground="Black"
+               FontSize="24"/>
+    <Pivot x:Name="rootPivot" Margin="8,20,0,0">
         <PivotItem Header="诗词">
-            
+
             <StackPanel Orientation="Vertical">
 
                 <StackPanel Orientation="Horizontal">
@@ -60,14 +65,13 @@
                                 HorizontalAlignment="Right"
                             Command="{Binding DeleteCommand}"/>
                 </StackPanel>
-                
+
                 <StackPanel  Name="panel1" >
                     <GridView ItemsSource="{Binding RecentViewItems}" 
                               IsItemClickEnabled="True" 
                               ItemClick="GridView_ItemClick"
                               ItemTemplate="{StaticResource RecentViewDataTemplate}"
-                              Name="RecentViewGridView"
-                              />
+                              Name="RecentViewGridView"/>
                 </StackPanel>
 
             </StackPanel>
@@ -93,6 +97,6 @@
             </StackPanel>
         </PivotItem>
     </Pivot>
-
+    </StackPanel>
 
 </Page>
