@@ -1,23 +1,55 @@
-﻿using Windows.System.UserProfile;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
-using System;
-using System.Numerics;
+using Windows.System.UserProfile;
 
-namespace DailyPoetry
+namespace DailyPoetry.Services
 {
-    public class ChangeWallpaper
+    /// <summary>
+    /// 改变用户的桌面壁纸
+    /// </summary>
+    public class WallpeperService
     {
-        // Pass in a relative path to a file inside the local appdata folder 
+        /// <summary>
+        /// 改变桌面壁纸。
+        /// </summary>
+        /// <param name="localAppDataFileName"></param>
+        /// <returns>是否操作成功。</returns>
         public async Task<bool> SetWallpaperAsync(string localAppDataFileName)
         {
             bool success = false;
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            //if (StorageFolder.TryGetItemAsync("Wallpapers") != null)
+            //{
+
+            //}
             if (UserProfilePersonalizationSettings.IsSupported())
             {
                 var uri = new Uri("ms-appx:///Wallpapers/" + localAppDataFileName);
                 StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
                 UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
                 success = await profileSettings.TrySetWallpaperImageAsync(file);
+            }
+            return success;
+        }
+
+        /// <summary>
+        /// 改变锁屏壁纸。
+        /// </summary>
+        /// <param name="localAppDataFileName"></param>
+        /// <returns>是否操作成功。</returns>
+        public async Task<bool> SetLockScreenAsync(string localAppDataFileName)
+        {
+            bool success = false;
+            if (UserProfilePersonalizationSettings.IsSupported())
+            {
+                var uri = new Uri("ms-appx:///LockScreens/" + localAppDataFileName);
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+                UserProfilePersonalizationSettings profileSettings = UserProfilePersonalizationSettings.Current;
+                success = await profileSettings.TrySetLockScreenImageAsync(file);
             }
             return success;
         }
@@ -40,10 +72,10 @@ namespace DailyPoetry
         public async Task<bool> WallpaperChanger()
         {
             string[] fileList = System.IO.Directory.GetFileSystemEntries("Wallpapers/");
-            for(int i = 0; i < fileList.Length; ++i)
+            for (int i = 0; i < fileList.Length; ++i)
             {
-                fileList[i] = 
-                    fileList[i].Substring(fileList[i].IndexOf("/")+1, fileList[i].Length - fileList[i].IndexOf("/")-1);
+                fileList[i] =
+                    fileList[i].Substring(fileList[i].IndexOf("/") + 1, fileList[i].Length - fileList[i].IndexOf("/") - 1);
             }
             //提高随机数不重复概率的种子生成方法，在New Random(SeedParam)时候保证SeedParam是唯一的
             Random random = new Random(int.Parse(DateTime.Now.ToString("HHmmssfff")));

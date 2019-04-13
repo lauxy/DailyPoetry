@@ -37,14 +37,9 @@
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="我的诗词" Foreground="Gray" />
                 <NavigationViewItem Icon="Clock" Content="最近浏览" Tag="browse" />
-                <NavigationViewItem Icon="Flag" Content="诗词大会" Tag="game" />
                 <NavigationViewItem Icon="Edit" Content="我的创作" Tag="creations" />
                 <NavigationViewItem Icon="OutlineStar" Content="我喜欢的诗词" Tag="favorite"/>
             </NavigationView.MenuItems>
-
-            <NavigationView.PaneFooter>
-                <NavigationViewItem Icon="Contact" Content="个人中心" />
-            </NavigationView.PaneFooter>
 
             <ScrollViewer>
                 <Frame x:Name="ContentFrame" Padding="0,0,0,0" IsTabStop="True"

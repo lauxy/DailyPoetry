@@ -122,7 +122,6 @@
     <Compile Include="BlankPage.xaml.cs">
       <DependentUpon>BlankPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ChangeWallpaper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -146,6 +145,7 @@
       <DependentUpon>SearchResultPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\DatabaseService.cs" />
+    <Compile Include="Services\GenerateBgService.cs" />
     <Compile Include="Services\ILocalInfoService.cs" />
     <Compile Include="Services\IRecentViewItemService.cs" />
     <Compile Include="Services\IRecommendItemService.cs" />
@@ -155,6 +155,7 @@
     <Compile Include="Services\RecommendItemService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\TokenService.cs" />
+    <Compile Include="Services\WallpeperService.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
