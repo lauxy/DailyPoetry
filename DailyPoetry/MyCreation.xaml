@@ -19,7 +19,7 @@
                        FontSize="24"
                        Margin="20,28,0,12"/>
         </StackPanel>
-        <RelativePanel Margin="0,0,0,20" HorizontalAlignment="Stretch">
+        <RelativePanel Margin="0,0,0,20" HorizontalAlignment="Stretch" Width="700">
             <RelativePanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="BorderThickness" Value="0" />
@@ -121,11 +121,11 @@
                 </muxcontrols:DropDownButton.Flyout>
             </muxcontrols:DropDownButton>
 
-            <RichEditBox x:Name="editor" Height="200" 
+            <RichEditBox x:Name="editor" Height="500" 
                  RelativePanel.Below="openFileButton" 
                  RelativePanel.AlignLeftWithPanel="True" 
                  RelativePanel.AlignRightWithPanel="True"
-                 GotFocus="Editor_GotFocus" />
+                 GotFocus="Editor_GotFocus"/>
         </RelativePanel>
     </StackPanel>
 </Page>

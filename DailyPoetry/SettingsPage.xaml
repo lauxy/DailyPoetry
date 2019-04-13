@@ -9,6 +9,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <TextBlock Text="设置"
+                   Foreground="Black"
+                   FontSize="24"
+                   Margin="20,28,0,12"/>
     </Grid>
 </Page>

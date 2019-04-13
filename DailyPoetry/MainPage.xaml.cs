@@ -66,6 +66,15 @@ namespace DailyPoetry
                     case "creations":
                         ContentFrame.Navigate(typeof(MyCreation));
                         break;
+                    case "recommend":
+                        ContentFrame.Navigate((typeof(RecommendPage)));
+                        break;
+                    case "friends":
+                        ContentFrame.Navigate(typeof(BlankPage));
+                        break;
+                    case "game":
+                        ContentFrame.Navigate(typeof(BlankPage));
+                        break;
                 }
                 
             }
