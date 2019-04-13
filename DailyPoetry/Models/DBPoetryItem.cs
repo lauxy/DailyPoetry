@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DailyPoetry.Models
 {
     /// <summary>
-    /// 诗词的基本内容
+    /// 数据库内容，请不要使用这个类，用下面的
     /// </summary>
     [Table("works")]
-    public class PoetryItem
+    public class DbPoetryItem
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -34,4 +34,16 @@ namespace DailyPoetry.Models
         public string Layout { get; set; }  // 显示布局
     }
 
+    public class PoetryItem
+    {
+        public DbPoetryItem Data;
+        public List<int> HightStartIdxs = new List<int>();
+        public List<int> HightEndIdxs = new List<int>();
+        public string Summary;
+        public PoetryItem(DbPoetryItem dbPoetryItem)
+        {
+            Data = dbPoetryItem;
+            Summary = Data.Content.Split('\n')[0];
+        }
+    }
 }

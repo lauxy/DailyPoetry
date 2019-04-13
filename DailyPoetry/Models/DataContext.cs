@@ -12,6 +12,6 @@ namespace DailyPoetry.Models
             optionsBuilder.UseSqlite("Data Source=db.sqlite");
         }
 
-        public DbSet<PoetryItem> PoetryItems { get; set; }
+        public DbSet<DbPoetryItem> PoetryItems { get; set; }
     }
 }

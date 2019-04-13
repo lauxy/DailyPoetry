@@ -41,7 +41,7 @@ namespace DailyPoetry.Services
             }
         }
 
-        public List<PoetryItem> GetAllPoetryData()
+        public List<DbPoetryItem> GetAllPoetryData()
         {
             return dataContext.PoetryItems.ToList();
         }
