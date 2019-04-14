@@ -18,7 +18,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using static DailyPoetry.ChangeWallpaper;
 using DailyPoetry.Models;
 using Windows.Storage;
 using System.Collections.ObjectModel;

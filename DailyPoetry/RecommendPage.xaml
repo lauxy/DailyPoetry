@@ -9,16 +9,39 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <TextBlock Name="ShowPoetryArea"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Margin="12,56,0,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Margin="0,0,62,0"
+                   FontSize="34"
+                   Grid.Row="0"
                    Text="{Binding RecommendItems.content}"/>
-        <TextBlock Name="ShowWeatherArea"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Margin="12,84,0,0"
-                   Text="{Binding LocalInfoItems.weatherData.weather}"/>
+    
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Row="1" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom">
+                <TextBlock FontSize="18"
+                       Margin="0,0,62,0"
+                       Text="{Binding LocalInfoItems.region}"/>
+                <TextBlock FontSize="18"
+                       Margin="0,0,62,0"
+                       Text="{Binding LocalInfoItems.weatherData.weather}"/>
+            </StackPanel>
+
+        <StackPanel Grid.Row="2" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top">
+            <GridView ItemsSource="{Binding LocalInfoItems.tags}"
+                      FontSize="18"
+                      Margin="0,0,56,0"
+                      IsItemClickEnabled="False"/>
+        </StackPanel>
 
     </Grid>
 </Page>
