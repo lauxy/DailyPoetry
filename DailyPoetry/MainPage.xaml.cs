@@ -72,9 +72,7 @@ namespace DailyPoetry
                     case "friends":
                         ContentFrame.Navigate(typeof(BlankPage));
                         break;
-                    case "game":
-                        ContentFrame.Navigate(typeof(BlankPage));
-                        break;
+                    
                 }
                 
             }

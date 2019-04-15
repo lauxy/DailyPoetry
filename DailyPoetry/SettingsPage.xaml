@@ -8,10 +8,94 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+   
+
+    <StackPanel Orientation="Vertical">
         <TextBlock Text="设置"
-                   Foreground="Black"
                    FontSize="24"
                    Margin="20,28,0,12"/>
-    </Grid>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" Margin="20,0,0,0" Grid.Column="0">
+                <TextBlock Text="个性设置"
+                           Margin="0,8,0,0"
+                           FontSize="20" />
+                <TextBlock Text="将每日推荐的背景图片自动设置为我的壁纸"
+                           Margin="0,8,0,0"
+                           FontSize="16"/>
+                <ToggleSwitch AutomationProperties.Name="simple ToggleSwitch"
+                              Name="WallpaperSwitch"
+                              IsOn="False"
+                              OffContent="开"
+                              Toggled="ToggleSwitch_OnToggled"/>
+                <TextBlock Text="将每日推荐的背景图片自动设置为我的锁屏"
+                           FontSize="16"
+                           Foreground="Black"/>
+                <ToggleSwitch AutomationProperties.Name="simple ToggleSwitch"
+                              Name="LockScreenSwitch"
+                              IsOn="False"
+                              OffContent="开"
+                              Toggled="LockScreenSwitch_OnToggled"/>
+
+                <TextBlock  Text="应用主题"
+                            Margin="0,24,0,8"
+                            FontSize="20"
+                            Style="{ThemeResource BaseTextBlockStyle}"/>
+                <RadioButton x:Name="LightColorRadioButton" 
+                             Content="浅色" 
+                             Checked="LightColorRadioButton_OnChecked"/>
+                <RadioButton x:Name="DarkColorRadioButton" 
+                             Content="深色" 
+                             Checked="DarkColorRadioButton_OnChecked"/>
+                <RadioButton x:Name="SystemColorRadioButton" 
+                             Content="与系统设置保持一致" 
+                             Checked="SystemColorRadioButton_OnChecked"/>
+
+                <TextBlock Text="背景设置"
+                           Margin="0,24,0,0"
+                           FontSize="20" />
+                <TextBlock Text="将我的创作的背景设为默认背景"
+                           FontSize="16"
+                           Margin="0,8,0,0"/>
+                <ToggleSwitch AutomationProperties.Name="simple ToggleSwitch"
+                              Name="BackgroundSwitch"
+                              IsOn="True"
+                              OffContent="开"
+                              Toggled="BackgroundSwitch_OnToggled"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" 
+                        Grid.Column="1">
+                <TextBlock Text="应用"
+                           Margin="0,8,0,0"
+                           FontSize="20" />
+                <HyperlinkButton Content="帮助" 
+                                 Margin="0,12,0,0"
+                                 FontSize="16"
+                                 NavigateUri="http://www.microsoft.com"/>
+                <HyperlinkButton Content="反馈" 
+                                 FontSize="16"
+                                 NavigateUri="http://www.microsoft.com"/>
+                <HyperlinkButton Content="关于" 
+                                 FontSize="16"
+                                 NavigateUri="http://www.microsoft.com"/>
+                <HyperlinkButton Content="新功能" 
+                                 FontSize="16"
+                                 NavigateUri="http://www.microsoft.com"/>
+            </StackPanel>
+        </Grid>
+
+
+
+
+        
+
+
+    </StackPanel>
+
 </Page>
