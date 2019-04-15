@@ -122,11 +122,14 @@
     <Compile Include="BlankPage.xaml.cs">
       <DependentUpon>BlankPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DetailPage.xaml.cs">
+      <DependentUpon>DetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\DataContext.cs" />
-    <Compile Include="Models\DbPoetryItem.cs" />
+    <Compile Include="Models\KnowledgeContext.cs" />
+    <Compile Include="Models\PoetryItem.cs" />
     <Compile Include="Models\RecentViewItem.cs" />
     <Compile Include="MyCreation.xaml.cs">
       <DependentUpon>MyCreation.xaml</DependentUpon>
@@ -144,7 +147,7 @@
     <Compile Include="SearchResultPage.xaml.cs">
       <DependentUpon>SearchResultPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\DatabaseService.cs" />
+    <Compile Include="Services\KnowledgeService.cs" />
     <Compile Include="Services\GenerateBgService.cs" />
     <Compile Include="Services\ILocalInfoService.cs" />
     <Compile Include="Services\IRecentViewItemService.cs" />
@@ -160,17 +163,15 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModel\DetailViewModel.cs" />
     <Compile Include="ViewModel\RecentViewPageViewModel.cs" />
     <Compile Include="ViewModel\RecommendPageViewModel.cs" />
-    <Compile Include="ViewModel\SearchResultPageViewModel.cs" />
+    <Compile Include="ViewModel\SearchResultViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="Assets\db.sqlite3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="DailyPoetry_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +200,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="BlankPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

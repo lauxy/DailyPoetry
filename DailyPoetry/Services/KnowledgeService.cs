@@ -10,17 +10,14 @@ using Windows.Storage;
 
 namespace DailyPoetry.Services
 {
-    public class DatabaseService
+    public class KnowledgeService
     {
-        /// <summary>
-        /// todo: not thread safe !
-        /// </summary>
-        private static DataContext _dataContext;
+        private static KnowledgeContext dataContext;
 
-        public DatabaseService()
+        public KnowledgeService()
         {
             Task.Run(InitDatabase).Wait();
-            _dataContext = new DataContext();
+            dataContext = new KnowledgeContext();
         }
 
         private async Task InitDatabase()
@@ -46,15 +43,8 @@ namespace DailyPoetry.Services
 
         public List<PoetryItem> GetAllPoetryData()
         {
-            var dbPoetryItems = _dataContext.DbPoetryItems.ToList().Take(10).ToList();
-            foreach (var dbPoetryItem in dbPoetryItems)
-            {
-                dbPoetryItem.Summary = dbPoetryItem.Content.Split('。')[0];
-            }
-
-            return dbPoetryItems;
+            return dataContext.PoetryItems.ToList();
         }
-
 
     }
 }

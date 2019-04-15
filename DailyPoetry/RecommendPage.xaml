@@ -41,6 +41,7 @@
                       FontSize="18"
                       Margin="0,0,56,0"
                       IsItemClickEnabled="False"/>
+            <!--<TextBlock Name="Tags"/>-->
         </StackPanel>
 
     </Grid>
