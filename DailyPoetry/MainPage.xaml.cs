@@ -58,7 +58,7 @@ namespace DailyPoetry
                 switch (item.Tag)
                 {
                     case "search":
-                        ContentFrame.Navigate(typeof(SearchPage));
+                        ContentFrame.Navigate(typeof(SearchResultPage));
                         break;
                     case "browse":
                         ContentFrame.Navigate(typeof(RecentViewPage));

@@ -12,12 +12,15 @@ namespace DailyPoetry.Services
 {
     public class DatabaseService
     {
-        private static DataContext dataContext;
+        /// <summary>
+        /// todo: not thread safe !
+        /// </summary>
+        private static DataContext _dataContext;
 
         public DatabaseService()
         {
             Task.Run(InitDatabase).Wait();
-            dataContext = new DataContext();
+            _dataContext = new DataContext();
         }
 
         private async Task InitDatabase()
@@ -41,10 +44,17 @@ namespace DailyPoetry.Services
             }
         }
 
-        public List<DbPoetryItem> GetAllPoetryData()
+        public List<PoetryItem> GetAllPoetryData()
         {
-            return dataContext.PoetryItems.ToList();
+            var dbPoetryItems = _dataContext.DbPoetryItems.ToList().Take(10).ToList();
+            foreach (var dbPoetryItem in dbPoetryItems)
+            {
+                dbPoetryItem.Summary = dbPoetryItem.Content.Split('。')[0];
+            }
+
+            return dbPoetryItems;
         }
+
 
     }
 }

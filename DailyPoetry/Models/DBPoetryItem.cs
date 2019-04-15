@@ -34,16 +34,13 @@ namespace DailyPoetry.Models
         public string Layout { get; set; }  // 显示布局
     }
 
-    public class PoetryItem
+    public class PoetryItem : DbPoetryItem
     {
-        public DbPoetryItem Data;
+        [NotMapped]
         public List<int> HightStartIdxs = new List<int>();
+        [NotMapped]
         public List<int> HightEndIdxs = new List<int>();
+        [NotMapped]
         public string Summary;
-        public PoetryItem(DbPoetryItem dbPoetryItem)
-        {
-            Data = dbPoetryItem;
-            Summary = Data.Content.Split('\n')[0];
-        }
     }
 }

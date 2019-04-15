@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using DailyPoetry.Models;
+using DailyPoetry.ViewModel;
+
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
 namespace DailyPoetry
@@ -25,6 +27,7 @@ namespace DailyPoetry
         public SearchResultPage()
         {
             this.InitializeComponent();
+            DataContext = ViewModelLocator.Instance.SearchResultPageViewModel;
         }
 
         private void MasterListView_OnItemClick(object sender, ItemClickEventArgs e)

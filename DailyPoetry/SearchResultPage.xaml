@@ -24,13 +24,13 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0"
                            Grid.ColumnSpan="2"
-                           Text="{x:Bind Data.Name}" 
+                           Text="{x:Bind Name}" 
                            Margin="0,0,0,0"/>
                 <TextBlock  Grid.Column="0" Grid.Row="1"
-                            Text="{x:Bind Data.Dynasty}" 
+                            Text="{x:Bind Dynasty}" 
                             Margin="0,0,0,0"/>
                 <TextBlock  Grid.Column="1" Grid.Row="1"
-                            Text="{x:Bind Data.AuthorName}" 
+                            Text="{x:Bind AuthorName}" 
                             Margin="0,0,0,0"/>
                 <TextBlock  Grid.Column="0" Grid.Row="2"
                             Grid.ColumnSpan="2"
@@ -54,14 +54,14 @@
             <TextBlock Text="诗词列表" Margin="24,8,8,8"
                        Style="{ThemeResource TitleTextBlockStyle}" />
         </Border>
-
+        
         <ListView x:Name="MasterListView" 
                   SelectionMode="Extended"
                   SelectionChanged="MasterListView_OnSelectionChanged"
                   IsItemClickEnabled="True"
                   ShowsScrollingPlaceholders="False"
                   ItemTemplate="{StaticResource PoetryItemViewTemplate }"
-                  ItemsSource="{Binding }"
+                  ItemsSource="{Binding PoetryItems}"
                   ItemClick="MasterListView_OnItemClick"
                   Grid.Row="1" Grid.Column="0">
             <ListView.ItemContainerStyle>

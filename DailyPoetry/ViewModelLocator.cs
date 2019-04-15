@@ -20,6 +20,9 @@ namespace DailyPoetry
         public RecommendPageViewModel RecommendPageViewModel =>
             SimpleIoc.Default.GetInstance<RecommendPageViewModel>();
 
+        public SearchResultPageViewModel SearchResultPageViewModel =>
+            SimpleIoc.Default.GetInstance<SearchResultPageViewModel>();
+
         private ViewModelLocator()
         {
             SimpleIoc.Default.Register<IRecentViewItemService, RecentViewItemService>();
@@ -28,6 +31,11 @@ namespace DailyPoetry
             SimpleIoc.Default.Register<ILocalInfoService, LocalInfoService>();
             SimpleIoc.Default.Register<RecentViewPageViewModel>();
             SimpleIoc.Default.Register<RecommendPageViewModel>();
+
+            SimpleIoc.Default.Register<DatabaseService>();
+            SimpleIoc.Default.Register<SearchService>();
+            SimpleIoc.Default.Register<SearchResultPageViewModel>();
+
         }
 
     }
