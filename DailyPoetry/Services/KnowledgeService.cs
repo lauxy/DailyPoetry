@@ -10,14 +10,14 @@ using Windows.Storage;
 
 namespace DailyPoetry.Services
 {
-    public class DatabaseService
+    public class KnowledgeService
     {
-        private static DataContext dataContext;
+        private static KnowledgeContext dataContext;
 
-        public DatabaseService()
+        public KnowledgeService()
         {
             Task.Run(InitDatabase).Wait();
-            dataContext = new DataContext();
+            dataContext = new KnowledgeContext();
         }
 
         private async Task InitDatabase()
