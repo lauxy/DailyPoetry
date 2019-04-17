@@ -129,7 +129,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\KnowledgeContext.cs" />
-    <Compile Include="Models\PoetryItem.cs" />
+    <Compile Include="Models\DbPoetryItem.cs" />
     <Compile Include="Models\RecentViewItem.cs" />
     <Compile Include="MyCreation.xaml.cs">
       <DependentUpon>MyCreation.xaml</DependentUpon>
