@@ -11,7 +11,7 @@ namespace DailyPoetry.Services
     /// <summary>
     /// 改变用户的桌面壁纸
     /// </summary>
-    public class WallpeperService
+    public class WallpaperService
     {
         /// <summary>
         /// 改变桌面壁纸。

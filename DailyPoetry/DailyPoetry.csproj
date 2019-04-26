@@ -131,8 +131,13 @@
     <Compile Include="Models\KnowledgeContext.cs" />
     <Compile Include="Models\PoetryItem.cs" />
     <Compile Include="Models\RecentViewItem.cs" />
+    <Compile Include="Models\UserContext.cs" />
+    <Compile Include="Models\UserDataBaseItem.cs" />
     <Compile Include="MyCreation.xaml.cs">
       <DependentUpon>MyCreation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyFavoritePage.xaml.cs">
+      <DependentUpon>MyFavoritePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecentViewPage.xaml.cs">
@@ -147,6 +152,7 @@
     <Compile Include="SearchResultPage.xaml.cs">
       <DependentUpon>SearchResultPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\IBingImageService.cs" />
     <Compile Include="Services\KnowledgeService.cs" />
     <Compile Include="Services\GenerateBgService.cs" />
     <Compile Include="Services\ILocalInfoService.cs" />
@@ -158,7 +164,8 @@
     <Compile Include="Services\RecommendItemService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\TokenService.cs" />
-    <Compile Include="Services\WallpeperService.cs" />
+    <Compile Include="Services\UserRecordService.cs" />
+    <Compile Include="Services\WallpaperService.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -215,6 +222,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MyFavoritePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RecentViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -241,7 +252,7 @@
       <Version>2.2.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.3</Version>
+      <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="MvvmLight">
       <Version>5.4.1.1</Version>

@@ -10,7 +10,6 @@ namespace DailyPoetry.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=db.sqlite");
-
         }
 
         public DbSet<PoetryItem> PoetryItems { get; set; }

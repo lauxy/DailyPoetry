@@ -6,7 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Loaded="RecommendPage_OnLoaded">
+    <!--Page.Background>
+        <ImageBrush ImageSource="" Stretch="UniformToFill"/>
+    </-->
 
     <Grid>
         <Grid.RowDefinitions>
@@ -21,18 +24,18 @@
                    FontSize="34"
                    Grid.Row="0"
                    Text="{Binding RecommendItems.content}"/>
-    
-            <StackPanel Orientation="Horizontal" 
+
+        <StackPanel Orientation="Horizontal" 
                         Grid.Row="1" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Bottom">
-                <TextBlock FontSize="18"
+            <TextBlock FontSize="18"
                        Margin="0,0,62,0"
                        Text="{Binding LocalInfoItems.region}"/>
-                <TextBlock FontSize="18"
+            <TextBlock FontSize="18"
                        Margin="0,0,62,0"
                        Text="{Binding LocalInfoItems.weatherData.weather}"/>
-            </StackPanel>
+        </StackPanel>
 
         <StackPanel Grid.Row="2" 
                         HorizontalAlignment="Right" 
@@ -41,8 +44,25 @@
                       FontSize="18"
                       Margin="0,0,56,0"
                       IsItemClickEnabled="False"/>
-            <!--<TextBlock Name="Tags"/>-->
         </StackPanel>
 
+        <Grid Name="GridLoading" Grid.Row="0" Grid.RowSpan="3">
+            <Grid.Background>
+                <SolidColorBrush Color="Black"/>
+            </Grid.Background>
+            <StackPanel Orientation="Vertical"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <ProgressRing Name="ProgressRingLoading"
+                          Width="100"
+                          Height="100"
+                          IsActive="True"
+                          Foreground="White"/>
+                <TextBlock Name="TextBlockLoading"
+                       Foreground="White"
+                       FontSize="24"
+                       Text="载入中..."/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

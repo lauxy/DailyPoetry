@@ -67,12 +67,14 @@ namespace DailyPoetry
                         ContentFrame.Navigate(typeof(MyCreation));
                         break;
                     case "recommend":
-                        ContentFrame.Navigate((typeof(RecommendPage)));
+                        ContentFrame.Navigate(typeof(RecommendPage));
                         break;
                     case "friends":
                         ContentFrame.Navigate(typeof(BlankPage));
                         break;
-                    
+                    case "favorite":
+                        ContentFrame.Navigate(typeof(MyFavoritePage));
+                        break;   
                 }
                 
             }

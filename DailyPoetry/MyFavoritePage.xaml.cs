@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using DailyPoetry.Services;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -20,25 +21,11 @@ namespace DailyPoetry
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class RecommendPage : Page
+    public sealed partial class MyFavoritePage : Page
     {
-        public RecommendPage()
+        public MyFavoritePage()
         {
             this.InitializeComponent();
-        }
-
-        private void RecommendPage_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            GridLoading.Visibility = Visibility.Visible;
-            ProgressRingLoading.IsActive = true;
-            DataContext = ViewModelLocator.Instance.RecommendPageViewModel;
-            ProgressRingLoading.IsActive = false;
-            GridLoading.Visibility = Visibility.Collapsed;
-        }
-
-        private void GetPoetryButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
     }
 }
