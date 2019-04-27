@@ -11,6 +11,7 @@ using Windows.Data.Json;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Media.Imaging;
@@ -22,17 +23,15 @@ namespace DailyPoetry.Services
     public class GenerateBgService : IBingImageService
     {
         /// <summary>
-        /// This Method fetches the JSON string from the BingAPI endpoint and then returns the Raw String to the caller.
-        /// We need to use either void or Task if we use await in the method body.
+        /// 获取Bing每日图片的Json，反序列化为类。
         /// </summary>
-        /// <param name="_numOfImages"></param>
-        /// <returns></returns>
-        public async Task<BingImageData> getBingImageAsync(int _numOfImages)
+        /// <returns>返回BingImageData类</returns>
+        public async Task<BingImageData> getBingImageAsync()
         {
             // We can specify the region we want for the Bing Image of the Day.
             string strRegion = "en-US";
             string strBingImageURL =
-                string.Format("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n={0}&mkt={1}", _numOfImages,
+                string.Format("http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n={0}&mkt={1}", 1,
                     strRegion);
             string strJSONString = "";
 
@@ -45,26 +44,30 @@ namespace DailyPoetry.Services
             return bingImageData;
         }
 
-       /// <summary>
-       /// This Method parses the fetched JSON string and retrieves the Image URLs using NewtonSoft Json.Net
-       /// Each Url is stored as a separate List item and the list of URLs is returned to the caller.
-       /// </summary>
-       /// <param name="_numOfImages"></param>
-       /// <param name="_strRawJSONString"></param>
-       /// <returns></returns>
-        public List<string> parseJSONString_Newtonsoft(int _numOfImages, string _strRawJSONString)
+        /// <summary>
+        /// 获取Bing图片。
+        /// </summary>
+        /// <returns>返回BitmapImage图片</returns>
+        public async Task<BitmapImage> GetPageBackground()
         {
-            List<string> _lstBingImageURLs = new List<string>(_numOfImages);
+            GenerateBgService bgService = new GenerateBgService();
+            BingImageData bingImageData = Task.Run(bgService.getBingImageAsync).Result;
+            Image item = bingImageData.images[0];
+            Windows.Web.Http.HttpClient http = new Windows.Web.Http.HttpClient();
 
-            JObject jResults = JObject.Parse(_strRawJSONString);
-            foreach (var image in jResults["images"])
+            IBuffer buffer = await http.GetBufferAsync(new Uri("https://www.bing.com" + item.url));
+
+            BitmapImage img = new BitmapImage();
+
+            using (IRandomAccessStream stream = new InMemoryRandomAccessStream())
             {
-                _lstBingImageURLs.Add((string)image["url"]);
+                await stream.WriteAsync(buffer);
+                stream.Seek(0);
+                await img.SetSourceAsync(stream);
             }
-            
-            return _lstBingImageURLs;
-        }
 
+            return img;
+        }
 
         /// <summary>
         /// 将文字（诗句）和图片（配图）合成一张图片，作为壁纸或锁屏。

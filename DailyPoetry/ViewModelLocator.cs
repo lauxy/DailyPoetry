@@ -26,7 +26,7 @@ namespace DailyPoetry
             SimpleIoc.Default.Register<ITokenService, TokenService>();
             SimpleIoc.Default.Register<IRecommendItemService, RecommendItemService>();
             SimpleIoc.Default.Register<ILocalInfoService, LocalInfoService>();
-            SimpleIoc.Default.Register<GenerateBgService>();
+            SimpleIoc.Default.Register<IBingImageService,GenerateBgService>();
             SimpleIoc.Default.Register<RecentViewPageViewModel>();
             SimpleIoc.Default.Register<RecommendPageViewModel>();
         }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace DailyPoetry.Services
 {
     public interface IBingImageService
     {
-
+        Task<BingImageData> getBingImageAsync();
+        Task<BitmapImage> GetPageBackground();
     }
 
     public class BingImageData
@@ -44,5 +46,4 @@ namespace DailyPoetry.Services
         public int bot { get; set; }
         public object[] hs { get; set; }
     }
-
 }

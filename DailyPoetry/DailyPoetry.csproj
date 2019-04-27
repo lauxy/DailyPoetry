@@ -152,6 +152,7 @@
     <Compile Include="SearchResultPage.xaml.cs">
       <DependentUpon>SearchResultPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\BingImageDetail.cs" />
     <Compile Include="Services\IBingImageService.cs" />
     <Compile Include="Services\KnowledgeService.cs" />
     <Compile Include="Services\GenerateBgService.cs" />

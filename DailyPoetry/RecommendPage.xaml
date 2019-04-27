@@ -5,11 +5,13 @@
     xmlns:local="using:DailyPoetry"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:services="using:DailyPoetry.Services"
     mc:Ignorable="d"
     Loaded="RecommendPage_OnLoaded">
-    <!--Page.Background>
-        <ImageBrush ImageSource="" Stretch="UniformToFill"/>
-    </-->
+
+    <Page.Background>
+        <ImageBrush x:Name="RecommendPageBg" ImageSource="{Binding Source}"></ImageBrush>
+    </Page.Background>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -17,12 +19,14 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <TextBlock Name="ShowPoetryArea"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"
                    Margin="0,0,62,0"
                    FontSize="34"
                    Grid.Row="0"
+                   Foreground="White"
                    Text="{Binding RecommendItems.content}"/>
 
         <StackPanel Orientation="Horizontal" 
@@ -31,19 +35,22 @@
                         VerticalAlignment="Bottom">
             <TextBlock FontSize="18"
                        Margin="0,0,62,0"
+                       Foreground="White"
                        Text="{Binding LocalInfoItems.region}"/>
             <TextBlock FontSize="18"
                        Margin="0,0,62,0"
+                       Foreground="White"
                        Text="{Binding LocalInfoItems.weatherData.weather}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="2" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Top">
-            <GridView ItemsSource="{Binding LocalInfoItems.tags}"
-                      FontSize="18"
+            <GridView FontSize="18"
+                      Foreground="White"
                       Margin="0,0,56,0"
-                      IsItemClickEnabled="False"/>
+                      IsItemClickEnabled="False"
+                      ItemsSource="{Binding LocalInfoItems.tags}"/>
         </StackPanel>
 
         <Grid Name="GridLoading" Grid.Row="0" Grid.RowSpan="3">
