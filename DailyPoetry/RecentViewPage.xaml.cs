@@ -42,26 +42,6 @@ namespace DailyPoetry
         }
 
         /// <summary>
-        /// “全选”复选框被选中
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// “全选”复选框未被选中
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        /// <summary>
         /// 删除最近浏览的记录信息
         /// </summary>
         /// <param name="sender"></param>
