@@ -26,7 +26,6 @@
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
 
-
                 <TextBlock FontSize="16" Text="{x:Bind Title}" 
                            FontWeight="Bold" 
                            Margin="8,6,0,0"

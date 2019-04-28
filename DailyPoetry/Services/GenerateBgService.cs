@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Windows.Data.Json;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
@@ -65,8 +66,34 @@ namespace DailyPoetry.Services
                 stream.Seek(0);
                 await img.SetSourceAsync(stream);
             }
-
+            
+            await SaveBitmapImageAsync(img);
             return img;
+        }
+
+        public async Task SaveBitmapImageAsync(BitmapImage img)
+        {
+            if (img == null) return;
+            string fileName = "Background.jpg";
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            //创建文件
+            StorageFile file =
+                await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            WriteableBitmap writeableBitmap = new WriteableBitmap(img.PixelWidth, img.PixelHeight);
+            using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
+                encoder.SetPixelData(
+                    BitmapPixelFormat.Bgra8,
+                    BitmapAlphaMode.Ignore,
+                    (uint)writeableBitmap.PixelWidth,
+                    (uint)writeableBitmap.PixelHeight,
+                    96.0,
+                    96.0,
+                    writeableBitmap.PixelBuffer.ToArray());
+                await encoder.FlushAsync();
+            }
         }
 
         /// <summary>
@@ -77,8 +104,9 @@ namespace DailyPoetry.Services
         /// <returns></returns>
         public async Task CreateBackgroundImageAsync(string imageName, string text)
         {
-            string filepath = "ms-appx:///Assets/" + imageName;
-            Uri imageuri = new Uri(filepath);
+            //string filepath = "ms-appx:///Assets/" + imageName;
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            Uri imageuri = new Uri(storageFolder + imageName);
             StorageFile inputFile = await StorageFile.GetFileFromApplicationUriAsync(imageuri);
             BitmapDecoder imagedecoder;
             using (var imagestream = await inputFile.OpenAsync(FileAccessMode.Read))
@@ -86,7 +114,8 @@ namespace DailyPoetry.Services
                 imagedecoder = await BitmapDecoder.CreateAsync(imagestream);
             }
             CanvasDevice device = CanvasDevice.GetSharedDevice();
-            CanvasRenderTarget renderTarget = new CanvasRenderTarget(device, imagedecoder.PixelWidth, imagedecoder.PixelHeight, 96);
+            CanvasRenderTarget renderTarget =
+                new CanvasRenderTarget(device, imagedecoder.PixelWidth, imagedecoder.PixelHeight, 96);
             using (var ds = renderTarget.CreateDrawingSession())
             {
                 ds.Clear(Colors.White);
@@ -95,8 +124,8 @@ namespace DailyPoetry.Services
                 ds.DrawText(text, new System.Numerics.Vector2(150, 150), Colors.Black);
             }
             string filename = "Wallpaper.png";
-            StorageFolder pictureFolder = KnownFolders.SavedPictures;
-            var file = await pictureFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+           // StorageFolder pictureFolder = KnownFolders.SavedPictures;
+            var file = await storageFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
             {
                 await renderTarget.SaveAsync(fileStream, CanvasBitmapFileFormat.Png, 1f);
