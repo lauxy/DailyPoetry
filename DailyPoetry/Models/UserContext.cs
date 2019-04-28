@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,11 +10,6 @@ namespace DailyPoetry.Models
 {
     public class UserContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=user.sqlite");
-        }
-
         /// <summary>
         /// “最近浏览”数据表。
         /// </summary>
@@ -23,6 +19,20 @@ namespace DailyPoetry.Models
         /// “我最喜欢的诗词”数据表。
         /// </summary>
         public DbSet<BrowseRecordItem> FavoriteItems { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=user.sqlite");
+        }
+
+        [Table("BrowseRecord")]
+        public class BrowseRecordItem
+        {
+            public PoetryItem poetryItem { get; set; }
+            public string poetryName { get; set; }
+            public string poetName { get; set; }
+            public string mainContent { get; set; }
+        }
     }
 }
 

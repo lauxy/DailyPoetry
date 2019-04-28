@@ -132,7 +132,6 @@
     <Compile Include="Models\PoetryItem.cs" />
     <Compile Include="Models\RecentViewItem.cs" />
     <Compile Include="Models\UserContext.cs" />
-    <Compile Include="Models\UserDataBaseItem.cs" />
     <Compile Include="MyCreation.xaml.cs">
       <DependentUpon>MyCreation.xaml</DependentUpon>
     </Compile>
