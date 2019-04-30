@@ -1,25 +1,15 @@
 ﻿using Microsoft.Graphics.Canvas;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using Windows.Data.Json;
-using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
-using Windows.UI.Text;
 using Windows.UI.Xaml.Media.Imaging;
+using Microsoft.Graphics.Canvas.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace DailyPoetry.Services
 {
@@ -118,7 +108,12 @@ namespace DailyPoetry.Services
                 ds.Clear(Colors.Black);
                 CanvasBitmap image = await CanvasBitmap.LoadAsync(device, inputFile.Path, 96);
                 ds.DrawImage(image);
-                ds.DrawText(text, new System.Numerics.Vector2(150, 150), Colors.White);
+                CanvasTextFormat format = new CanvasTextFormat();
+                format.FontSize = 48;
+                ds.DrawText(text,
+                    new System.Numerics.Vector2(imagedecoder.PixelWidth-900, imagedecoder.PixelHeight-300),
+                    Colors.White,
+                    format);
             }
             string filename = "Wallpaper.png";
            
