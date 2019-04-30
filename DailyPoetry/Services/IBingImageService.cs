@@ -9,8 +9,9 @@ namespace DailyPoetry.Services
 {
     public interface IBingImageService
     {
-        Task<BingImageData> getBingImageAsync();
-        Task<BitmapImage> GetPageBackground();
+        Task<BingImageData> getBingImageDataAsync();
+        Task<BitmapImage> GetBitmapImageAsync();
+        Task CreateBackgroundImageAsync(string text);
     }
 
     public class BingImageData

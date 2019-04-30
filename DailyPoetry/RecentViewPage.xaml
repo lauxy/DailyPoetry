@@ -52,7 +52,7 @@
                Margin="20,28,0,0"
                FontSize="24"/>
         <Pivot x:Name="rootPivot" Margin="8,20,0,0">
-            <PivotItem Header="诗词">
+            <PivotItem Header="来自搜索">
 
                 <StackPanel Orientation="Vertical">
 
@@ -75,7 +75,7 @@
                 </StackPanel>
             </PivotItem>
 
-            <PivotItem Header="好友动态">
+            <PivotItem Header="来自推荐">
                 <StackPanel>
                     <Image Source="/Assets/404.png"
                        Height="300"

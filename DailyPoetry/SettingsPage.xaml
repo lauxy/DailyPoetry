@@ -47,12 +47,13 @@
                             Style="{ThemeResource BaseTextBlockStyle}"/>
                 <RadioButton x:Name="LightColorRadioButton" 
                              Content="浅色" 
+                             IsChecked="True"
                              Checked="LightColorRadioButton_OnChecked"/>
                 <RadioButton x:Name="DarkColorRadioButton" 
                              Content="深色" 
                              Checked="DarkColorRadioButton_OnChecked"/>
                 <RadioButton x:Name="SystemColorRadioButton" 
-                             Content="与系统设置保持一致" 
+                             Content="与系统保持一致" 
                              Checked="SystemColorRadioButton_OnChecked"/>
 
                 <TextBlock Text="背景设置"
@@ -63,7 +64,7 @@
                            Margin="0,8,0,0"/>
                 <ToggleSwitch AutomationProperties.Name="simple ToggleSwitch"
                               Name="BackgroundSwitch"
-                              IsOn="True"
+                              IsOn="False"
                               OffContent="开"
                               Toggled="BackgroundSwitch_OnToggled"/>
 

@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -23,11 +25,13 @@ namespace DailyPoetry.Services
 {
     public class GenerateBgService : IBingImageService
     {
+
+        private StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
         /// <summary>
         /// 获取Bing每日图片的Json，反序列化为类。
         /// </summary>
         /// <returns>返回BingImageData类</returns>
-        public async Task<BingImageData> getBingImageAsync()
+        public async Task<BingImageData> getBingImageDataAsync()
         {
             // We can specify the region we want for the Bing Image of the Day.
             string strRegion = "en-US";
@@ -49,15 +53,16 @@ namespace DailyPoetry.Services
         /// 获取Bing图片。
         /// </summary>
         /// <returns>返回BitmapImage图片</returns>
-        public async Task<BitmapImage> GetPageBackground()
+        public async Task<BitmapImage> GetBitmapImageAsync()
         {
             GenerateBgService bgService = new GenerateBgService();
-            BingImageData bingImageData = Task.Run(bgService.getBingImageAsync).Result;
+            BingImageData bingImageData = Task.Run(bgService.getBingImageDataAsync).Result;
             Image item = bingImageData.images[0];
             Windows.Web.Http.HttpClient http = new Windows.Web.Http.HttpClient();
 
-            IBuffer buffer = await http.GetBufferAsync(new Uri("https://www.bing.com" + item.url));
-
+            string uri = "https://www.bing.com" + item.url;
+            IBuffer buffer = await http.GetBufferAsync(new Uri(uri));
+            
             BitmapImage img = new BitmapImage();
 
             using (IRandomAccessStream stream = new InMemoryRandomAccessStream())
@@ -66,33 +71,26 @@ namespace DailyPoetry.Services
                 stream.Seek(0);
                 await img.SetSourceAsync(stream);
             }
-            
-            await SaveBitmapImageAsync(img);
+
+            // Save the bing image to local folder
+            SaveImageToLocalFolder(uri);
+
             return img;
         }
 
-        public async Task SaveBitmapImageAsync(BitmapImage img)
+        /// <summary>
+        /// 保存Bing图片到本地文件夹。
+        /// </summary>
+        /// <param name="uri">文件的Url</param>
+        public async void SaveImageToLocalFolder(string uri)
         {
-            if (img == null) return;
-            string fileName = "Background.jpg";
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            //创建文件
-            StorageFile file =
-                await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-
-            WriteableBitmap writeableBitmap = new WriteableBitmap(img.PixelWidth, img.PixelHeight);
-            using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            HttpClient client = new HttpClient();
+            var imgStream = await client.GetStreamAsync(new Uri(uri));
+            var file = await storageFolder.CreateFileAsync("Background.jpg", CreationCollisionOption.ReplaceExisting);
+            using (var targetStream = await file.OpenAsync(FileAccessMode.ReadWrite))
             {
-                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
-                encoder.SetPixelData(
-                    BitmapPixelFormat.Bgra8,
-                    BitmapAlphaMode.Ignore,
-                    (uint)writeableBitmap.PixelWidth,
-                    (uint)writeableBitmap.PixelHeight,
-                    96.0,
-                    96.0,
-                    writeableBitmap.PixelBuffer.ToArray());
-                await encoder.FlushAsync();
+                using (imgStream)
+                    await imgStream.CopyToAsync(targetStream.AsStreamForWrite());
             }
         }
 
@@ -102,11 +100,10 @@ namespace DailyPoetry.Services
         /// <param name="imageName">原配图的名字</param>
         /// <param name="text">诗句的内容</param>
         /// <returns></returns>
-        public async Task CreateBackgroundImageAsync(string imageName, string text)
+        public async Task CreateBackgroundImageAsync(string text)
         {
-            //string filepath = "ms-appx:///Assets/" + imageName;
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            Uri imageuri = new Uri(storageFolder + imageName);
+            Uri imageuri = new Uri("ms-appdata:///local/Background.jpg");
+            
             StorageFile inputFile = await StorageFile.GetFileFromApplicationUriAsync(imageuri);
             BitmapDecoder imagedecoder;
             using (var imagestream = await inputFile.OpenAsync(FileAccessMode.Read))
@@ -118,13 +115,13 @@ namespace DailyPoetry.Services
                 new CanvasRenderTarget(device, imagedecoder.PixelWidth, imagedecoder.PixelHeight, 96);
             using (var ds = renderTarget.CreateDrawingSession())
             {
-                ds.Clear(Colors.White);
+                ds.Clear(Colors.Black);
                 CanvasBitmap image = await CanvasBitmap.LoadAsync(device, inputFile.Path, 96);
                 ds.DrawImage(image);
-                ds.DrawText(text, new System.Numerics.Vector2(150, 150), Colors.Black);
+                ds.DrawText(text, new System.Numerics.Vector2(150, 150), Colors.White);
             }
             string filename = "Wallpaper.png";
-           // StorageFolder pictureFolder = KnownFolders.SavedPictures;
+           
             var file = await storageFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
             {

@@ -67,7 +67,9 @@
                           Foreground="White"/>
                 <TextBlock Name="TextBlockLoading"
                        Foreground="White"
+                       HorizontalTextAlignment="Center"
                        FontSize="24"
+                       Margin="0,4,0,0"
                        Text="载入中..."/>
             </StackPanel>
         </Grid>
