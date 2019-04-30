@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -40,26 +39,6 @@ namespace DailyPoetry
         {
             this.InitializeComponent();
             DataContext = ViewModelLocator.Instance.RecentViewPageViewModel;
-        }
-
-        /// <summary>
-        /// “全选”复选框被选中
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// “全选”复选框未被选中
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-
         }
 
         /// <summary>

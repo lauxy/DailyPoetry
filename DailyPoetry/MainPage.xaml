@@ -33,12 +33,11 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Icon="Find" Content="搜索" Tag="search" />
                 <NavigationViewItem Icon="CalendarReply" Content="每日推荐" Tag="recommend" />
-                <NavigationViewItem Icon="People" Content="朋友" Tag="friends" />
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="我的诗词" Foreground="Gray" />
                 <NavigationViewItem Icon="Clock" Content="最近浏览" Tag="browse" />
                 <NavigationViewItem Icon="Edit" Content="我的创作" Tag="creations" />
-                <NavigationViewItem Icon="OutlineStar" Content="我喜欢的诗词" Tag="favorite"/>
+                <NavigationViewItem Icon="OutlineStar" Content="我喜爱的诗词" Tag="favorite"/>
             </NavigationView.MenuItems>
 
             <ScrollViewer>

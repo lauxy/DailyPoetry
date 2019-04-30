@@ -26,7 +26,6 @@
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
 
-
                 <TextBlock FontSize="16" Text="{x:Bind Title}" 
                            FontWeight="Bold" 
                            Margin="8,6,0,0"
@@ -49,54 +48,52 @@
     </Page.Resources>
 
     <StackPanel>
-    <TextBlock Text="最近浏览"
+        <TextBlock Text="最近浏览"
                Margin="20,28,0,0"
-               Foreground="Black"
                FontSize="24"/>
-    <Pivot x:Name="rootPivot" Margin="8,20,0,0">
-        <PivotItem Header="诗词">
+        <Pivot x:Name="rootPivot" Margin="8,20,0,0">
+            <PivotItem Header="来自搜索">
 
-            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical">
 
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="全部清空"
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="全部清空"
                                 Name="DeleteButton"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                             Command="{Binding DeleteCommand}"/>
-                </StackPanel>
+                    </StackPanel>
 
-                <StackPanel  Name="panel1" >
-                    <GridView ItemsSource="{Binding RecentViewItems}" 
+                    <StackPanel  Name="panel1" >
+                        <GridView ItemsSource="{Binding RecentViewItems}" 
                               IsItemClickEnabled="True" 
                               ItemClick="GridView_ItemClick"
                               ItemTemplate="{StaticResource RecentViewDataTemplate}"
                               Name="RecentViewGridView"/>
+                    </StackPanel>
+
                 </StackPanel>
+            </PivotItem>
 
-            </StackPanel>
-        </PivotItem>
-
-        <PivotItem Header="好友动态">
-            <StackPanel>
-                <Image Source="/Assets/404.png"
+            <PivotItem Header="来自推荐">
+                <StackPanel>
+                    <Image Source="/Assets/404.png"
                        Height="300"
                        Width="500"
                        Margin="0,36,0,0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
-                <TextBlock Text="404页面找不到了"
+                    <TextBlock Text="404页面找不到了"
                            Foreground="Gray"
                            FontSize="48"
                            HorizontalAlignment="Center"/>
-                <TextBlock Text="前方施工，敬请期待"
+                    <TextBlock Text="前方施工，敬请期待"
                            Foreground="Gray"
                            FontSize="28"
                            Margin="0,24,0,0"
                            HorizontalAlignment="Center"/>
-            </StackPanel>
-        </PivotItem>
-    </Pivot>
+                </StackPanel>
+            </PivotItem>
+        </Pivot>
     </StackPanel>
-
 </Page>
