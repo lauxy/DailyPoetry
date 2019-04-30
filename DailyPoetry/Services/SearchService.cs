@@ -14,11 +14,11 @@ namespace DailyPoetry.Services
 {
     public class SearchService
     {
-        private DatabaseService _databaseService;
+        private KnowledgeService _knowledgeService;
 
-        public SearchService(DatabaseService databaseService)
+        public SearchService(KnowledgeService knowledgeService)
         {
-            _databaseService = databaseService;
+            _knowledgeService = knowledgeService;
         }
 
 

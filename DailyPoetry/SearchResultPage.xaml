@@ -6,12 +6,12 @@
     xmlns:model="using:DailyPoetry.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:knowledgeModels="using:DailyPoetry.Models.KnowledgeModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
     <Page.Resources>
         <DataTemplate x:Name="PoetryItemViewTemplate" 
-                      x:DataType="model:PoetryItem">
+                      x:DataType="knowledgeModels:SimplifiedPoetryItem">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -20,22 +20,22 @@
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Grid.Row="0"
                            Grid.ColumnSpan="2"
                            Text="{x:Bind Name}" 
-                           Margin="0,0,0,0"/>
+                           Margin="12,6,0,0"/>
                 <TextBlock  Grid.Column="0" Grid.Row="1"
                             Text="{x:Bind Dynasty}" 
-                            Margin="0,0,0,0"/>
+                            Margin="12,6,0,0"/>
                 <TextBlock  Grid.Column="1" Grid.Row="1"
                             Text="{x:Bind AuthorName}" 
-                            Margin="0,0,0,0"/>
+                            Margin="6,6,0,0"/>
                 <TextBlock  Grid.Column="0" Grid.Row="2"
                             Grid.ColumnSpan="2"
-                            Text="{x:Bind Summary}" 
-                            Margin="0,0,0,0"/>
+                            Text="{x:Bind Abstract}" 
+                            Margin="12,6,0,0"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>

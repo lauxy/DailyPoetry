@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DailyPoetry.Models
+namespace DailyPoetry.Models.KnowledgeModels
 {
     /// <summary>
-    /// 数据库内容，请不要使用这个类，用下面的
+    /// 使用前务必浏览 SimplifiedPoetryItem
     /// </summary>
     [Table("works")]
-    public class DbPoetryItem
+    public class PoetryItem
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -34,13 +34,17 @@ namespace DailyPoetry.Models
         public string Layout { get; set; }  // 显示布局
     }
 
-    public class PoetryItem : DbPoetryItem
+    /// <summary>
+    /// 所有查询语句都会返回 SimplifiedPoetryItem，为节约内存
+    /// 如需要 PoetryItem，请使用 KnowledgeService 的 GetOnePoetryDetail 或者 GetBatchPoetryDetail
+    /// </summary>
+    [NotMapped]
+    public class SimplifiedPoetryItem
     {
-        [NotMapped]
-        public List<int> HightStartIdxs = new List<int>();
-        [NotMapped]
-        public List<int> HightEndIdxs = new List<int>();
-        [NotMapped]
-        public string Summary;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Dynasty { get; set; }
+        public string AuthorName { get; set; }
+        public string Abstract { get; set; }
     }
 }
