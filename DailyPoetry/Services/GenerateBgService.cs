@@ -17,6 +17,7 @@ namespace DailyPoetry.Services
     {
 
         private StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+        private string prefix = DateTime.Today.ToShortDateString().Replace("/", "");
         /// <summary>
         /// 获取Bing每日图片的Json，反序列化为类。
         /// </summary>
@@ -74,13 +75,18 @@ namespace DailyPoetry.Services
         /// <param name="uri">文件的Url</param>
         public async void SaveImageToLocalFolder(string uri)
         {
-            HttpClient client = new HttpClient();
-            var imgStream = await client.GetStreamAsync(new Uri(uri));
-            var file = await storageFolder.CreateFileAsync("Background.jpg", CreationCollisionOption.ReplaceExisting);
-            using (var targetStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            // 如果文件存在则不再执行下面的保存操作。
+            if (!File.Exists(storageFolder.Path + @"\" + prefix + "Background.jpg"))
             {
-                using (imgStream)
-                    await imgStream.CopyToAsync(targetStream.AsStreamForWrite());
+                HttpClient client = new HttpClient();
+                var imgStream = await client.GetStreamAsync(new Uri(uri));
+                string imgName = prefix + "Background.jpg";
+                var file = await storageFolder.CreateFileAsync(imgName, CreationCollisionOption.ReplaceExisting);
+                using (var targetStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    using (imgStream)
+                        await imgStream.CopyToAsync(targetStream.AsStreamForWrite());
+                }
             }
         }
 
@@ -92,7 +98,7 @@ namespace DailyPoetry.Services
         /// <returns></returns>
         public async Task CreateBackgroundImageAsync(string text)
         {
-            Uri imageuri = new Uri("ms-appdata:///local/Background.jpg");
+            Uri imageuri = new Uri("ms-appdata:///local/"+prefix+"Background.jpg");
             
             StorageFile inputFile = await StorageFile.GetFileFromApplicationUriAsync(imageuri);
             BitmapDecoder imagedecoder;
@@ -115,7 +121,7 @@ namespace DailyPoetry.Services
                     Colors.White,
                     format);
             }
-            string filename = "Wallpaper.png";
+            string filename = prefix+"Wallpaper.png";
            
             var file = await storageFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))

@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:services="using:DailyPoetry.Services"
     mc:Ignorable="d"
-    Loaded="RecommendPage_OnLoaded">
+    Loading="RecommendPage_OnLoading">
     <Page.Resources>
         <Style x:Name="MyGridViewStyle" TargetType="GridViewItem">
             <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>

@@ -32,11 +32,9 @@ namespace DailyPoetry.ViewModel
             _tokenService = tokenService;
             _recommendItemService = recommendItemService;
             _localInfoService = localInfoService;
-            //_bingImageService = bingImageService;
             TokenData key = Task.Run(_tokenService.GetUsersToken).Result;
             RecommendItems = Task.Run(_recommendItemService.GetRecommendContentAsync).Result;
             LocalInfoItems = Task.Run(_localInfoService.GetLocalInfoAsync).Result;
-            //BingImageItems = Task.Run(_bingImageService.getBingImageAsync).Result;
         }
 
         /// <summary>
@@ -67,12 +65,5 @@ namespace DailyPoetry.ViewModel
             set => Set(nameof(LocalInfoItems), ref _localInfoItems, value);
         }
 
-        //private BingImageData _bingImageItems = new BingImageData();
-
-        //public BingImageData BingImageItems
-        //{
-        //    get => _bingImageItems;
-        //    set => Set(nameof(BingImageItems), ref _bingImageItems, value);
-        //}
     }
 }

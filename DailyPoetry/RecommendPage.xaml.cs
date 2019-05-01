@@ -22,6 +22,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using DailyPoetry.Services;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Graphics.Canvas;
 using Image = DailyPoetry.Services.Image;
 
@@ -46,12 +47,13 @@ namespace DailyPoetry
         }
 
         /// <summary>
-        /// Page OnLoaded
+        /// Page Loading.
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void RecommendPage_OnLoaded(object sender, RoutedEventArgs e)
+        /// <param name="args"></param>
+        private async void RecommendPage_OnLoading(FrameworkElement sender, object args)
         {
+            
             GridLoading.Visibility = Visibility.Visible;
             ProgressRingLoading.IsActive = true;
 
@@ -70,11 +72,21 @@ namespace DailyPoetry
                 {
                     // 用户允许将每日推荐图片设置为壁纸
                     await generateBgService.CreateBackgroundImageAsync(text);
+                    WallpaperService wallpaperService = new WallpaperService();
+                    if (!await wallpaperService.WallpaperChanger())
+                    {
+                        // Todo: 当设置壁纸失败时异常处理。
+                    }
                 }
                 else if (localSettings.Values["SetLockScreen"].Equals(true))
                 {
                     // 用户允许将每日推荐图片设置为锁屏
                     await generateBgService.CreateBackgroundImageAsync(text);
+                    WallpaperService wallpaperService = new WallpaperService();
+                    if (!await wallpaperService.LockScreenChanger())
+                    {
+                        // Todo: 当设置锁屏失败时异常处理。
+                    }
                 }
             }
             catch (Exception imgOrTxtException)
@@ -90,7 +102,6 @@ namespace DailyPoetry
 
             ProgressRingLoading.IsActive = false;
             GridLoading.Visibility = Visibility.Collapsed;
-
         }
     }
 }
