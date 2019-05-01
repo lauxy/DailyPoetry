@@ -128,14 +128,19 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\KnowledgeModels\Interface.cs" />
     <Compile Include="Models\KnowledgeModels\CategoryItem.cs" />
     <Compile Include="Models\KnowledgeModels\CategoryWorkItem.cs" />
     <Compile Include="Models\KnowledgeModels\KnowledgeContext.cs" />
     <Compile Include="Models\KnowledgeModels\PoetryItem.cs" />
     <Compile Include="Models\RecentViewItem.cs" />
     <Compile Include="Models\KnowledgeModels\WriterItem.cs" />
+    <Compile Include="Models\UserContext.cs" />
     <Compile Include="MyCreation.xaml.cs">
       <DependentUpon>MyCreation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyFavoritePage.xaml.cs">
+      <DependentUpon>MyFavoritePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecentViewPage.xaml.cs">
@@ -150,6 +155,8 @@
     <Compile Include="SearchResultPage.xaml.cs">
       <DependentUpon>SearchResultPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\BingImageDetail.cs" />
+    <Compile Include="Services\IBingImageService.cs" />
     <Compile Include="Services\KnowledgeService.cs" />
     <Compile Include="Services\GenerateBgService.cs" />
     <Compile Include="Services\ILocalInfoService.cs" />
@@ -161,7 +168,8 @@
     <Compile Include="Services\RecommendItemService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\TokenService.cs" />
-    <Compile Include="Services\WallpeperService.cs" />
+    <Compile Include="Services\UserRecordService.cs" />
+    <Compile Include="Services\WallpaperService.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -169,6 +177,7 @@
     <Compile Include="ViewModel\DetailViewModel.cs" />
     <Compile Include="ViewModel\RecentViewPageViewModel.cs" />
     <Compile Include="ViewModel\RecommendPageViewModel.cs" />
+    <Compile Include="ViewModel\SearchResultPageViewModel.cs" />
     <Compile Include="ViewModel\SearchResultViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +227,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MyFavoritePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="RecentViewPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,19 +257,31 @@
       <Version>2.2.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <Version>2.2.3</Version>
+      <Version>2.2.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.3</Version>
+      <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>5.1.1</Version>
     </PackageReference>
     <PackageReference Include="MvvmLight">
       <Version>5.4.1.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.1</Version>
+      <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
       <Version>1.23.0</Version>

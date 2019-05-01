@@ -10,7 +10,7 @@ namespace DailyPoetry.Models.KnowledgeModels
     /// <summary>
     /// 这个表描述了诗词的类别，比如“唐诗三百首”，“诗经全集”，“悼亡”，“春”
     /// </summary>
-    public class CategoryItem
+    public class CategoryItem : IDbItem<SimplifiedCategoryItem>
     {
         public int Id { get; set; }
         public int OrderNumber { get; set; }
@@ -21,5 +21,21 @@ namespace DailyPoetry.Models.KnowledgeModels
         public string Press { get; set; }
         [Column("works_count")] public int WorksCount { get; set; }
         [Column("rhesises_count")] public int RhesisesCount { get; set; }
+
+        public SimplifiedCategoryItem ToSimplified()
+        {
+            return new SimplifiedCategoryItem
+            {
+                Id = this.Id,
+                Name = this.Name
+            };
+        }
+    }
+
+    [NotMapped]
+    public class SimplifiedCategoryItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

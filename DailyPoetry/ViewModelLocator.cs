@@ -20,7 +20,7 @@ namespace DailyPoetry
         public RecommendPageViewModel RecommendPageViewModel =>
             SimpleIoc.Default.GetInstance<RecommendPageViewModel>();
 
-        public SearchResultViewModel SearchResultPageViewModel =>
+        public SearchResultViewModel SearchResultViewModel =>
             SimpleIoc.Default.GetInstance<SearchResultViewModel>();
 
         private ViewModelLocator()

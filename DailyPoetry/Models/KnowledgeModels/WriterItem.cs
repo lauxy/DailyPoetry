@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DailyPoetry.Models
+namespace DailyPoetry.Models.KnowledgeModels
 {
     [Table("authors")]
-    public class WriterItem
+    public class WriterItem : IDbItem<SimplifiedWriterItem>
     {
         public int Id { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
         public string Intro { get; set; }
         [Column("rhesises_count")]
         public int RhesisesCount { get; set; }
@@ -23,5 +23,23 @@ namespace DailyPoetry.Models
         [Column("ci_count")] public int CiCount { get; set; }
         [Column("qu_count")] public int QuCount { get; set; }
         [Column("fu_count")] public int FuCount { get; set; }
+
+        public SimplifiedWriterItem ToSimplified()
+        {
+            return new SimplifiedWriterItem
+            {
+                Id = this.Id,
+                Dynasty = this.Dynasty,
+                Name = this.Name
+            };
+        }
+    }
+
+    [NotMapped]
+    public class SimplifiedWriterItem
+    {
+        public int Id { get; set; }
+        public string Dynasty { get; set; }
+        public string Name { get; set; }
     }
 }

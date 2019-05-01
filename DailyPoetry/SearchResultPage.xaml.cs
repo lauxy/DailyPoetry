@@ -27,17 +27,12 @@ namespace DailyPoetry
         public SearchResultPage()
         {
             this.InitializeComponent();
-            DataContext = ViewModelLocator.Instance.SearchResultPageViewModel;
+            DataContext = ViewModelLocator.Instance.SearchResultViewModel;
         }
 
-        private void MasterListView_OnItemClick(object sender, ItemClickEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
-        }
-
-        private void MasterListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            throw new NotImplementedException();
+            (DataContext as SearchResultViewModel).AddFilter();
         }
     }
 

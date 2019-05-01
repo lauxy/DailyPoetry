@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DailyPoetry.Models.KnowledgeModels
 {
+
     public class KnowledgeContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // lazy load 的意义未知
-            optionsBuilder.UseLazyLoadingProxies().UseSqlite("Data Source=db.sqlite");
+            optionsBuilder
+                .UseSqlite("Data Source=db.sqlite3");
         }
 
         public DbSet<PoetryItem> PoetryItems { get; set; }

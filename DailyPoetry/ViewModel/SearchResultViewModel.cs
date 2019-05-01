@@ -9,23 +9,58 @@ using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
-using DailyPoetry.Models;
+using DailyPoetry.Models.KnowledgeModels;
 using DailyPoetry.Services;
 using GalaSoft.MvvmLight;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
+using System.ComponentModel;
 
 namespace DailyPoetry.ViewModel
 {
+    // using statements are strictly per-file. There is no simple way to share
+    // alias cross files. 
+    using PoetryIntermediateType = IntermediateResult<PoetryItem, SimplifiedPoetryItem>;
+    using WriterIntermediateType = IntermediateResult<WriterItem, SimplifiedWriterItem>;
+    using CategoryIntermediateType = IntermediateResult<CategoryItem, SimplifiedCategoryItem>;
+
     public class SearchResultViewModel : ViewModelBase
     {
         private KnowledgeService _knowledgeService;
+
+        private IEnumerator<PoetryIntermediateType> poetryIntermediate;
+
+        private List<PoetryItem> poetryItems;
+
+        public List<PoetryItem> PoetryItems {
+            get => poetryItems;
+            set => Set(nameof(PoetryItems), ref poetryItems, value);
+        }
+
+        private ObservableCollection<FilterItem> filterItems = new ObservableCollection<FilterItem> {
+                new FilterItem(FilterCategory.TITLE, ""),
+                new FilterItem(FilterCategory.CONTENT, "")};
+
+        public ObservableCollection<FilterItem> FilterItems {
+            get => filterItems;
+            set => Set(nameof(FilterItems), ref filterItems, value);
+        }
+
         public SearchResultViewModel(KnowledgeService knowledgeService)
         {
             _knowledgeService = knowledgeService;
-            var a = _knowledgeService.GetOneById(12);
-            Debug.WriteLine("Yeah");
+            _knowledgeService.Entry();
+            poetryIntermediate = null;
+            poetryItems = new List<PoetryItem>();
         }
+
+        public void AddFilter()
+        {
+            filterItems.Add(new FilterItem(FilterCategory.CONTENT, ""));
+            Debug.Write(FilterItems.Count());
+        }
+
+ 
     }
 
     public class IncrementalLoadingCollection<T, I> : ObservableCollection<I>,
@@ -73,6 +108,25 @@ namespace DailyPoetry.ViewModel
 
                     return new LoadMoreItemsResult() {Count = resultCount};
                 }).AsAsyncOperation<LoadMoreItemsResult>();
+        }
+    }
+
+    public enum FilterCategory
+    {
+        TITLE, CONTENT, WRITER, DYSTANY
+    };
+
+    public class FilterItem
+    {
+        public int index;
+        public FilterCategory filterCategory;
+        public string value;
+
+        public FilterItem(FilterCategory filterCategory, string value)
+        {
+            index = -1;
+            this.filterCategory = filterCategory;
+            this.value = value;
         }
     }
 }

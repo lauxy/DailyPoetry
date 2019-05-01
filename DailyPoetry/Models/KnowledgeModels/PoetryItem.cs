@@ -9,7 +9,7 @@ namespace DailyPoetry.Models.KnowledgeModels
     /// 使用前务必浏览 SimplifiedPoetryItem
     /// </summary>
     [Table("works")]
-    public class PoetryItem
+    public class PoetryItem : IDbItem<SimplifiedPoetryItem>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -32,11 +32,37 @@ namespace DailyPoetry.Models.KnowledgeModels
         [Column("famous_reviews")]
         public string FamousReviews { get; set; }  // 评论
         public string Layout { get; set; }  // 显示布局
+
+        private string _abstract = null;
+
+        [NotMapped]
+        public string Abstract
+        {
+            get
+            {
+                if (_abstract != null)
+                    return _abstract;
+                return _abstract = "placeholder";
+            }
+        }
+
+        public SimplifiedPoetryItem ToSimplified()
+        {
+            return new SimplifiedPoetryItem
+            {
+                Id = this.Id,
+                Name = this.Name,
+                Dynasty = this.Dynasty,
+                AuthorName = this.AuthorName,
+                Abstract = this.Abstract
+            };
+        }
     }
 
     /// <summary>
     /// 所有查询语句都会返回 SimplifiedPoetryItem，为节约内存
-    /// 如需要 PoetryItem，请使用 KnowledgeService 的 GetOnePoetryDetail 或者 GetBatchPoetryDetail
+    /// 如需要 PoetryItem，请使用 KnowledgeService 转换
+    /// [NotMapped] 只是预防性的，应该没有意义
     /// </summary>
     [NotMapped]
     public class SimplifiedPoetryItem

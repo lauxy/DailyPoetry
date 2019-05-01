@@ -8,6 +8,34 @@
     xmlns:services="using:DailyPoetry.Services"
     mc:Ignorable="d"
     Loaded="RecommendPage_OnLoaded">
+    <Page.Resources>
+        <Style x:Name="MyGridViewStyle" TargetType="GridViewItem">
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="Background" Value="{ThemeResource GridViewItemBackground}"/>
+            <Setter Property="Foreground" Value="{ThemeResource GridViewItemForeground}"/>
+            <Setter Property="TabNavigation" Value="Local"/>
+            <Setter Property="IsHoldingEnabled" Value="True"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,4,4"/>
+            <Setter Property="MinWidth" Value="{ThemeResource GridViewItemMinWidth}"/>
+            <Setter Property="MinHeight" Value="{ThemeResource GridViewItemMinHeight}"/>
+            <Setter Property="AllowDrop" Value="False"/>
+            <Setter Property="UseSystemFocusVisuals" Value="False"/>
+            <Setter Property="FocusVisualMargin" Value="-2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GridViewItem">
+                        <ContentPresenter ContentTransitions="{TemplateBinding ContentTransitions}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  Margin="{TemplateBinding Padding}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Page.Background>
         <ImageBrush x:Name="RecommendPageBg" ImageSource="{Binding Source}"></ImageBrush>
@@ -46,11 +74,12 @@
         <StackPanel Grid.Row="2" 
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Top">
-            <GridView FontSize="18"
+            <GridView ItemContainerStyle="{StaticResource MyGridViewStyle}" FontSize="18"
                       Foreground="White"
                       Margin="0,0,56,0"
                       IsItemClickEnabled="False"
-                      ItemsSource="{Binding LocalInfoItems.tags}"/>
+                      ItemsSource="{Binding LocalInfoItems.tags}">
+            </GridView>
         </StackPanel>
 
         <Grid Name="GridLoading" Grid.Row="0" Grid.RowSpan="3">

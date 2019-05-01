@@ -23,4 +23,5 @@ namespace DailyPoetry.Models.KnowledgeModels
         [Column("work_dynasty")] public string WorkDynasty { get; set; }
         [Column("work_type")] public string WorkType { get; set; }
     }
+
 }

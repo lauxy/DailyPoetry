@@ -1,112 +1,323 @@
-﻿using DailyPoetry.Models.KnowledgeModels;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
-using Windows.Storage;
+using DailyPoetry.Models.KnowledgeModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Toolkit.Collections;
-using System.Threading;
+using Windows.Storage;
 
 namespace DailyPoetry.Services
-{ 
+{
+    using PoetryIntermediateType = IntermediateResult<PoetryItem, SimplifiedPoetryItem>;
+    using WriterIntermediateType = IntermediateResult<WriterItem, SimplifiedWriterItem>;
+    using CategoryIntermediateType = IntermediateResult<CategoryItem, SimplifiedCategoryItem>;
+
     /// <summary>
-    /// * 线程安全问题（等问题）没有研究
-    /// * 此外需要注意 IEnumerable 对象并没有将数据装入内存，
-    ///   EF Core只是保存了获取数据的路径，调用 ToList 等方法才生效将数据调入内存。
-    ///   在此之前释放context，可能会导致崩溃（未测试）
+    /// 诗词、作者等固定内容的服务
+    /// 1. 使用时，使用 using(knowledgeService.Entry) { ... }
+    /// 2. 所有查询结果默认返回 Simplified 的对象
+    ///    Models 中定义了 Simplified 和 原始对象 之间的关系
+    /// 3. 使用 Simplified 的对象是因为假定不需要同时获取多个 原始对象，节约内存
+    /// todo: use type map
     /// </summary>
-    public class KnowledgeService
+    public class KnowledgeService : IDisposable
     {
-        public KnowledgeService()
+        public KnowledgeContext _knowledgeContext;
+
+        /// <summary>
+        /// 进入资源，KnowledgeService 建议在 using 语句块中使用
+        /// </summary>
+        /// <returns>return this</returns>
+        public KnowledgeService Entry()
         {
             Task.Run(InitDatabase).Wait();
+            if (_knowledgeContext != null)
+                throw new InvalidOperationException("Re-entry is forbidden.");
+            _knowledgeContext = new KnowledgeContext();
+            return this;
         }
 
+
+
         private async Task InitDatabase()
+
         {
+
             // check whether the database file local in correct folder
             // because ef core? can not access assets folder
             // see https://social.msdn.microsoft.com/Forums/en-US/b6d7a970-0088-4bd4-aaa8-c86bca4387df/uwp-sqlitenet-path-question
-            var dbFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync("db.sqlite") as StorageFile;
+
+            var dbFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync("db.sqlite3") as StorageFile;
             if (dbFile == null)
             {
                 var localFolder = ApplicationData.Current.LocalFolder;
                 var originalDbFileUri = new Uri("ms-appx:///Assets/db.sqlite3");
                 var originalDbFile = await StorageFile.GetFileFromApplicationUriAsync(originalDbFileUri);
+
                 if (originalDbFile != null)
                 {
-                    dbFile = await originalDbFile.CopyAsync(localFolder, "db.sqlite",
+                    dbFile = await originalDbFile.CopyAsync(localFolder, "db.sqlite3",
                         NameCollisionOption.ReplaceExisting);
                 }
-
                 // todo: error handler
             }
         }
 
         /// <summary>
-        /// 根据 Id 获取摘要
+        /// 释放 Context
         /// </summary>
-        /// <param name="id">诗词的Id</param>
-        /// <returns></returns>
-        public string GetAbstractById(int id)
+        /// <remarks>Call <see cref="Dispose"/> when you are finished using the <see cref="T:dbService.KnowledgeService"/>. The
+        /// <see cref="Dispose"/> method leaves the <see cref="T:dbService.KnowledgeService"/> in an unusable state.
+        /// After calling <see cref="Dispose"/>, you must release all references to the
+        /// <see cref="T:dbService.KnowledgeService"/> so the garbage collector can reclaim the memory that the
+        /// <see cref="T:dbService.KnowledgeService"/> was occupying.</remarks>
+        public void Dispose()
         {
-            using (var context = new KnowledgeContext())
+            _knowledgeContext.Dispose();
+            _knowledgeContext = null;
+        }
+
+        // 根据Id获取对象的一族函数
+
+        public SimplifiedPoetryItem GetSimplifiedPoetryItemById(int id)
+        {
+            var poetryItem = GetPoetryItemById(id);
+            if (poetryItem == null)
+                return null;
+            return poetryItem.ToSimplified(); ;
+        }
+
+        public PoetryItem GetPoetryItemById(int id)
+        {
+            var poetryItem = _knowledgeContext.PoetryItems
+                .Where(pItem => pItem.Id == id);
+            if (poetryItem.Any())
+                return poetryItem.First();
+            return null;
+        }
+
+        public SimplifiedWriterItem GetSimplifiedWriterItemById(int id)
+        {
+            var writerItem = GetWriterItemById(id);
+            if (writerItem == null)
+                return null;
+            return writerItem.ToSimplified();
+        }
+
+        public WriterItem GetWriterItemById(int id)
+        {
+            var writerItem = _knowledgeContext.WriterItems
+                .Where(wItem => wItem.Id == id);
+            if (writerItem.Any())
+                return writerItem.First();
+            return null;
+        }
+
+        public SimplifiedCategoryItem GetSimplifiedCategoryItem(int id)
+        {
+            var categoryItem = GetdCategoryItem(id);
+            if (categoryItem == null)
+                return null;
+            return categoryItem.ToSimplified();
+        }
+
+        public CategoryItem GetdCategoryItem(int id)
+        {
+            var categoryItem = _knowledgeContext.CategoryItems
+                .Where(wItem => wItem.Id == id);
+            if (categoryItem.Any())
+                return categoryItem.First();
+            return null;
+        }
+
+        // 获取所有对象的一族函数
+
+        public PoetryIntermediateType GetAllSimplifiedPoetryItems()
+        {
+            return new PoetryIntermediateType(_knowledgeContext.PoetryItems);
+        }
+
+        public WriterIntermediateType GetAllSimplifiedWriterItems()
+        {
+            return new WriterIntermediateType(_knowledgeContext.WriterItems);
+        }
+
+        public CategoryIntermediateType GetAllSimplifiedCategoryItems()
+        {
+            return new CategoryIntermediateType(_knowledgeContext.CategoryItems);
+        }
+
+        // 查询的一族函数
+
+        /// <summary>
+        /// 根据名字获取诗词
+        /// </summary>
+        /// <returns>The poetry items by name.</returns>
+        /// <param name="query">Query.</param>
+        public PoetryIntermediateType GetPoetryItemsByName(
+            string query, bool exactMode = false)
+        {
+            return GetPoetryItemsByName(
+                GetAllSimplifiedPoetryItems(), query, exactMode);
+        }
+
+        /// <summary>
+        /// 根据名字获取诗词, 可以从之前的查询结果开始
+        /// </summary>
+        /// <returns>The poetry items by name.</returns>
+        /// <param name="source">Source.</param>
+        /// <param name="query">Query.</param>
+        /// <param name="exactMode">If set to <c>true</c> exact mode.</param>
+        public PoetryIntermediateType GetPoetryItemsByName(
+            PoetryIntermediateType source, string query, bool exactMode = false)
+        {
+            return source.Where(
+                GetWhereFunc<PoetryItem>("Name", query, exactMode));
+        }
+
+        public PoetryIntermediateType GetPoetryItemsByWriter(
+            string query, bool exactMode = false)
+        {
+            return GetPoetryItemsByWriter(GetAllSimplifiedPoetryItems(),
+                query, exactMode);
+        }
+
+        public PoetryIntermediateType GetPoetryItemsByWriter(
+            PoetryIntermediateType source, string query, bool exactMode = false)
+        {
+            return source.Where(
+                GetWhereFunc<PoetryItem>("AuthorName", query, exactMode));
+        }
+
+        //public WriterIntermediateType
+
+        /// <summary>
+        /// 分页获取数据
+        /// 
+        /// </summary>
+        /// <returns>每次返回一页</returns>
+        /// <param name="source">数据源</param>
+        /// <param name="count">页的大小</param>
+        public IEnumerable<IntermediateResult<T, ST>> GetDataByPage<T, ST>(
+            IntermediateResult<T, ST> source, int count) where T : IDbItem<ST>
+        {
+            int current = 0;
+            return GetNextPageEnumerator();
+
+            IEnumerable<IntermediateResult<T, ST>> GetNextPageEnumerator()
             {
-                var onePoem = context.PoetryItems
-                    .Single(poetryItem => poetryItem.Id == id);
-                return onePoem != null ? 
-                    GetAbstractByString(onePoem.Content) : "";
+                var data = source.Skip(current).Take(count);
+                while (data.Count() == count)
+                {
+                    yield return data;
+                    //System.GC.Collect();
+                    current += count;
+                    data = source.Skip(current).Take(count);
+                }
+                yield return data;
             }
         }
 
         /// <summary>
-        /// 从文本获取摘要
+        /// 获取 Where 的查询函数, 需要注意使用反射可能导致性能问题，到时候再说吧
+        /// 如果需要解决，可以使用 fasterflect (http://fasterflect.codeplex.com/)
         /// </summary>
-        /// <param name="content"></param>
-        /// <returns></returns>
-        public string GetAbstractByString(string content)
+        /// <returns>The where func.</returns>
+        /// <param name="propertyName">属性名</param>
+        /// <param name="query">要查询的字符串</param>
+        /// <param name="exactMode">If set to <c>true</c> 全匹配.</param>
+        private Func<T, bool> GetWhereFunc<T>(
+            string propertyName, string query, bool exactMode)
         {
-            return "Placeholder";
-        }
-
-        /// <summary>
-        /// 根据id获取简略信息
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public SimplifiedPoetryItem GetOneById(int id)
-        {
-            using (var context = new KnowledgeContext())
-            {
-                var oneSimplifiedPoetry = context.PoetryItems
-                    .Where(poetryItem => poetryItem.Id == id)
-                    .Select(poetryItem => new SimplifiedPoetryItem()
-                    {
-                        Id = poetryItem.Id,
-                        Name = poetryItem.Name,
-                        Dynasty = poetryItem.Dynasty,
-                        AuthorName = poetryItem.AuthorName,
-                        Abstract = GetAbstractByString(poetryItem.Content)
-                    });
-                return oneSimplifiedPoetry.Any() ? oneSimplifiedPoetry.First() : null;
-            }
+            Type type = typeof(T);
+            PropertyInfo prop = type.GetProperty(propertyName);
+            if (prop == null)
+                throw new MissingMemberException();
+            Func<T, bool> whereFunc = exactMode ?
+                (whereFunc = (T pItem) =>
+                    (prop.GetValue(pItem) as string) == query) :
+                (whereFunc = (T pItem) =>
+                    (prop.GetValue(pItem) as string).Contains(query));
+            return whereFunc;
         }
     }
 
     /// <summary>
-    /// KnowledgeService的所有查询函数返回DataSource，数据通过DataSource存取
-    /// 注意DataSource只能存在于context中
+    /// KnowledgeService 的中间结果，使用 ToList 提取数据
+    /// 只是一个 Agent 用于在最后一步转换为 Simplified
+    /// note: 2019-4-22 failed to add thread safe.
     /// </summary>
-    public class DataSource : IIncrementalSource<SimplifiedPoetryItem>
+    public class IntermediateResult<T, ST> where T : IDbItem<ST>
     {
+        public IEnumerable<T> Data { get; private set; }
 
-        public Task<IEnumerable<SimplifiedPoetryItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default(CancellationToken))
+        public IntermediateResult(IEnumerable<T> source)
         {
-            throw new NotImplementedException();
+            Data = source;
+        }
+
+        public List<T> ToListFull()
+        {
+            return Data.ToList();
+        }
+
+        public Task<List<T>> ToListFullAsync()
+        {
+            return Task.Run(() => Data.ToList());
+        }
+
+        public List<ST> ToList()
+        {
+            return Data
+                .Select(t => t.ToSimplified())
+                .ToList();
+        }
+
+        public Task<List<ST>> ToListAsync()
+        {
+            return Task.Run(() => Data
+                .Select(t => t.ToSimplified())
+                .ToList());
+        }
+
+        public IntermediateResult<T, ST> Where(Func<T, bool> predicate)
+        {
+            return new IntermediateResult<T, ST>(Data.Where(predicate));
+        }
+
+        public IntermediateResult<T, ST> Select(Func<T, T> predicate)
+        {
+            return new IntermediateResult<T, ST>(Data.Select(predicate));
+        }
+
+        public IntermediateResult<T, ST> Skip(int count)
+        {
+            //using (IEnumerator<T> iterator = Data.GetEnumerator())
+            //{
+            //    for (int i = 0; i < count; i++)
+            //    {
+            //        if (!iterator.MoveNext())
+            //        {
+            //            yield break;
+            //        }
+            //    }
+            //    while (iterator.MoveNext())
+            //    {
+            //        yield return iterator.Current;
+            //    }
+            //}
+            return new IntermediateResult<T, ST>(Data.Skip(count));
+        }
+
+        public IntermediateResult<T, ST> Take(int count)
+        {
+            return new IntermediateResult<T, ST>(Data.Take(count));
+        }
+
+        public int Count()
+        {
+            return Data.Count();
         }
     }
 }
