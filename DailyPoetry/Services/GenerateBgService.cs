@@ -121,7 +121,7 @@ namespace DailyPoetry.Services
                     Colors.White,
                     format);
             }
-            string filename = prefix+"Wallpaper.png";
+            string filename = prefix+"Wallpaper.jpg";
            
             var file = await storageFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))

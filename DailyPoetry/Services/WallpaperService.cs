@@ -56,14 +56,14 @@ namespace DailyPoetry.Services
         /// <returns></returns>
         public async Task<bool> WallpaperChanger()
         {
-            string filename = DateTime.Today.ToShortDateString().Replace("/", "") + "Wallpaper.png";
+            string filename = DateTime.Today.ToShortDateString().Replace("/", "") + "Wallpaper.jpg";
             bool isSucceed = await SetWallpaperAsync(filename);
             return isSucceed;
         }
 
         public async Task<bool> LockScreenChanger()
         {
-            string filename = DateTime.Today.ToShortDateString().Replace("/", "") + "Wallpaper.png";
+            string filename = DateTime.Today.ToShortDateString().Replace("/", "") + "Wallpaper.jpg";
             bool isSucceed = await SetLockScreenAsync(filename);
             return isSucceed;
         }

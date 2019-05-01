@@ -56,17 +56,23 @@
                              Content="与系统保持一致" 
                              Checked="SystemColorRadioButton_OnChecked"/>
 
-                <TextBlock Text="背景设置"
+                <TextBlock Text="清除应用数据"
                            Margin="0,24,0,0"
                            FontSize="20" />
-                <TextBlock Text="将我的创作的背景设为默认背景"
+                <TextBlock Text="清除应用程序在您本地保存的图片和数据"
                            FontSize="16"
                            Margin="0,8,0,0"/>
-                <ToggleSwitch AutomationProperties.Name="simple ToggleSwitch"
-                              Name="BackgroundSwitch"
-                              IsOn="False"
-                              OffContent="开"
-                              Toggled="BackgroundSwitch_OnToggled"/>
+                <Button Content="全部清除"
+                        Margin="0,10,0,0"
+                        Click="ButtonBase_OnClick">
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="应用数据已完成清除！" Margin="0,0,0,12" />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
 
             </StackPanel>
 

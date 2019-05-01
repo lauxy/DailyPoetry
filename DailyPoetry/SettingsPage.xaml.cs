@@ -55,20 +55,6 @@ namespace DailyPoetry
                     LockScreenSwitch.OffContent = "关";
                 }
             }
-
-            if (localSettings.Values["IsMyCreationPageBgDefault"] != null)
-            {
-                if (localSettings.Values["IsMyCreationPageBgDefault"].Equals(true))
-                {
-                    BackgroundSwitch.IsOn = true;
-                    BackgroundSwitch.OffContent = "开";
-                }
-                else
-                {
-                    BackgroundSwitch.IsOn = false;
-                    BackgroundSwitch.OffContent = "关";
-                }
-            }
         }
 
         private void ToggleSwitch_OnToggled(object sender, RoutedEventArgs e)
@@ -141,28 +127,38 @@ namespace DailyPoetry
         }
 
         /// <summary>
-        /// 选择“我的创作”界面的背景是否采用默认背景。
+        /// 删除LocalFolder下的所有jpg文件。
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BackgroundSwitch_OnToggled(object sender, RoutedEventArgs e)
+        public static void DeleteFile()
         {
-            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
-            if (toggleSwitch != null)
+            string filepath1 = ApplicationData.Current.LocalFolder.Path;
+            string deleteFileName = ".jpg"; //要删除的文件名称
+            try
             {
-                if (toggleSwitch.IsOn == true)
+                string[] rootFiles = Directory.GetFiles(filepath1); //当前目录下的文件：
+                foreach (string s2 in rootFiles)
                 {
-                    toggleSwitch.OffContent = "开";
-                    localSettings.Values["IsMyCreationPageBgDefault"] = true;
+                    if (s2.Contains(deleteFileName))
+                    {
+                        //Console.WriteLine(s2);
+                        File.Delete(s2); //删除文件
+                    }
                 }
-                else
-                {
-                    toggleSwitch.OffContent = "关";
-                    localSettings.Values["IsMyCreationPageBgDefault"] = false;
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message.ToString());
             }
         }
 
-     
+        /// <summary>
+        /// 清除应用数据（存在LocalFolder下的图片）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            DeleteFile();
+        }
     }
 }
