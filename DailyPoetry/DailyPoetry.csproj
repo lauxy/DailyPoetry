@@ -177,7 +177,6 @@
     <Compile Include="ViewModel\DetailViewModel.cs" />
     <Compile Include="ViewModel\RecentViewPageViewModel.cs" />
     <Compile Include="ViewModel\RecommendPageViewModel.cs" />
-    <Compile Include="ViewModel\SearchResultPageViewModel.cs" />
     <Compile Include="ViewModel\SearchResultViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

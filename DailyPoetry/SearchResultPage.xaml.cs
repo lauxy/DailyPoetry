@@ -30,9 +30,18 @@ namespace DailyPoetry
             DataContext = ViewModelLocator.Instance.SearchResultViewModel;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ChevronButton_Click(object sender, RoutedEventArgs e)
         {
-            (DataContext as SearchResultViewModel).AddFilter();
+            if (ChevronIcon.Glyph == "\uE70E") // xaml 和 c# 表示十六进制不一样
+            {
+                ChevronIcon.Glyph = "\uE70D";
+                ChevronText.Text = "展开";
+            }
+            else
+            {
+                ChevronIcon.Glyph = "\uE70E";
+                ChevronText.Text = "收起";
+            }
         }
     }
 

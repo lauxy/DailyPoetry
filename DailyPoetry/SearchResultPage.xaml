@@ -18,16 +18,22 @@
                     <ColumnDefinition Width="64"/>
                 </Grid.ColumnDefinitions>
                 <ComboBox SelectedIndex="1" Grid.Column="0" Margin="12,6,0,0" Width="80">
+                    <!--如果改变顺序，请同步修改 enum FilterCategory （在SearchResultViewModel）-->
                     <x:String>标题</x:String>
                     <x:String>内容</x:String>
-                    <x:String>朝代</x:String>
                     <x:String>作者</x:String>
+                    <x:String>朝代</x:String>
                 </ComboBox>
                 <AutoSuggestBox Grid.Column="1" Margin="12,6,0,0" Text="{x:Bind value, Mode=TwoWay}"></AutoSuggestBox>
                 <Button Grid.Column="2" Margin="12,6,0,6" Background="White" Width="48">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;"/>
                 </Button>
             </Grid>
+        </DataTemplate>
+        <DataTemplate x:Name="FilterSimplifiedTemplate" x:DataType="viewmodel:FilterItem">
+            <StackPanel Orientation="Horizontal">
+                
+            </StackPanel>
         </DataTemplate>
         <DataTemplate x:Name="PoetryItemTemplate">
             <Grid>
@@ -57,29 +63,53 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" x:Name="FiltersRow"/>
+            <RowDefinition Height="auto" x:Name="FilterSimplifiedRow"/>
+            <RowDefinition Height="auto" x:Name="ButtonRow"/>
+            <RowDefinition Height="auto" x:Name="ResultRow"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ListView Name="FiltersList" MaxHeight="120"
-                    ItemsSource="{Binding FilterItems}"
-                    ItemTemplate="{StaticResource FilterTemplate}"
-                    Grid.Row="0" SelectionMode="None">
+        <ListView Name="FiltersList"
+            ItemsSource="{Binding FilterItems, Mode=TwoWay}"
+            ItemTemplate="{StaticResource FilterTemplate}"
+            Visibility="{Binding FilterListVisibility}"
+            Grid.Row="0" SelectionMode="None">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-            
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button Margin="12,6,0,0" Click="Button_Click">
-                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;"/>
+
+        <ListView Name="FiltersSimplifiedList" 
+                  Visibility="{Binding FilterSimplifiedListVisibility}"
+                  Grid.Row="1" SelectionMode="None">
+            <TextBlock Text="123"></TextBlock>
+        </ListView>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" FlowDirection="RightToLeft">
+            <Button Background="CornflowerBlue" Margin="12,6, 0, 0" Name="SearchButton">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
+                    <TextBlock Margin="8,0,0,0" Text="搜索"/>
+                </StackPanel>
             </Button>
-            <Button Background="CornflowerBlue" Margin="12,6, 0, 0">
-                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
+            <Button Margin="12,6,0,0" Name="AddButton" Command="{Binding AddFilterCommand}">
+                <StackPanel  Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE710;"/>
+                    <TextBlock Margin="8,0,0,0"  Text="添加"/>
+                </StackPanel>
+            </Button>
+
+            <Button Margin="12,6,0,0" Name="ChevronButton" 
+                    Click="ChevronButton_Click"
+                    Command="{Binding ChevronSwitchCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70E;" Name="ChevronIcon"/>
+                    <TextBlock Margin="8,0,0,0" Name="ChevronText" Text="收起"/>
+                </StackPanel>
             </Button>
         </StackPanel>
  

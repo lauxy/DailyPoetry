@@ -15,6 +15,8 @@ using GalaSoft.MvvmLight;
 using Microsoft.Toolkit.Collections;
 using Microsoft.Toolkit.Uwp;
 using System.ComponentModel;
+using GalaSoft.MvvmLight.Command;
+using Windows.UI.Xaml.Controls;
 
 namespace DailyPoetry.ViewModel
 {
@@ -28,13 +30,27 @@ namespace DailyPoetry.ViewModel
     {
         private KnowledgeService _knowledgeService;
 
-        private IEnumerator<PoetryIntermediateType> poetryIntermediate;
+        private List<PoetryItem> _poetryItems;
 
-        private List<PoetryItem> poetryItems;
+        public List<PoetryItem> PoetryItems
+        {
+            get => _poetryItems;
+            set => Set(nameof(PoetryItems), ref _poetryItems, value);
+        }
 
-        public List<PoetryItem> PoetryItems {
-            get => poetryItems;
-            set => Set(nameof(PoetryItems), ref poetryItems, value);
+        private Visibility _filterListVisibility;
+
+        public Visibility FilterListVisibility
+        {
+            get => _filterListVisibility;
+            set => Set(nameof(FilterListVisibility), ref _filterListVisibility, value);
+        }
+        private Visibility _filterSimplifiedListVisibility;
+
+        public Visibility FilterSimplifiedListVisibility
+        {
+            get => _filterSimplifiedListVisibility;
+            set => Set(nameof(FilterSimplifiedListVisibility), ref _filterSimplifiedListVisibility, value);
         }
 
         private ObservableCollection<FilterItem> filterItems = new ObservableCollection<FilterItem> {
@@ -50,17 +66,30 @@ namespace DailyPoetry.ViewModel
         {
             _knowledgeService = knowledgeService;
             _knowledgeService.Entry();
-            poetryIntermediate = null;
-            poetryItems = new List<PoetryItem>();
+            _poetryItems = new List<PoetryItem>();
+            FilterListVisibility = Visibility.Visible;
+            FilterSimplifiedListVisibility = Visibility.Collapsed;
         }
 
-        public void AddFilter()
+        public RelayCommand _addFilterCommand;
+
+        public RelayCommand AddFilterCommand =>
+        _addFilterCommand ?? (_addFilterCommand = new RelayCommand(() =>
         {
             filterItems.Add(new FilterItem(FilterCategory.CONTENT, ""));
-            Debug.Write(FilterItems.Count());
-        }
+        }));
 
- 
+        public RelayCommand<object> _chevronSwitchCommand;
+
+        public RelayCommand<object> ChevronSwitchCommand =>
+        _chevronSwitchCommand ?? (_chevronSwitchCommand = new RelayCommand<object>((object sender) =>
+        {
+            var tmpVisiblity = _filterSimplifiedListVisibility;
+            FilterSimplifiedListVisibility = _filterListVisibility;
+            FilterListVisibility = tmpVisiblity;
+            //((sender as Button).DataContext as SearchResultPage).SwitchChevron();
+        }));
+
     }
 
     public class IncrementalLoadingCollection<T, I> : ObservableCollection<I>,
@@ -121,6 +150,8 @@ namespace DailyPoetry.ViewModel
         public int index;
         public FilterCategory filterCategory;
         public string value;
+
+        public Visibility visibility { get =>  (value == "") ? Visibility.Collapsed : Visibility.Visible; }
 
         public FilterItem(FilterCategory filterCategory, string value)
         {
