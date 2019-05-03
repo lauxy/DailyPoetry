@@ -44,6 +44,7 @@ namespace DailyPoetry
                 ChevronIcon.Glyph = "\uE70E";
                 ChevronText.Text = "收起";
             }
+            AddButton.IsEnabled = !AddButton.IsEnabled;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -60,9 +61,23 @@ namespace DailyPoetry
             (DataContext as SearchResultViewModel).UpdateFilterCategory((int)combobox.Tag, combobox.SelectedIndex);
         }
 
-        private void SearchResultList_ItemClick(object sender, ItemClickEventArgs e)
+        private void SearchResultList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var poetryItem = (PoetryItem)e.ClickedItem;
+            foreach(var item in e.AddedItems)
+            {
+                ListViewItem lvi = (sender as ListView).ContainerFromItem(item) as ListViewItem;
+                lvi.ContentTemplate = (DataTemplate)this.Resources["PoetryItemExpandedTemplate"];
+            }
+            foreach (var item in e.RemovedItems)
+            {
+                ListViewItem lvi = (sender as ListView).ContainerFromItem(item) as ListViewItem;
+                lvi.ContentTemplate = (DataTemplate)this.Resources["PoetryItemTemplate"];
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var poetryItem = (PoetryItem)(e.OriginalSource as Button).DataContext;
             Frame.Navigate(typeof(DetailPage), poetryItem);
         }
     }

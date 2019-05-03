@@ -7,6 +7,8 @@
     xmlns:viewmodel="using:DailyPoetry.ViewModel"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" 
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     Background="White">
     
     <Page.Resources>
@@ -31,10 +33,10 @@
         </DataTemplate>
         
         <DataTemplate x:Name="FilterSimplifiedTemplate" x:DataType="viewmodel:FilterItem">
-            <StackPanel Orientation="Horizontal" Background="LightGray" Visibility="{x:Bind visibility, Mode=OneWay}">
-                <TextBlock Text="{x:Bind Value, Mode=OneWay}" FontSize="24" VerticalAlignment="Center" Margin="8,0,8,0"/>
-                <Button Tag="{x:Bind Index, Mode=OneWay}" Margin="4" Width="48" Click="Button_Click">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;"/>
+            <StackPanel Orientation="Horizontal" Background="LightGray">
+                <TextBlock Text="{x:Bind Value, Mode=OneWay}" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                <Button Tag="{x:Bind Index, Mode=OneWay}" Margin="4" Click="Button_Click">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" FontSize="12"/>
                 </Button>
             </StackPanel>
         </DataTemplate>
@@ -42,7 +44,7 @@
         <DataTemplate x:Name="PoetryItemTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -61,6 +63,38 @@
                 <TextBlock  Grid.Column="1" Grid.Row="1"
                             Text="{Binding AuthorName}" 
                             Margin="6,6,0,0"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Name="PoetryItemExpandedTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding Name}" 
+                           Margin="12,6,0,0"/>
+                <TextBlock  Grid.Column="0" Grid.Row="1"
+                            Text="{Binding Dynasty}" 
+                            Margin="12,6,0,0"/>
+                <TextBlock  Grid.Column="1" Grid.Row="1"
+                            Text="{Binding AuthorName}" 
+                            Margin="6,6,0,0"/>
+                <TextBlock Grid.Column="0" Grid.Row="2"
+                           Grid.ColumnSpan="2"
+                           Text="{Binding Content}"
+                           Margin="12,6,0,0"/>
+                <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="3"
+                        Content="更多" Click="Button_Click_1"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -87,13 +121,13 @@
         </ListView>
 
         <ListView Name="FiltersSimplifiedList" 
-            ItemsSource="{Binding FilterItems, Mode=OneWay}"
+            ItemsSource="{Binding CollapsedFilterItems, Mode=OneWay}"
             ItemTemplate="{StaticResource FilterSimplifiedTemplate}"
             Visibility="{Binding FilterSimplifiedListVisibility}"
             Grid.Row="1" SelectionMode="None">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <controls:WrapPanel Padding="0" VerticalSpacing="8" HorizontalSpacing="8"/>
+                    <controls:WrapPanel Padding="0" VerticalSpacing="4" HorizontalSpacing="4"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ListView>
@@ -126,7 +160,8 @@
                   ItemsSource="{Binding PoetryItems, Mode=OneWay}"
                   ItemTemplate="{StaticResource PoetryItemTemplate}"
                   Visibility="{Binding PoetryResultVisibility}"
-                  Grid.Row="3" Margin="16" ItemClick="SearchResultList_ItemClick" IsItemClickEnabled="True">
+                  Grid.Row="3" Margin="16" IsItemClickEnabled="True"
+                  SelectionChanged="SearchResultList_SelectionChanged">
         </ListView>
 
         <ProgressRing Name="SearchRing" IsActive="{Binding ProcessRingVisibility}" Grid.Row="4" Height="100" Width="100"/>

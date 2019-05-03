@@ -32,6 +32,10 @@ namespace DailyPoetry
         {
             Title.Text = ((PoetryItem)e.Parameter).Name;
             Content.Text = ((PoetryItem)e.Parameter).Content;
+            Dynasty.Text = ((PoetryItem)e.Parameter).Dynasty;
+            Writer.Text = ((PoetryItem)e.Parameter).AuthorName;
+            Annotation.Text = ((PoetryItem)e.Parameter).Annotation;
+            Translation.Text = ((PoetryItem)e.Parameter).Translation;
         }
     }
 }

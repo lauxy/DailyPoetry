@@ -5,11 +5,27 @@
     xmlns:local="using:DailyPoetry"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel>
-        <TextBlock Name="Title"/>
-        <TextBlock Name="Content"/>
-    </StackPanel>
+    <Grid>
+        <ScrollViewer>
+            <StackPanel Margin="20">
+                <TextBlock Name="Title"/>
+                <TextBlock Name="Dynasty"/>
+                <TextBlock Name="Writer"/>
+                <controls:Expander x:Name="ContentExpander" Header="正文" IsExpanded="True">
+                    <TextBlock Name="Content" Text="CONTENT"/>
+                </controls:Expander>
+                <controls:Expander x:Name="AnnotationExpander" Header="注释">
+                    <TextBlock Name="Annotation" Text="Annotation"/>
+                </controls:Expander>
+                <controls:Expander x:Name="TranslationExpander" Header="翻译">
+                    <TextBlock Name="Translation" Text="Translation"/>
+                </controls:Expander>
+                
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Page>

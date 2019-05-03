@@ -78,7 +78,15 @@ namespace DailyPoetry.ViewModel
             set => Set(nameof(FilterItems), ref filterItems, value);
         }
 
-        public RelayCommand _addFilterCommand;
+        private ObservableCollection<FilterItem> collapsedFilterItems;
+
+        public ObservableCollection<FilterItem> CollapsedFilterItems
+        {
+            get => collapsedFilterItems;
+            set => Set(nameof(CollapsedFilterItems), ref collapsedFilterItems, value);
+        }
+
+        private RelayCommand _addFilterCommand;
 
         public RelayCommand AddFilterCommand =>
         _addFilterCommand ?? (_addFilterCommand = new RelayCommand(() =>
@@ -87,21 +95,29 @@ namespace DailyPoetry.ViewModel
             _updateFilterIndex();
         }));
 
-        public RelayCommand _chevronSwitchCommand;
+        private RelayCommand _chevronSwitchCommand;
 
         public RelayCommand ChevronSwitchCommand =>
             _chevronSwitchCommand ?? (_chevronSwitchCommand = new RelayCommand(() =>
             {
-                var tmpVisiblity = _filterSimplifiedListVisibility;
-                FilterSimplifiedListVisibility = _filterListVisibility;
-                FilterListVisibility = tmpVisiblity;
-                _updateFilterVisibility();
+                if(_filterListVisibility == Visibility.Visible)
+                {
+                    _updateCollapsedFilter();
+                    FilterListVisibility = Visibility.Collapsed;
+                    FilterSimplifiedListVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    FilterListVisibility = Visibility.Visible;
+                    FilterSimplifiedListVisibility = Visibility.Collapsed;
+                }
             }));
 
         public void DeleteFilter(int index)
         {
             FilterItems.RemoveAt(index);
             _updateFilterIndex();
+            _updateCollapsedFilter();
         }
 
         public void UpdateFilterCategory(int index, int new_choice)
@@ -149,12 +165,12 @@ namespace DailyPoetry.ViewModel
             }
         }
 
-        private void _updateFilterVisibility()
+        private void _updateCollapsedFilter()
         {
-            foreach (var filterItem in filterItems)
-            {
-                filterItem.visibility = filterItem.Value == "" ? Visibility.Collapsed : Visibility.Visible;
-            }
+            CollapsedFilterItems.Clear();
+            foreach (var filterItem in FilterItems)
+                if (filterItem.Value != "")
+                    CollapsedFilterItems.Add(filterItem);
         }
 
         public SearchResultViewModel(KnowledgeService knowledgeService)
@@ -166,6 +182,7 @@ namespace DailyPoetry.ViewModel
             FilterSimplifiedListVisibility = Visibility.Collapsed;
             FilterItems = new ObservableCollection<FilterItem>();
             FilterItems.Add(new FilterItem(FilterCategory.CONTENT, ""));
+            CollapsedFilterItems = new ObservableCollection<FilterItem>();
             _updateFilterIndex();
         }
     }
@@ -230,7 +247,6 @@ namespace DailyPoetry.ViewModel
         private int _index;
         private FilterCategory _filterCategory;
         private string _value;
-        private Visibility _visibility;
 
         public int Index
         {
@@ -259,16 +275,6 @@ namespace DailyPoetry.ViewModel
             {
                 _value = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
-            }
-        }
-
-        public Visibility visibility
-        {
-            get => _visibility;
-            set
-            {
-                _visibility = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("visibility"));
             }
         }
 
