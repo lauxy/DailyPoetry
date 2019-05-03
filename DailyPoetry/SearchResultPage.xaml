@@ -17,24 +17,28 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="64"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox SelectedIndex="1" Grid.Column="0" Margin="12,6,0,0" Width="80">
+                <ComboBox SelectedIndex="1" Grid.Column="0" Margin="12,6,0,0" Width="80" SelectionChanged="ComboBox_SelectionChanged" Tag="{x:Bind Index, Mode=OneWay}">
                     <!--如果改变顺序，请同步修改 enum FilterCategory （在SearchResultViewModel）-->
                     <x:String>标题</x:String>
                     <x:String>内容</x:String>
                     <x:String>作者</x:String>
-                    <x:String>朝代</x:String>
                 </ComboBox>
-                <AutoSuggestBox Grid.Column="1" Margin="12,6,0,0" Text="{x:Bind value, Mode=TwoWay}"></AutoSuggestBox>
-                <Button Grid.Column="2" Margin="12,6,0,6" Background="White" Width="48">
+                <AutoSuggestBox Grid.Column="1" Margin="12,6,0,0" Text="{x:Bind Value, Mode=TwoWay}"></AutoSuggestBox>
+                <Button Grid.Column="2" Tag="{x:Bind Index, Mode=OneWay}" Margin="12,6,0,6" Width="48" Click="Button_Click">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;"/>
                 </Button>
             </Grid>
         </DataTemplate>
+        
         <DataTemplate x:Name="FilterSimplifiedTemplate" x:DataType="viewmodel:FilterItem">
-            <StackPanel Orientation="Horizontal">
-                
+            <StackPanel Orientation="Horizontal" Background="LightGray" Visibility="{x:Bind visibility, Mode=OneWay}">
+                <TextBlock Text="{x:Bind Value, Mode=OneWay}" FontSize="24" VerticalAlignment="Center" Margin="8,0,8,0"/>
+                <Button Tag="{x:Bind Index, Mode=OneWay}" Margin="4" Width="48" Click="Button_Click">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;"/>
+                </Button>
             </StackPanel>
         </DataTemplate>
+        
         <DataTemplate x:Name="PoetryItemTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -83,13 +87,19 @@
         </ListView>
 
         <ListView Name="FiltersSimplifiedList" 
-                  Visibility="{Binding FilterSimplifiedListVisibility}"
-                  Grid.Row="1" SelectionMode="None">
-            <TextBlock Text="123"></TextBlock>
+            ItemsSource="{Binding FilterItems, Mode=OneWay}"
+            ItemTemplate="{StaticResource FilterSimplifiedTemplate}"
+            Visibility="{Binding FilterSimplifiedListVisibility}"
+            Grid.Row="1" SelectionMode="None">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:WrapPanel Padding="0" VerticalSpacing="8" HorizontalSpacing="8"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
         </ListView>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" FlowDirection="RightToLeft">
-            <Button Background="CornflowerBlue" Margin="12,6, 0, 0" Name="SearchButton">
+            <Button Background="CornflowerBlue" Margin="12,6, 0, 0" Name="SearchButton" Command="{Binding SearchCommand}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
                     <TextBlock Margin="8,0,0,0" Text="搜索"/>
@@ -104,20 +114,21 @@
 
             <Button Margin="12,6,0,0" Name="ChevronButton" 
                     Click="ChevronButton_Click"
-                    Command="{Binding ChevronSwitchCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                    Command="{Binding ChevronSwitchCommand}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70E;" Name="ChevronIcon"/>
                     <TextBlock Margin="8,0,0,0" Name="ChevronText" Text="收起"/>
                 </StackPanel>
             </Button>
         </StackPanel>
- 
-        
-        <!--<ScrollViewer Name="SearchResultList">
-            
-        </ScrollViewer>
-        
-        <ProgressRing Name="SearchRing" IsActive="False"/>-->
+
+        <ListView Name="SearchResultList" 
+                  ItemsSource="{Binding PoetryItems, Mode=OneWay}"
+                  ItemTemplate="{StaticResource PoetryItemTemplate}"
+                  Visibility="{Binding PoetryResultVisibility}"
+                  Grid.Row="3" Margin="16">
+        </ListView>
+
+        <ProgressRing Name="SearchRing" IsActive="{Binding ProcessRingVisibility}" Grid.Row="4" Height="100" Width="100"/>
     </Grid>
 </Page>

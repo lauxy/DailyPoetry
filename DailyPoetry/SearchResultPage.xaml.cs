@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using DailyPoetry.Models;
 using DailyPoetry.ViewModel;
+using System.Diagnostics;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -42,6 +43,20 @@ namespace DailyPoetry
                 ChevronIcon.Glyph = "\uE70E";
                 ChevronText.Text = "收起";
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as SearchResultViewModel).DeleteFilter((int)(sender as Button).Tag);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            var combobox = (sender as ComboBox);
+            if (combobox.Tag == null)
+                return;
+            (DataContext as SearchResultViewModel).UpdateFilterCategory((int)combobox.Tag, combobox.SelectedIndex);
         }
     }
 

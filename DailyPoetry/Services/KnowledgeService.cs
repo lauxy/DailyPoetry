@@ -37,7 +37,7 @@ namespace DailyPoetry.Services
             _knowledgeContext = new KnowledgeContext();
             return this;
         }
-
+ 
 
 
         private async Task InitDatabase()
@@ -188,6 +188,20 @@ namespace DailyPoetry.Services
         {
             return source.Where(
                 GetWhereFunc<PoetryItem>("AuthorName", query, exactMode));
+        }
+
+        public PoetryIntermediateType GetPoetryItemsByContent(
+            string query, bool exactMode = false)
+        {
+            return GetPoetryItemsByContent(GetAllSimplifiedPoetryItems(),
+                query, exactMode);
+        }
+
+        public PoetryIntermediateType GetPoetryItemsByContent(
+            PoetryIntermediateType source, string query, bool exactMode = false)
+        {
+            return source.Where(
+                GetWhereFunc<PoetryItem>("Content", query, exactMode));
         }
 
         //public WriterIntermediateType

@@ -166,7 +166,6 @@
     <Compile Include="Services\LocalInfoService.cs" />
     <Compile Include="Services\RecentViewItemService.cs" />
     <Compile Include="Services\RecommendItemService.cs" />
-    <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\TokenService.cs" />
     <Compile Include="Services\UserRecordService.cs" />
     <Compile Include="Services\WallpaperService.cs" />
