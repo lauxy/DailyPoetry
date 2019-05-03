@@ -126,9 +126,11 @@
                   ItemsSource="{Binding PoetryItems, Mode=OneWay}"
                   ItemTemplate="{StaticResource PoetryItemTemplate}"
                   Visibility="{Binding PoetryResultVisibility}"
-                  Grid.Row="3" Margin="16">
+                  Grid.Row="3" Margin="16" ItemClick="SearchResultList_ItemClick" IsItemClickEnabled="True">
         </ListView>
 
         <ProgressRing Name="SearchRing" IsActive="{Binding ProcessRingVisibility}" Grid.Row="4" Height="100" Width="100"/>
     </Grid>
+    
+    
 </Page>

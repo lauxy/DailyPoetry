@@ -8,6 +8,8 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <!-- obslate -->
-
+    <StackPanel>
+        <TextBlock Name="Title"/>
+        <TextBlock Name="Content"/>
+    </StackPanel>
 </Page>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DailyPoetry.Models.KnowledgeModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,12 @@ namespace DailyPoetry
         public DetailPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            Title.Text = ((PoetryItem)e.Parameter).Name;
+            Content.Text = ((PoetryItem)e.Parameter).Content;
         }
     }
 }

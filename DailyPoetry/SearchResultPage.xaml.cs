@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using DailyPoetry.Models;
 using DailyPoetry.ViewModel;
 using System.Diagnostics;
+using DailyPoetry.Models.KnowledgeModels;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -57,6 +58,12 @@ namespace DailyPoetry
             if (combobox.Tag == null)
                 return;
             (DataContext as SearchResultViewModel).UpdateFilterCategory((int)combobox.Tag, combobox.SelectedIndex);
+        }
+
+        private void SearchResultList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var poetryItem = (PoetryItem)e.ClickedItem;
+            Frame.Navigate(typeof(DetailPage), poetryItem);
         }
     }
 
