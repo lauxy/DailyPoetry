@@ -17,6 +17,9 @@ using Microsoft.Toolkit.Uwp;
 using System.ComponentModel;
 using GalaSoft.MvvmLight.Command;
 using Windows.UI.Xaml.Controls;
+using System.Threading;
+using System.Collections.Specialized;
+using System.Collections;
 
 namespace DailyPoetry.ViewModel
 {
@@ -27,16 +30,13 @@ namespace DailyPoetry.ViewModel
     using CategoryIntermediateType = IntermediateResult<CategoryItem, SimplifiedCategoryItem>;
 
     public class SearchResultViewModel : ViewModelBase
-    {
+    { 
+
         private KnowledgeService _knowledgeService;
 
-        private List<PoetryItem> _poetryItems;
+        private PoetryIntermediateType _poetryIntermediate;
 
-        public List<PoetryItem> PoetryItems
-        {
-            get => _poetryItems;
-            set => Set(nameof(PoetryItems), ref _poetryItems, value);
-        }
+        // visibility, process ring`s active, button`s enabled
 
         private Visibility _filterListVisibility;
 
@@ -54,14 +54,6 @@ namespace DailyPoetry.ViewModel
             set => Set(nameof(FilterSimplifiedListVisibility), ref _filterSimplifiedListVisibility, value);
         }
 
-        public bool _processRingVisibility;
-
-        public bool ProcessRingVisibility
-        {
-            get => _processRingVisibility;
-            set => Set(nameof(ProcessRingVisibility), ref _processRingVisibility, value);
-        }
-
         private Visibility _poetryResultVisibility;
 
         public Visibility PoetryResultVisibility
@@ -70,21 +62,102 @@ namespace DailyPoetry.ViewModel
             set => Set(nameof(PoetryResultVisibility), ref _poetryResultVisibility, value);
         }
 
-        private ObservableCollection<FilterItem> filterItems;
+        private Visibility _resultNavigateBarVisibility;
+
+        public Visibility ResultNavigateBarVisibility
+        {
+            get => _resultNavigateBarVisibility;
+            set => Set(nameof(ResultNavigateBarVisibility), ref _resultNavigateBarVisibility, value);
+        }
+
+        private bool _processRingActive;
+
+        public bool ProcessRingActive
+        {
+            get => _processRingActive;
+            set => Set(nameof(ProcessRingActive), ref _processRingActive, value);
+        }
+
+        private bool _prevButtonEnabled;
+
+        public bool PrevButtonEnabled
+        {
+            get => _prevButtonEnabled;
+            set => Set(nameof(PrevButtonEnabled), ref _prevButtonEnabled, value);
+        }
+
+        private bool _nextButtonEnabled;
+
+        public bool NextButtonEnabled
+        {
+            get => _nextButtonEnabled;
+            set => Set(nameof(NextButtonEnabled), ref _nextButtonEnabled, value);
+        }
+
+        public SearchResultViewModel(KnowledgeService knowledgeService)
+        {
+            _knowledgeService = knowledgeService;
+            _knowledgeService.Entry();
+            _poetryItems = null;
+            FilterListVisibility = Visibility.Visible;
+            FilterSimplifiedListVisibility = Visibility.Collapsed;
+            FilterItems = new ObservableCollection<FilterItem>();
+            FilterItems.Add(new FilterItem(FilterCategory.CONTENT, ""));
+            CollapsedFilterItems = new ObservableCollection<FilterItem>();
+            _updateFilterIndex();
+        }
+
+        // filter`s data
+
+        private ObservableCollection<FilterItem> _filterItems;
 
         public ObservableCollection<FilterItem> FilterItems
         {
-            get => filterItems;
-            set => Set(nameof(FilterItems), ref filterItems, value);
+            get => _filterItems;
+            set => Set(nameof(FilterItems), ref _filterItems, value);
         }
 
-        private ObservableCollection<FilterItem> collapsedFilterItems;
+        private ObservableCollection<FilterItem> _collapsedFilterItems;
 
         public ObservableCollection<FilterItem> CollapsedFilterItems
         {
-            get => collapsedFilterItems;
-            set => Set(nameof(CollapsedFilterItems), ref collapsedFilterItems, value);
+            get => _collapsedFilterItems;
+            set => Set(nameof(CollapsedFilterItems), ref _collapsedFilterItems, value);
         }
+
+        // result`s data
+
+        private List<PoetryItem> _poetryItems;
+
+        public List<PoetryItem> PoetryItems
+        {
+            get => _poetryItems;
+            set => Set(nameof(PoetryItems), ref _poetryItems, value);
+        }
+
+        private List<int> _pageIndex;
+
+        public List<int> PageIndex
+        {
+            get => _pageIndex;
+            set => Set(nameof(PageIndex), ref _pageIndex, value);
+        }
+
+        private int _currentPage;
+
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set => Set(nameof(CurrentPage), ref _currentPage, value);
+        }
+
+        private int _pageSize = 20;
+
+        private int _pageCnt;
+
+        public bool Refreshing;
+
+        // commands
 
         private RelayCommand _addFilterCommand;
 
@@ -95,8 +168,15 @@ namespace DailyPoetry.ViewModel
             _updateFilterIndex();
         }));
 
+        // public RelayCommand DeleteFilterCommand
+        // 在 viewmodel 中实现，因为不知道怎么在 command 里带参数
+        // 目前在 viewmodel 中读取 button 的 tag 来实现参数
+
         private RelayCommand _chevronSwitchCommand;
 
+        /// <summary>
+        /// 展开收起 filter 的 panel
+        /// </summary>
         public RelayCommand ChevronSwitchCommand =>
             _chevronSwitchCommand ?? (_chevronSwitchCommand = new RelayCommand(() =>
             {
@@ -113,52 +193,87 @@ namespace DailyPoetry.ViewModel
                 }
             }));
 
-        public void DeleteFilter(int index)
-        {
-            FilterItems.RemoveAt(index);
-            _updateFilterIndex();
-            _updateCollapsedFilter();
-        }
-
-        public void UpdateFilterCategory(int index, int new_choice)
-        {
-            FilterItems[index].FilterCategory = (FilterCategory)new_choice;
-        }
-
         private RelayCommand _searchCommand;
 
         public RelayCommand SearchCommand =>
-            _searchCommand ?? (_searchCommand = new RelayCommand(async () =>
+            _searchCommand ?? (_searchCommand = new RelayCommand(() =>
             {
+                // clean controls` status
                 PoetryResultVisibility = Visibility.Collapsed;
-                ProcessRingVisibility = true;
-                PoetryIntermediateType result = _knowledgeService.GetAllSimplifiedPoetryItems();
-                foreach (var filterItem in filterItems)
+                ResultNavigateBarVisibility = Visibility.Collapsed;
+                ProcessRingActive = true;
+
+                // build path
+                _poetryIntermediate = _knowledgeService.GetAllSimplifiedPoetryItems();
+                foreach (var filterItem in _filterItems)
                 {
                     switch (filterItem.FilterCategory)
                     {
                         case FilterCategory.TITLE:
-                            result = _knowledgeService.GetPoetryItemsByName(result, filterItem.Value);
+                            _poetryIntermediate = _knowledgeService.GetPoetryItemsByName(_poetryIntermediate, filterItem.Value);
                             break;
                         case FilterCategory.CONTENT:
-                            result = _knowledgeService.GetPoetryItemsByContent(result, filterItem.Value);
+                            _poetryIntermediate = _knowledgeService.GetPoetryItemsByContent(_poetryIntermediate, filterItem.Value);
                             break;
                         case FilterCategory.WRITER:
-                            result = _knowledgeService.GetPoetryItemsByWriter(result, filterItem.Value);
+                            _poetryIntermediate = _knowledgeService.GetPoetryItemsByWriter(_poetryIntermediate, filterItem.Value);
                             break;
                         default:
                             break;
                     }
                 }
-                PoetryItems = await result.ToListFullAsync();
-                ProcessRingVisibility = false;
-                PoetryResultVisibility = Visibility.Visible;
+
+                // set values
+                _pageCnt = (_poetryIntermediate.Count() + _pageSize - 1) / _pageSize;
+                if(_pageCnt == 0)
+                {
+
+                }
+                else
+                {
+                    CurrentPage = 0;
+                    if(_pageCnt > 1)
+                    {
+                        ResultNavigateBarVisibility = Visibility.Visible;
+                        PrevButtonEnabled = false;
+                        NextButtonEnabled = true;
+                        PageIndex = Enumerable.Range(1, _pageCnt).ToList();
+                    }
+                    PoetryResultVisibility = Visibility.Visible;
+                }
+                ProcessRingActive = false;
             }));
+
+        private RelayCommand _nextPageCommand;
+
+        public RelayCommand NextPageCommand =>
+            _nextPageCommand ?? (_nextPageCommand = new RelayCommand(async () =>
+            {
+                await NextPage();
+            }));
+
+        private RelayCommand _prevPageCommand;
+
+        public RelayCommand PrevPageCommand =>
+            _prevPageCommand ?? (_prevPageCommand = new RelayCommand(async () =>
+            {
+                await PrevPage();
+            }));
+
+        private RelayCommand _refreshPageCommand;
+
+        public RelayCommand RefreshPageCommand =>
+            _refreshPageCommand ?? (_refreshPageCommand = new RelayCommand(async () =>
+            {
+                await RefreshPage();
+            }));
+
+        // helpers
 
         private void _updateFilterIndex()
         {
             int i = 0;
-            foreach (var filterItem in filterItems)
+            foreach (var filterItem in _filterItems)
             {
                 filterItem.Index = i;
                 ++i;
@@ -173,65 +288,48 @@ namespace DailyPoetry.ViewModel
                     CollapsedFilterItems.Add(filterItem);
         }
 
-        public SearchResultViewModel(KnowledgeService knowledgeService)
+        // activity
+
+        public void DeleteFilter(int index)
         {
-            _knowledgeService = knowledgeService;
-            _knowledgeService.Entry();
-            _poetryItems = new List<PoetryItem>();
-            FilterListVisibility = Visibility.Visible;
-            FilterSimplifiedListVisibility = Visibility.Collapsed;
-            FilterItems = new ObservableCollection<FilterItem>();
-            FilterItems.Add(new FilterItem(FilterCategory.CONTENT, ""));
-            CollapsedFilterItems = new ObservableCollection<FilterItem>();
+            FilterItems.RemoveAt(index);
             _updateFilterIndex();
-        }
-    }
-
-    public class IncrementalLoadingCollection<T, I> : ObservableCollection<I>,
-        ISupportIncrementalLoading
-        where T : IIncrementalSource<I>, new()
-    {
-        private T source;
-        private int itemsPerPage;
-        private bool hasMoreItems;
-        private int currentPage = 0;
-
-        public IncrementalLoadingCollection(T source, int itemsPerPage = 10)
-        {
-            this.source = source;
-            this.itemsPerPage = itemsPerPage;
-            hasMoreItems = true;
+            _updateCollapsedFilter();
         }
 
-        public bool HasMoreItems => hasMoreItems;
-
-        public IAsyncOperation<LoadMoreItemsResult> LoadMoreItemsAsync(uint count)
+        public void UpdateFilterCategory(int index, int new_choice)
         {
-            var dispatcher = Window.Current.Dispatcher;
-            return Task.Run<LoadMoreItemsResult>(
-                async () =>
-                {
-                    uint resultCount = 0;
-                    var result = await source.GetPagedItemsAsync(
-                        currentPage++, (int)count);
-                    if (result == null || !result.Any())
-                    {
-                        hasMoreItems = false;
-                    }
-                    else
-                    {
-                        resultCount = (uint)result.Count();
-                        await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                        {
-                            foreach (var item in result)
-                            {
-                                this.Add(item);
-                            }
-                        });
-                    }
+            FilterItems[index].FilterCategory = (FilterCategory)new_choice;
+        }
 
-                    return new LoadMoreItemsResult() { Count = resultCount };
-                }).AsAsyncOperation<LoadMoreItemsResult>();
+        public async Task NextPage()
+        {
+            CurrentPage += 1;
+            if (CurrentPage + 1 == _pageCnt)
+                NextButtonEnabled = false;
+            PrevButtonEnabled = true;
+            PoetryItems = await _poetryIntermediate.
+                Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
+        }
+
+        public async Task PrevPage()
+        {
+            CurrentPage -= 1;
+            if (CurrentPage == 0)
+                PrevButtonEnabled = false;
+            NextButtonEnabled = true;
+            PoetryItems = await _poetryIntermediate.
+                Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
+        }
+
+        public async Task RefreshPage()
+        {
+            if (CurrentPage == 0)
+                PrevButtonEnabled = false;
+            if (CurrentPage + 1 == _pageCnt)
+                NextButtonEnabled = false;
+            PoetryItems = await _poetryIntermediate.
+                Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
         }
     }
 

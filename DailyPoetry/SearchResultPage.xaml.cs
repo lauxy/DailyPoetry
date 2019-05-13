@@ -17,8 +17,7 @@ using DailyPoetry.ViewModel;
 using System.Diagnostics;
 using Windows.Storage;
 using DailyPoetry.Models.KnowledgeModels;
-
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
+using System.Threading.Tasks;
 
 namespace DailyPoetry
 {
@@ -32,16 +31,7 @@ namespace DailyPoetry
         {
             this.InitializeComponent();
             DataContext = ViewModelLocator.Instance.SearchResultViewModel;
-            //初始化界面主题
-            //if (localSettings.Values["ThemeStyle"] != null)
-            //{
-            //    string theme = localSettings.Values["ThemeStyle"].ToString();
-            //    if (theme == "Dark")
-            //        this.RequestedTheme = ElementTheme.Dark;
-            //    else if (theme == "Light")
-            //        this.RequestedTheme = ElementTheme.Light;
-            //    else this.RequestedTheme = ElementTheme.Default;
-            //}
+            (DataContext as SearchResultViewModel).ResultNavigateBarVisibility = Visibility.Collapsed;
         }
 
         private void ChevronButton_Click(object sender, RoutedEventArgs e)
@@ -73,24 +63,15 @@ namespace DailyPoetry
             (DataContext as SearchResultViewModel).UpdateFilterCategory((int)combobox.Tag, combobox.SelectedIndex);
         }
 
-        private void SearchResultList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            foreach(var item in e.AddedItems)
-            {
-                ListViewItem lvi = (sender as ListView).ContainerFromItem(item) as ListViewItem;
-                lvi.ContentTemplate = (DataTemplate)this.Resources["PoetryItemExpandedTemplate"];
-            }
-            foreach (var item in e.RemovedItems)
-            {
-                ListViewItem lvi = (sender as ListView).ContainerFromItem(item) as ListViewItem;
-                lvi.ContentTemplate = (DataTemplate)this.Resources["PoetryItemTemplate"];
-            }
-        }
-
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var poetryItem = (PoetryItem)(e.OriginalSource as Button).DataContext;
             Frame.Navigate(typeof(DetailPage), poetryItem);
+        }
+
+        private void PageIndex_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (DataContext as SearchResultViewModel).RefreshPage();
         }
     }
 
