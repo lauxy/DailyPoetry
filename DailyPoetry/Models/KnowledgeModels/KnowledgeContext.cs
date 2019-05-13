@@ -18,5 +18,11 @@ namespace DailyPoetry.Models.KnowledgeModels
         public DbSet<CategoryItem> CategoryItems { get; set; }
         public DbSet<CategoryWorkItem> CategoryWorkItems { get; set; }
         public DbSet<WriterItem> WriterItems { get; set; }
+
+        [DbFunction("instr")]
+        public static int SatisfiesMyUserFunction(string x, string y)
+        {
+            throw new Exception(); // this code doesn't get executed; the call is passed through to the database function
+        }
     }
 }

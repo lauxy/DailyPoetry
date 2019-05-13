@@ -34,8 +34,8 @@ namespace DailyPoetry
             SimpleIoc.Default.Register<RecommendPageViewModel>();
 
             SimpleIoc.Default.Register<KnowledgeService>();
-            SimpleIoc.Default.Register<SearchResultViewModel>();
-
+            SimpleIoc.Default.Register<SearchResultViewModel>(
+                () => new SearchResultViewModel(SimpleIoc.Default.GetInstance<KnowledgeService>("Search")));
         }
 
     }

@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodel="using:DailyPoetry.ViewModel"
+    xmlns:kmodel="using:DailyPoetry.Models.KnowledgeModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" 
@@ -19,14 +20,18 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="64"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox SelectedIndex="1" Grid.Column="0" Margin="12,6,0,0" Width="80" SelectionChanged="ComboBox_SelectionChanged" Tag="{x:Bind Index, Mode=OneWay}">
+                <ComboBox SelectedIndex="1" Grid.Column="0" Margin="4,0,0,0" Width="80" 
+                          VerticalAlignment="Center"
+                          SelectionChanged="ComboBox_SelectionChanged" Tag="{x:Bind Index, Mode=OneWay}">
                     <!--如果改变顺序，请同步修改 enum FilterCategory （在SearchResultViewModel）-->
                     <x:String>标题</x:String>
                     <x:String>内容</x:String>
                     <x:String>作者</x:String>
                 </ComboBox>
-                <AutoSuggestBox Grid.Column="1" Margin="12,6,0,0" Text="{x:Bind Value, Mode=TwoWay}"></AutoSuggestBox>
-                <Button Grid.Column="2" Tag="{x:Bind Index, Mode=OneWay}" Margin="12,6,0,6" Width="48" Click="Button_Click">
+                <AutoSuggestBox Grid.Column="1" Margin="4,0,0,0" 
+                                Text="{x:Bind Value, Mode=TwoWay}" VerticalAlignment="Center"
+                                ></AutoSuggestBox>
+                <Button Grid.Column="2" Tag="{x:Bind Index, Mode=OneWay}" Margin="4,0,0,0" Width="48" Click="Button_Click">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;"/>
                 </Button>
             </Grid>
@@ -40,72 +45,39 @@
                 </Button>
             </StackPanel>
         </DataTemplate>
-        
-        <DataTemplate x:Name="PoetryItemTemplate">
-            <Grid>
+
+        <DataTemplate x:Name="PoetryItemTemplate" x:DataType="kmodel:PoetryItem">
+            <Grid Margin="12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Text="{Binding Name}" 
+                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                           Text="{Binding Name}" Style="{StaticResource TitleTextBlockStyle}" MaxLines="1"  
                            Margin="12,6,0,0"/>
                 <TextBlock  Grid.Column="0" Grid.Row="1"
-                            Text="{Binding Dynasty}" 
+                            Text="{Binding Dynasty}" Style="{StaticResource BodyTextBlockStyle}" MaxLines="1"
                             Margin="12,6,0,0"/>
                 <TextBlock  Grid.Column="1" Grid.Row="1"
-                            Text="{Binding AuthorName}" 
+                            Text="{Binding AuthorName}" Style="{StaticResource BodyTextBlockStyle}" MaxLines="1"
                             Margin="6,6,0,0"/>
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Name="PoetryItemExpandedTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Column="0" Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Text="{Binding Name}" 
-                           Margin="12,6,0,0"/>
-                <TextBlock  Grid.Column="0" Grid.Row="1"
-                            Text="{Binding Dynasty}" 
-                            Margin="12,6,0,0"/>
-                <TextBlock  Grid.Column="1" Grid.Row="1"
-                            Text="{Binding AuthorName}" 
-                            Margin="6,6,0,0"/>
-                <TextBlock Grid.Column="0" Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           Text="{Binding Content}"
-                           Margin="12,6,0,0"/>
-                <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="3"
-                        Content="更多" Click="Button_Click_1"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
     
-    <Grid>
+    <Grid Margin="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" x:Name="FiltersRow"/>
             <RowDefinition Height="auto" x:Name="FilterSimplifiedRow"/>
             <RowDefinition Height="auto" x:Name="ButtonRow"/>
             <RowDefinition Height="auto" x:Name="ResultRow"/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition Height="auto" x:Name="ResultNavigateRow"/>
         </Grid.RowDefinitions>
 
         <ListView Name="FiltersList"
@@ -133,7 +105,8 @@
         </ListView>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" FlowDirection="RightToLeft">
-            <Button Background="CornflowerBlue" Margin="12,6, 0, 0" Name="SearchButton" Command="{Binding SearchCommand}">
+            <Button Background="CornflowerBlue" Margin="12,6, 0, 0" Name="SearchButton" 
+                    Command="{Binding SearchCommand}">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
                     <TextBlock Margin="8,0,0,0" Text="搜索"/>
@@ -160,11 +133,30 @@
                   ItemsSource="{Binding PoetryItems, Mode=OneWay}"
                   ItemTemplate="{StaticResource PoetryItemTemplate}"
                   Visibility="{Binding PoetryResultVisibility}"
-                  Grid.Row="3" Margin="16" IsItemClickEnabled="True"
-                  SelectionChanged="SearchResultList_SelectionChanged">
+                  Grid.Row="3" Margin="16" IsItemClickEnabled="True">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
 
-        <ProgressRing Name="SearchRing" IsActive="{Binding ProcessRingVisibility}" Grid.Row="4" Height="100" Width="100"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" 
+                    Visibility="{Binding ResultNavigateBarVisibility}"
+                    Grid.Row="5">
+            <Button Name="PrevButton" Content="上一页" IsEnabled="{Binding PrevButtonEnabled}" Command="{Binding PrevPageCommand}"/>
+            <ListView Name="PageIndex" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{Binding PageIndex}"
+                      SelectedIndex='{Binding CurrentPage}' SelectionChanged="PageIndex_SelectionChanged">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate >
+                </ListView.ItemsPanel>
+            </ListView>
+            <Button Name="NextButton" Content="下一页" IsEnabled="{Binding NextButtonEnabled}" Command="{Binding NextPageCommand}"/>
+        </StackPanel>
+        
+        <ProgressRing Name="SearchRing" IsActive="{Binding ProcessRingActivte}" Grid.Row="4" Height="100" Width="100"/>
     </Grid>
     
     

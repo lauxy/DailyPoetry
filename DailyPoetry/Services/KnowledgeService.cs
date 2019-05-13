@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using DailyPoetry.Models.KnowledgeModels;
@@ -16,38 +17,20 @@ namespace DailyPoetry.Services
     /// <summary>
     /// 诗词、作者等固定内容的服务
     /// 1. 使用时，使用 using(knowledgeService.Entry) { ... }
-    /// 2. 所有查询结果默认返回 Simplified 的对象
+    /// 2. 所有查询结果 ToList 返回 Simplified, ToListFull 返回完整的
     ///    Models 中定义了 Simplified 和 原始对象 之间的关系
     /// 3. 使用 Simplified 的对象是因为假定不需要同时获取多个 原始对象，节约内存
-    /// todo: use type map
     /// </summary>
     public class KnowledgeService : IDisposable
     {
         public KnowledgeContext _knowledgeContext;
 
         /// <summary>
-        /// 进入资源，KnowledgeService 建议在 using 语句块中使用
+        /// 初始化数据库，在 app.xaml.cs 中调用
         /// </summary>
-        /// <returns>return this</returns>
-        public KnowledgeService Entry()
+        /// <returns></returns>
+        public static async Task InitDatabase()
         {
-            Task.Run(InitDatabase).Wait();
-            if (_knowledgeContext != null)
-                throw new InvalidOperationException("Re-entry is forbidden.");
-            _knowledgeContext = new KnowledgeContext();
-            return this;
-        }
- 
-
-
-        private async Task InitDatabase()
-
-        {
-
-            // check whether the database file local in correct folder
-            // because ef core? can not access assets folder
-            // see https://social.msdn.microsoft.com/Forums/en-US/b6d7a970-0088-4bd4-aaa8-c86bca4387df/uwp-sqlitenet-path-question
-
             var dbFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync("db.sqlite3") as StorageFile;
             if (dbFile == null)
             {
@@ -57,11 +40,22 @@ namespace DailyPoetry.Services
 
                 if (originalDbFile != null)
                 {
-                    dbFile = await originalDbFile.CopyAsync(localFolder, "db.sqlite3",
+                    await originalDbFile.CopyAsync(localFolder, "db.sqlite3",
                         NameCollisionOption.ReplaceExisting);
                 }
-                // todo: error handler
             }
+        }
+
+        /// <summary>
+        /// 进入资源，KnowledgeService 建议在 using 语句块中使用
+        /// </summary>
+        /// <returns>return this</returns>
+        public KnowledgeService Entry()
+        {
+            if (_knowledgeContext != null)
+                throw new InvalidOperationException("请注意释放资源，使用 using 或者手动调用 Dispose");
+            _knowledgeContext = new KnowledgeContext();
+            return this;
         }
 
         /// <summary>
@@ -225,7 +219,6 @@ namespace DailyPoetry.Services
                 while (data.Count() == count)
                 {
                     yield return data;
-                    //System.GC.Collect();
                     current += count;
                     data = source.Skip(current).Take(count);
                 }
@@ -234,6 +227,10 @@ namespace DailyPoetry.Services
         }
 
         /// <summary>
+        /// NEW at 20190507
+        /// 使用反射会阻止 EF core 生成 SQL 语句，就是会把所有数据取到内存，在内存中进行反射的操作
+        /// 应该使用 dynamic
+        /// ----
         /// 获取 Where 的查询函数, 需要注意使用反射可能导致性能问题，到时候再说吧
         /// 如果需要解决，可以使用 fasterflect (http://fasterflect.codeplex.com/)
         /// </summary>
@@ -241,19 +238,27 @@ namespace DailyPoetry.Services
         /// <param name="propertyName">属性名</param>
         /// <param name="query">要查询的字符串</param>
         /// <param name="exactMode">If set to <c>true</c> 全匹配.</param>
-        private Func<T, bool> GetWhereFunc<T>(
+        private System.Linq.Expressions.Expression<Func<T, bool>> GetWhereFunc<T>(
             string propertyName, string query, bool exactMode)
         {
-            Type type = typeof(T);
-            PropertyInfo prop = type.GetProperty(propertyName);
-            if (prop == null)
-                throw new MissingMemberException();
-            Func<T, bool> whereFunc = exactMode ?
-                (whereFunc = (T pItem) =>
-                    (prop.GetValue(pItem) as string) == query) :
-                (whereFunc = (T pItem) =>
-                    (prop.GetValue(pItem) as string).Contains(query));
-            return whereFunc;
+            var parameterExp = Expression.Parameter(typeof(T), "type");
+            var propertyExp = Expression.Property(parameterExp, propertyName);
+            MethodInfo method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+            var someValue = Expression.Constant(query, typeof(string));
+            var containsMethodExp = Expression.Call(propertyExp, method, someValue);
+
+            return Expression.Lambda<Func<T, bool>>(containsMethodExp, parameterExp);
+
+            //Type type = typeof(T);
+            //PropertyInfo prop = type.GetProperty(propertyName);
+            //if (prop == null)
+            //    throw new MissingMemberException();
+            //System.Linq.Expressions.Expression<Func<T, bool>> whereFunc = exactMode ?
+            //    (whereFunc = (T pItem) =>
+            //        (prop.GetValue(pItem) as string) == query) :
+            //    (whereFunc = (T pItem) =>
+            //        (prop.GetValue(pItem) as string).Contains(query));
+            //return whereFunc;
         }
     }
 
@@ -264,9 +269,9 @@ namespace DailyPoetry.Services
     /// </summary>
     public class IntermediateResult<T, ST> where T : IDbItem<ST>
     {
-        public IEnumerable<T> Data { get; private set; }
+        public IQueryable<T> Data { get; private set; }
 
-        public IntermediateResult(IEnumerable<T> source)
+        public IntermediateResult(IQueryable<T> source)
         {
             Data = source;
         }
@@ -295,32 +300,18 @@ namespace DailyPoetry.Services
                 .ToList());
         }
 
-        public IntermediateResult<T, ST> Where(Func<T, bool> predicate)
+        public IntermediateResult<T, ST> Where(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
         {
             return new IntermediateResult<T, ST>(Data.Where(predicate));
         }
 
-        public IntermediateResult<T, ST> Select(Func<T, T> predicate)
+        public IntermediateResult<T, ST> Select(System.Linq.Expressions.Expression<Func<T, T>> predicate)
         {
             return new IntermediateResult<T, ST>(Data.Select(predicate));
         }
 
         public IntermediateResult<T, ST> Skip(int count)
         {
-            //using (IEnumerator<T> iterator = Data.GetEnumerator())
-            //{
-            //    for (int i = 0; i < count; i++)
-            //    {
-            //        if (!iterator.MoveNext())
-            //        {
-            //            yield break;
-            //        }
-            //    }
-            //    while (iterator.MoveNext())
-            //    {
-            //        yield return iterator.Current;
-            //    }
-            //}
             return new IntermediateResult<T, ST>(Data.Skip(count));
         }
 
