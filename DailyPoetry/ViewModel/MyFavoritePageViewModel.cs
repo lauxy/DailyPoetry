@@ -26,6 +26,7 @@ namespace DailyPoetry.ViewModel
             {
                 _favoriteItems.Add(_knowledgeService.GetPoetryItemById(favoriteItem.PoetryId));
             }
+            _knowledgeService.Dispose(); //手动释放资源
         }
 
         public ObservableCollection<PoetryItem> FavoriteItems

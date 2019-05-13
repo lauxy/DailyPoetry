@@ -33,6 +33,7 @@ namespace DailyPoetry.ViewModel
             {
                 _recentViewItems.Add(_knowledgeService.GetPoetryItemById(recentViewItem.PoetryItemId));
             }
+            _knowledgeService.Dispose(); //手动释放资源
         }
 
 
