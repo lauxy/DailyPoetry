@@ -8,8 +8,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-   
-
     <StackPanel Orientation="Vertical">
         <TextBlock Text="设置"
                    FontSize="24"
@@ -33,8 +31,7 @@
                               OffContent="开"
                               Toggled="ToggleSwitch_OnToggled"/>
                 <TextBlock Text="将每日推荐的背景图片自动设置为我的锁屏"
-                           FontSize="16"
-                           Foreground="Black"/>
+                           FontSize="16"/>
                 <ToggleSwitch AutomationProperties.Name="simple ToggleSwitch"
                               Name="LockScreenSwitch"
                               IsOn="False"
@@ -47,7 +44,6 @@
                             Style="{ThemeResource BaseTextBlockStyle}"/>
                 <RadioButton x:Name="LightColorRadioButton" 
                              Content="浅色" 
-                             IsChecked="True"
                              Checked="LightColorRadioButton_OnChecked"/>
                 <RadioButton x:Name="DarkColorRadioButton" 
                              Content="深色" 

@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using DailyPoetry.Models;
 using DailyPoetry.ViewModel;
 using System.Diagnostics;
+using Windows.Storage;
 using DailyPoetry.Models.KnowledgeModels;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -26,10 +27,21 @@ namespace DailyPoetry
     /// </summary>
     public sealed partial class SearchResultPage : Page
     {
+        private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public SearchResultPage()
         {
             this.InitializeComponent();
             DataContext = ViewModelLocator.Instance.SearchResultViewModel;
+            //初始化界面主题
+            //if (localSettings.Values["ThemeStyle"] != null)
+            //{
+            //    string theme = localSettings.Values["ThemeStyle"].ToString();
+            //    if (theme == "Dark")
+            //        this.RequestedTheme = ElementTheme.Dark;
+            //    else if (theme == "Light")
+            //        this.RequestedTheme = ElementTheme.Light;
+            //    else this.RequestedTheme = ElementTheme.Default;
+            //}
         }
 
         private void ChevronButton_Click(object sender, RoutedEventArgs e)

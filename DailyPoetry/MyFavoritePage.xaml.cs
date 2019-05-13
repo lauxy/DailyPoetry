@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,9 +24,26 @@ namespace DailyPoetry
     /// </summary>
     public sealed partial class MyFavoritePage : Page
     {
+        private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public MyFavoritePage()
         {
             this.InitializeComponent();
+            DataContext = ViewModelLocator.Instance.MyFavoritePageViewModel;
+            // 初始化界面主题
+            if (localSettings.Values["ThemeStyle"] != null)
+            {
+                string theme = localSettings.Values["ThemeStyle"].ToString();
+                if (theme == "Dark")
+                    this.RequestedTheme = ElementTheme.Dark;
+                else if (theme == "Light")
+                    this.RequestedTheme = ElementTheme.Light;
+                else this.RequestedTheme = ElementTheme.Default;
+            }
+        }
+
+        private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

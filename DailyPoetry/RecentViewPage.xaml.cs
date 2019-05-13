@@ -32,6 +32,7 @@ namespace DailyPoetry
     /// </summary>
     public sealed partial class RecentViewPage : Page
     {
+        private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -39,28 +40,17 @@ namespace DailyPoetry
         {
             this.InitializeComponent();
             DataContext = ViewModelLocator.Instance.RecentViewPageViewModel;
+            //初始化界面主题
+            if (localSettings.Values["ThemeStyle"] != null)
+            {
+                string theme = localSettings.Values["ThemeStyle"].ToString();
+                if (theme == "Dark")
+                    this.RequestedTheme = ElementTheme.Dark;
+                else if (theme == "Light")
+                    this.RequestedTheme = ElementTheme.Light;
+                else this.RequestedTheme = ElementTheme.Default;
+            }
         }
-
-        /// <summary>
-        /// 删除最近浏览的记录信息
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// 
-        //private void DeleteRecentViews() =>
-        //    RecentViewGridView.SelectedItem as RecentView)
-
-        //private async void DeleteButton_Click(object sender, RoutedEventArgs e)
-        //{
-            
-
-        //    //测试更换壁纸
-        //    //ChangeWallpaper changer = new ChangeWallpaper();
-        //    //bool x = await changer.SetWallpaperAsync("Buildings.jpg");
-
-        //    //ChangeWallpaper changer = new ChangeWallpaper();
-        //    //bool x = await changer.WallpaperChanger();
-        //}
 
         /// <summary>
         /// 点击记录项执行的事件
@@ -69,7 +59,7 @@ namespace DailyPoetry
         /// <param name="e"></param>
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var selectedItem = (RecentViewItem)e.ClickedItem; //获取当前被点击的对象的引用
+            //var selectedItem = (RecentViewItem)e.ClickedItem; //获取当前被点击的对象的引用
 
         }
 

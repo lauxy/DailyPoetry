@@ -5,13 +5,54 @@
     xmlns:local="using:DailyPoetry"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:knowledgeModels="using:DailyPoetry.Models.KnowledgeModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:DataType="knowledgeModels:PoetryItem" x:Key="FavoriteDataTemplate">
+            <StackPanel Orientation="Horizontal" Width="1920">
+                <TextBlock Text="{x:Bind Id}"
+                           VerticalAlignment="Center"
+                           Margin="0,7,0,0"/>
+                <AppBarToggleButton Label="SymbolIcon"
+                                    Width="30" 
+                                    Height="30">
+                    <AppBarToggleButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;"/>
+                    </AppBarToggleButton.Icon>
+                </AppBarToggleButton>
+
+                <TextBlock FontSize="16" Text="{x:Bind Name}" 
+                           FontWeight="Bold" 
+                           Margin="8,6,0,0"
+                           VerticalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="14" 
+                               Text="{x:Bind AuthorName}" 
+                               Foreground="Gray" 
+                               Margin="36,6,0,0" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock FontSize="14" 
+                               Text="{x:Bind Abstract}" 
+                               Foreground="Gray" 
+                               Margin="24,6,0,0" 
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
 
     <StackPanel Orientation="Vertical">
         <TextBlock Text="我喜爱的诗词"
                    Margin="20,28,0,0"
                    FontSize="24"/>
+        <GridView ItemsSource="{Binding FavoriteItems}" 
+                  IsItemClickEnabled="True" 
+                  ItemTemplate="{StaticResource FavoriteDataTemplate}"
+                  ItemClick="ListViewBase_OnItemClick"
+                  Margin="20,24,0,0"/>
      
     </StackPanel>
 </Page>

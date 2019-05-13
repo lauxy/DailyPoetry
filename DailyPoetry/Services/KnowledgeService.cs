@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using DailyPoetry.Models.KnowledgeModels;
 using Microsoft.EntityFrameworkCore;
 using Windows.Storage;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace DailyPoetry.Services
 {
@@ -37,8 +39,6 @@ namespace DailyPoetry.Services
             _knowledgeContext = new KnowledgeContext();
             return this;
         }
- 
-
 
         private async Task InitDatabase()
 
@@ -60,6 +60,8 @@ namespace DailyPoetry.Services
                     dbFile = await originalDbFile.CopyAsync(localFolder, "db.sqlite3",
                         NameCollisionOption.ReplaceExisting);
                 }
+
+                //_knowledgeContext
                 // todo: error handler
             }
         }

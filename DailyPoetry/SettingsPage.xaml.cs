@@ -27,6 +27,15 @@ namespace DailyPoetry
         public SettingsPage()
         {
             this.InitializeComponent();
+            if (localSettings.Values["ThemeStyle"] != null)
+            {
+                string theme = localSettings.Values["ThemeStyle"].ToString();
+                if (theme == "Dark")
+                    DarkColorRadioButton.IsChecked = true;
+                else if (theme == "Light")
+                    LightColorRadioButton.IsChecked = true; 
+                else SystemColorRadioButton.IsChecked = true;
+            }
             // 查询AppDataContainer中保存的关于用户是否允许将每日推荐图片设置为壁纸的偏好设置
             if (localSettings.Values["SetWallpaper"] != null)
             {
@@ -102,7 +111,7 @@ namespace DailyPoetry
         private void LightColorRadioButton_OnChecked(object sender, RoutedEventArgs e)
         {
             localSettings.Values["ThemeStyle"] = "Light";
-
+            this.RequestedTheme = ElementTheme.Light;
         }
 
         /// <summary>
@@ -124,6 +133,7 @@ namespace DailyPoetry
         private void SystemColorRadioButton_OnChecked(object sender, RoutedEventArgs e)
         {
             localSettings.Values["ThemeStyle"] = "Default";
+            this.RequestedTheme = ElementTheme.Default;
         }
 
         /// <summary>

@@ -128,14 +128,14 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\KnowledgeModels\FavoriteItem.cs" />
     <Compile Include="Models\KnowledgeModels\Interface.cs" />
     <Compile Include="Models\KnowledgeModels\CategoryItem.cs" />
     <Compile Include="Models\KnowledgeModels\CategoryWorkItem.cs" />
     <Compile Include="Models\KnowledgeModels\KnowledgeContext.cs" />
     <Compile Include="Models\KnowledgeModels\PoetryItem.cs" />
-    <Compile Include="Models\RecentViewItem.cs" />
+    <Compile Include="Models\KnowledgeModels\RecentViewItem.cs" />
     <Compile Include="Models\KnowledgeModels\WriterItem.cs" />
-    <Compile Include="Models\UserContext.cs" />
     <Compile Include="MyCreation.xaml.cs">
       <DependentUpon>MyCreation.xaml</DependentUpon>
     </Compile>
@@ -160,20 +160,18 @@
     <Compile Include="Services\KnowledgeService.cs" />
     <Compile Include="Services\GenerateBgService.cs" />
     <Compile Include="Services\ILocalInfoService.cs" />
-    <Compile Include="Services\IRecentViewItemService.cs" />
     <Compile Include="Services\IRecommendItemService.cs" />
     <Compile Include="Services\ITokenService.cs" />
     <Compile Include="Services\LocalInfoService.cs" />
-    <Compile Include="Services\RecentViewItemService.cs" />
     <Compile Include="Services\RecommendItemService.cs" />
     <Compile Include="Services\TokenService.cs" />
-    <Compile Include="Services\UserRecordService.cs" />
     <Compile Include="Services\WallpaperService.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\DetailViewModel.cs" />
+    <Compile Include="ViewModel\MyFavoritePageViewModel.cs" />
     <Compile Include="ViewModel\RecentViewPageViewModel.cs" />
     <Compile Include="ViewModel\RecommendPageViewModel.cs" />
     <Compile Include="ViewModel\SearchResultViewModel.cs" />

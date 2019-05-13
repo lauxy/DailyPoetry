@@ -75,10 +75,14 @@
                         HorizontalAlignment="Right" 
                         VerticalAlignment="Top">
             <GridView ItemContainerStyle="{StaticResource MyGridViewStyle}" FontSize="18"
-                      Foreground="White"
                       Margin="0,0,56,0"
                       IsItemClickEnabled="False"
                       ItemsSource="{Binding LocalInfoItems.tags}">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" Foreground="White"></TextBlock>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
             </GridView>
         </StackPanel>
 

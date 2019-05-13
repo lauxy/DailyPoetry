@@ -42,7 +42,7 @@ namespace DailyPoetry.Models.KnowledgeModels
             {
                 if (_abstract != null)
                     return _abstract;
-                return _abstract = "placeholder";
+                return _abstract = Content.Split("。")[0];
             }
         }
 

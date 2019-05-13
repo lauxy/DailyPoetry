@@ -23,19 +23,21 @@ namespace DailyPoetry
         public SearchResultViewModel SearchResultViewModel =>
             SimpleIoc.Default.GetInstance<SearchResultViewModel>();
 
+        public MyFavoritePageViewModel MyFavoritePageViewModel =>
+            SimpleIoc.Default.GetInstance<MyFavoritePageViewModel>();
+
         private ViewModelLocator()
         {
-            SimpleIoc.Default.Register<IRecentViewItemService, RecentViewItemService>();
             SimpleIoc.Default.Register<ITokenService, TokenService>();
             SimpleIoc.Default.Register<IRecommendItemService, RecommendItemService>();
             SimpleIoc.Default.Register<ILocalInfoService, LocalInfoService>();
             SimpleIoc.Default.Register<IBingImageService,GenerateBgService>();
             SimpleIoc.Default.Register<RecentViewPageViewModel>();
             SimpleIoc.Default.Register<RecommendPageViewModel>();
+            SimpleIoc.Default.Register<MyFavoritePageViewModel>();
 
             SimpleIoc.Default.Register<KnowledgeService>();
             SimpleIoc.Default.Register<SearchResultViewModel>();
-
         }
 
     }

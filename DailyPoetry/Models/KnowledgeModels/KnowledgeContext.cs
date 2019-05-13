@@ -14,9 +14,16 @@ namespace DailyPoetry.Models.KnowledgeModels
                 .UseSqlite("Data Source=db.sqlite3");
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PoetryItem>().ToTable("works");
+
+        }
         public DbSet<PoetryItem> PoetryItems { get; set; }
         public DbSet<CategoryItem> CategoryItems { get; set; }
         public DbSet<CategoryWorkItem> CategoryWorkItems { get; set; }
         public DbSet<WriterItem> WriterItems { get; set; }
+        public DbSet<RecentViewItem> RecentViewItems { get; set; }
+        public DbSet<FavoriteItem> FavoriteItems { get; set; }
     }
 }
