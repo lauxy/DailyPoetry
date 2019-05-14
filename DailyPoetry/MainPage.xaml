@@ -2,10 +2,8 @@
     x:Class="DailyPoetry.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DailyPoetry"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Windows10version1809="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 7)"
     mc:Ignorable="d" Opacity="1"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -16,9 +14,11 @@
                         IsPaneOpen="True"
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Stretch"
-                        SelectionChanged="NavView_OnSelectionChanged"
+                        Loaded="NavView_OnLoaded"
                         BackRequested="NavView_BackRequested"
-                        >
+                        ItemInvoked="NavView_ItemInvoked"
+                        SelectionChanged="NavView_OnSelectionChanged"
+                        AlwaysShowHeader="False">
             <NavigationView.PaneHeader>
                 <TextBlock Text="每日诗词 Daily Peotry"
                            FontSize="20"

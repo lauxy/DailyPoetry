@@ -12,40 +12,42 @@
     <Page.Resources>
         <Style x:Name="MyButtonStyle" TargetType="AppBarToggleButton">
 
-            <Setter Property="UseSystemFocusVisuals" Value="False"/>
-            <Setter Property="FocusVisualMargin" Value="-2"/>
+            <Setter Property="UseSystemFocusVisuals" Value="False" />
+            <Setter Property="FocusVisualMargin" Value="-2" />
+            <Setter Property="Background" Value="Transparent" />
 
         </Style>
+
         <DataTemplate x:DataType="data1:PoetryItem" x:Key="RecentViewDataTemplate">
             <StackPanel Orientation="Horizontal" Width="1920">
                 <TextBlock Text="{x:Bind Id}"
                            VerticalAlignment="Center"
-                           Margin="0,7,0,0"/>
+                           Margin="0,7,0,0" />
                 <AppBarToggleButton Label="SymbolIcon"
-                                    Width="30" 
+                                    Width="30"
                                     Height="30"
                                     Click="AppBarToggleButton_Click" Style="{StaticResource MyButtonStyle}">
                     <AppBarToggleButton.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" />
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
 
-                <TextBlock FontSize="16" Text="{x:Bind Name}" 
-                           FontWeight="Bold" 
+                <TextBlock FontSize="16" Text="{x:Bind Name}"
+                           FontWeight="Bold"
                            Margin="8,6,0,0"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center" />
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock FontSize="14" 
-                               Text="{x:Bind AuthorName}" 
-                               Foreground="Gray" 
-                               Margin="36,6,0,0" 
-                               VerticalAlignment="Center"/>
-                    <TextBlock FontSize="14" 
-                               Text="{x:Bind Abstract}" 
-                               Foreground="Gray" 
-                               Margin="24,6,0,0" 
-                               VerticalAlignment="Center"/>
+                    <TextBlock FontSize="14"
+                               Text="{x:Bind AuthorName}"
+                               Foreground="Gray"
+                               Margin="36,6,0,0"
+                               VerticalAlignment="Center" />
+                    <TextBlock FontSize="14"
+                               Text="{x:Bind Abstract}"
+                               Foreground="Gray"
+                               Margin="24,6,0,0"
+                               VerticalAlignment="Center" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -53,8 +55,8 @@
 
     <StackPanel>
         <TextBlock Text="最近浏览"
-               Margin="20,28,0,0"
-               FontSize="24"/>
+                   Margin="20,28,0,0"
+                   FontSize="24" />
         <Pivot x:Name="rootPivot" Margin="8,20,0,0">
             <PivotItem Header="来自搜索">
 
@@ -65,15 +67,15 @@
                                 Name="DeleteButton"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
-                            Command="{Binding DeleteCommand}"/>
+                                Command="{Binding DeleteCommand}" />
                     </StackPanel>
 
-                    <StackPanel  Name="panel1" >
-                        <GridView ItemsSource="{Binding RecentViewItems}" 
-                              IsItemClickEnabled="True" 
-                              ItemClick="GridView_ItemClick"
-                              ItemTemplate="{StaticResource RecentViewDataTemplate}"
-                              Name="RecentViewGridView"/>
+                    <StackPanel Name="panel1">
+                        <GridView ItemsSource="{Binding RecentViewItems}"
+                                  IsItemClickEnabled="True"
+                                  ItemClick="GridView_ItemClick"
+                                  ItemTemplate="{StaticResource RecentViewDataTemplate}"
+                                  Name="RecentViewGridView" />
                     </StackPanel>
 
                 </StackPanel>
@@ -82,20 +84,20 @@
             <PivotItem Header="来自推荐">
                 <StackPanel>
                     <Image Source="/Assets/404.png"
-                       Height="300"
-                       Width="500"
-                       Margin="0,36,0,0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center" />
+                           Height="300"
+                           Width="500"
+                           Margin="0,36,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
                     <TextBlock Text="404页面找不到了"
-                           Foreground="Gray"
-                           FontSize="48"
-                           HorizontalAlignment="Center"/>
+                               Foreground="Gray"
+                               FontSize="48"
+                               HorizontalAlignment="Center" />
                     <TextBlock Text="前方施工，敬请期待"
-                           Foreground="Gray"
-                           FontSize="28"
-                           Margin="0,24,0,0"
-                           HorizontalAlignment="Center"/>
+                               Foreground="Gray"
+                               FontSize="28"
+                               Margin="0,24,0,0"
+                               HorizontalAlignment="Center" />
                 </StackPanel>
             </PivotItem>
         </Pivot>

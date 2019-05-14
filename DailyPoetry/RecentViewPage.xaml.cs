@@ -1,27 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using Microsoft.Win32;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using DailyPoetry.Models.KnowledgeModels;
+using System;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using DailyPoetry.Models;
-using Windows.Storage;
-using System.Collections.ObjectModel;
-using DailyPoetry.ViewModel;
-using DailyPoetry.Services;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -59,7 +40,7 @@ namespace DailyPoetry
         /// <param name="e"></param>
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            //var selectedItem = (RecentViewItem)e.ClickedItem; //获取当前被点击的对象的引用
+            var selectedItem = (RecentViewItem)e.ClickedItem; //获取当前被点击的对象的引用
 
         }
 
@@ -71,9 +52,10 @@ namespace DailyPoetry
         private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
         {
             AppBarToggleButton b = sender as AppBarToggleButton;
+            var poetryItem = (PoetryItem)(e.OriginalSource as Button).DataContext;
             if (b != null)
             {
-                throw new NotImplementedException();        
+                 
 
             }
         }

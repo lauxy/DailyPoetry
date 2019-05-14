@@ -1,16 +1,9 @@
-﻿using DailyPoetry.Models;
+﻿using DailyPoetry.Models.KnowledgeModels;
 using DailyPoetry.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using DailyPoetry.Models.KnowledgeModels;
 
 namespace DailyPoetry.ViewModel
 {
@@ -43,6 +36,11 @@ namespace DailyPoetry.ViewModel
         private RelayCommand _deleteCommand;
 
         /// <summary>
+        /// 将poetryItem添加到喜爱的诗词数据库。
+        /// </summary>
+        private RelayCommand _likeCommand;
+
+        /// <summary>
         /// RecentViewItems 最近浏览记录的get/set方法
         /// </summary>
         public ObservableCollection<PoetryItem> RecentViewItems
@@ -51,17 +49,20 @@ namespace DailyPoetry.ViewModel
             set => Set(nameof(RecentViewItems), ref _recentViewItems, value);
         }
 
-
-
         /// <summary>
         ///  删除命令。
         /// </summary>
-        //public RelayCommand DeleteCommand =>
-        //    _deleteCommand ?? (_deleteCommand = new RelayCommand(() =>
-        //    {
-        //        RecentViewItems = new List<RecentViewItem>();
-        //        _recentViewItemService.DeleteRecentViewItems();
-        //    }));
+        public RelayCommand DeleteCommand =>
+            _deleteCommand ?? (_deleteCommand = new RelayCommand(() =>
+            {
+                
+            }));
+
+        public RelayCommand LikeCommand =>
+            _likeCommand ?? (_likeCommand = new RelayCommand(() =>
+            {
+                
+            }));
 
     }
 }
