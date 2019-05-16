@@ -234,7 +234,6 @@ namespace DailyPoetry.ViewModel
                 CurrentPage = 1;
                 if (_pageCnt == 0)
                 {
-
                 }
                 else
                 {
@@ -246,8 +245,10 @@ namespace DailyPoetry.ViewModel
                         PageIndex = Enumerable.Range(1, _pageCnt).ToList();
                     }
                     PoetryResultVisibility = Visibility.Visible;
-                    await RefreshPage();
+                    
                 }
+                await RefreshPage();
+                Debug.Write("exed");
                 ProcessRingActive = false;
             }));
 
@@ -353,11 +354,15 @@ namespace DailyPoetry.ViewModel
                     FilterItems[0].Value == "")
                 {
                     FilterItems[0].Value = query;
+                    if (SearchCommand.CanExecute(null))
+                        SearchCommand.Execute(null);
                     return;
                 }
             }
             FilterItems.Add(new FilterItem(FilterCategory.CONTENT, query));
             _updateFilterIndex();
+            if (SearchCommand.CanExecute(null))
+                SearchCommand.Execute(null);
         }
     }
 

@@ -95,9 +95,7 @@ namespace DailyPoetry
 
         private void SearchButton_OnClick(object sender, RoutedEventArgs e)
         {
-            PoetryItem poetryItem = new PoetryItem();
-            poetryItem.Content = ShowPoetryArea.Text;
-            Frame.Navigate(typeof(DetailPage), poetryItem);
+            Frame.Navigate(typeof(SearchResultPage), ShowPoetryArea.Text);
         }
 
         /// <summary>
