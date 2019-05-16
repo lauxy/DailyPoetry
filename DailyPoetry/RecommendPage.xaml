@@ -72,10 +72,10 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" 
-                        HorizontalAlignment="Right" 
-                        VerticalAlignment="Top">
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top">
             <GridView ItemContainerStyle="{StaticResource MyGridViewStyle}" FontSize="18"
-                      Margin="0,0,56,0"
+                      Margin="0,12,56,0"
                       IsItemClickEnabled="False"
                       ItemsSource="{Binding LocalInfoItems.tags}">
                 <GridView.ItemTemplate>
@@ -84,7 +84,37 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,8,0" >
+                <Button Name="SearchButton"
+                        Foreground="White"
+                        Click="SearchButton_OnClick">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" 
+                          Glyph="&#xE761;"/>
+                </Button>
+                <Button Name="ShareButton"
+                        Foreground="White"
+                        Click="ShareButton_OnClick">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" 
+                              Glyph="&#xE72D;"/>
+                </Button>
+            </StackPanel>
+            <ContentDialog  Title="Save your work?"
+                            PrimaryButtonText="Save"
+                            SecondaryButtonText="Don't Save"
+                            CloseButtonText="Cancel"
+                            DefaultButton="Primary">
+                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <CheckBox Content="Upload your content to the cloud."/>
+                    <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." 
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </ContentDialog>
+
         </StackPanel>
+
 
         <Grid Name="GridLoading" Grid.Row="0" Grid.RowSpan="3">
             <Grid.Background>

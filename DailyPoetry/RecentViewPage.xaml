@@ -89,7 +89,7 @@
                            Margin="0,36,0,0"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center" />
-                    <TextBlock Text="404页面找不到了"
+                    <TextBlock Text="页面找不到了"
                                Foreground="Gray"
                                FontSize="48"
                                HorizontalAlignment="Center" />
