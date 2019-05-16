@@ -74,6 +74,7 @@ namespace DailyPoetry
             ("creations", typeof(MyCreation)),
             ("recommend", typeof(RecommendPage)),
             ("favorite", typeof(MyFavoritePage)),
+            ("detail", typeof(DetailPage)),
         };
 
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
@@ -169,9 +170,10 @@ namespace DailyPoetry
             {
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
-                NavView.SelectedItem = NavView.MenuItems
+                NavView.SelectedItem =
+                    NavView.MenuItems
                     .OfType<NavigationViewItem>()
-                    .First(n => n.Tag.Equals(item.Tag));
+                    .FirstOrDefault(n => n.Tag.Equals(item.Tag));
 
                 NavView.Header =
                     ((NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();

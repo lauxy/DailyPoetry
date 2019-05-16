@@ -76,7 +76,6 @@
             <RowDefinition Height="auto" x:Name="FilterSimplifiedRow"/>
             <RowDefinition Height="auto" x:Name="ButtonRow"/>
             <RowDefinition Height="auto" x:Name="ResultRow"/>
-            <RowDefinition />
             <RowDefinition Height="auto" x:Name="ResultNavigateRow"/>
         </Grid.RowDefinitions>
 
@@ -133,7 +132,8 @@
                   ItemsSource="{Binding PoetryItems, Mode=OneWay}"
                   ItemTemplate="{StaticResource PoetryItemTemplate}"
                   Visibility="{Binding PoetryResultVisibility}"
-                  Grid.Row="3" Margin="16" IsItemClickEnabled="True">
+                  Grid.Row="3" Margin="16" IsItemClickEnabled="True"
+                  ItemClick="SearchResultList_ItemClick">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -143,16 +143,19 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" 
                     Visibility="{Binding ResultNavigateBarVisibility}"
-                    Grid.Row="5">
+                    Grid.Row="4">
             <Button Name="PrevButton" Content="上一页" IsEnabled="{Binding PrevButtonEnabled}" Command="{Binding PrevPageCommand}"/>
-            <ListView Name="PageIndex" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{Binding PageIndex}"
+            <Slider Name="PageIndex" Minimum="1" Maximum="{Binding PageCnt,Mode=OneWay}" 
+                    Value="{Binding CurrentPage, Mode=TwoWay}" ValueChanged="PageIndex_ValueChanged" Width="200"/>
+            <!-- 先用slider 凑活一下，因为显示序号的话，得处理长度的问题 -->
+            <!--<ListView Name="PageIndex" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{Binding PageIndex}"
                       SelectedIndex='{Binding CurrentPage}' SelectionChanged="PageIndex_SelectionChanged">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsStackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate >
                 </ListView.ItemsPanel>
-            </ListView>
+            </ListView>-->
             <Button Name="NextButton" Content="下一页" IsEnabled="{Binding NextButtonEnabled}" Command="{Binding NextPageCommand}"/>
         </StackPanel>
         

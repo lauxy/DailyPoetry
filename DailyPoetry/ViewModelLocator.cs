@@ -26,6 +26,9 @@ namespace DailyPoetry
         public MyFavoritePageViewModel MyFavoritePageViewModel =>
             SimpleIoc.Default.GetInstance<MyFavoritePageViewModel>();
 
+        public DetailViewModel DetailViewModel => 
+            SimpleIoc.Default.GetInstance<DetailViewModel>();
+
         private ViewModelLocator()
         {
             SimpleIoc.Default.Register<ITokenService, TokenService>();
@@ -39,6 +42,8 @@ namespace DailyPoetry
             SimpleIoc.Default.Register<KnowledgeService>();
             SimpleIoc.Default.Register<SearchResultViewModel>(
                 () => new SearchResultViewModel(SimpleIoc.Default.GetInstance<KnowledgeService>("Search")));
+            SimpleIoc.Default.Register<DetailViewModel>(
+                () => new DetailViewModel(SimpleIoc.Default.GetInstance<KnowledgeService>("Detail")));
         }
 
     }

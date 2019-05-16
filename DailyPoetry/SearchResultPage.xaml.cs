@@ -34,6 +34,14 @@ namespace DailyPoetry
             (DataContext as SearchResultViewModel).ResultNavigateBarVisibility = Visibility.Collapsed;
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var query = e.Parameter as string;
+            if (query == null)
+                return;
+            (DataContext as SearchResultViewModel).SetContentQuery(query);
+        }
+
         private void ChevronButton_Click(object sender, RoutedEventArgs e)
         {
             if (ChevronIcon.Glyph == "\uE70E") // xaml 和 c# 表示十六进制不一样
@@ -63,15 +71,23 @@ namespace DailyPoetry
             (DataContext as SearchResultViewModel).UpdateFilterCategory((int)combobox.Tag, combobox.SelectedIndex);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            var poetryItem = (PoetryItem)(e.OriginalSource as Button).DataContext;
-            Frame.Navigate(typeof(DetailPage), poetryItem);
-        }
 
         private void PageIndex_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             (DataContext as SearchResultViewModel).RefreshPage();
+        }
+
+        private void PageIndex_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if (DataContext == null)
+                return;
+            (DataContext as SearchResultViewModel).SetPage();
+        }
+
+        private void SearchResultList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var poetryItem = e.ClickedItem;
+            Frame.Navigate(typeof(DetailPage), poetryItem);
         }
     }
 

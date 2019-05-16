@@ -200,7 +200,56 @@ namespace DailyPoetry.Services
                 GetWhereFunc<PoetryItem>("Content", query, exactMode));
         }
 
-        //public WriterIntermediateType
+        /// 增加删除
+        
+        public void AddFavoriteItem(int PoetryId)
+        {
+            var favoriteItem = new FavoriteItem { PoetryId = PoetryId };
+            _knowledgeContext.FavoriteItems.Add(favoriteItem);
+            _knowledgeContext.SaveChanges();
+        }
+
+        public void AddRecentViewItem(int PoetryId)
+        {
+            var recentViewItem = new RecentViewItem { PoetryItemId = PoetryId };
+            _knowledgeContext.RecentViewItems.Add(recentViewItem);
+            _knowledgeContext.SaveChanges();
+        }
+
+        public void DeleteFavoriteItemByPoetryIdItem(int PoetryId)
+        {
+            var favoriteItem = _knowledgeContext.FavoriteItems.Single(i => i.PoetryId == PoetryId);
+            if (favoriteItem == null)
+                throw new InvalidOperationException();
+            _knowledgeContext.FavoriteItems.Remove(favoriteItem);
+            _knowledgeContext.SaveChanges();
+        }
+
+        public void DeleteRecentViewItemByPoetryIdItem(int PoetryId)
+        {
+            var recentViewItem = _knowledgeContext.RecentViewItems.Single(i => i.PoetryItemId == PoetryId);
+            if (recentViewItem == null)
+                throw new InvalidOperationException();
+            _knowledgeContext.RecentViewItems.Remove(recentViewItem);
+            _knowledgeContext.SaveChanges();
+        }
+
+        public void DeleteFavoriteItemById(int itemId)
+        {
+            var favoriteItem = _knowledgeContext.FavoriteItems.Find(itemId);
+            if (favoriteItem == null)
+                throw new InvalidOperationException();
+            _knowledgeContext.FavoriteItems.Remove(favoriteItem);
+            _knowledgeContext.SaveChanges();
+        }
+        public void DeleteRecentViewItemById(int itemId)
+        {
+            var recentViewItem = _knowledgeContext.RecentViewItems.Find(itemId);
+            if (recentViewItem == null)
+                throw new InvalidOperationException();
+            _knowledgeContext.RecentViewItems.Remove(recentViewItem);
+            _knowledgeContext.SaveChanges();
+        }
 
         /// <summary>
         /// 分页获取数据

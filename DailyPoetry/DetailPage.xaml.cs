@@ -26,6 +26,7 @@ namespace DailyPoetry
         public DetailPage()
         {
             this.InitializeComponent();
+            DataContext = ViewModelLocator.Instance.DetailViewModel;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -36,6 +37,7 @@ namespace DailyPoetry
             Writer.Text = ((PoetryItem)e.Parameter).AuthorName;
             Annotation.Text = ((PoetryItem)e.Parameter).Annotation;
             Translation.Text = ((PoetryItem)e.Parameter).Translation;
+            
         }
     }
 }

@@ -155,6 +155,12 @@ namespace DailyPoetry.ViewModel
 
         private int _pageCnt;
 
+        public int PageCnt
+        {
+            get => _pageCnt;
+            set => Set(nameof(PageCnt), ref _pageCnt, value);
+        }
+
         public bool Refreshing;
 
         // commands
@@ -196,7 +202,7 @@ namespace DailyPoetry.ViewModel
         private RelayCommand _searchCommand;
 
         public RelayCommand SearchCommand =>
-            _searchCommand ?? (_searchCommand = new RelayCommand(() =>
+            _searchCommand ?? (_searchCommand = new RelayCommand(async () =>
             {
                 // clean controls` status
                 PoetryResultVisibility = Visibility.Collapsed;
@@ -224,14 +230,14 @@ namespace DailyPoetry.ViewModel
                 }
 
                 // set values
-                _pageCnt = (_poetryIntermediate.Count() + _pageSize - 1) / _pageSize;
-                if(_pageCnt == 0)
+                PageCnt = (_poetryIntermediate.Count() + _pageSize - 1) / _pageSize;
+                CurrentPage = 1;
+                if (_pageCnt == 0)
                 {
 
                 }
                 else
                 {
-                    CurrentPage = 0;
                     if(_pageCnt > 1)
                     {
                         ResultNavigateBarVisibility = Visibility.Visible;
@@ -240,6 +246,7 @@ namespace DailyPoetry.ViewModel
                         PageIndex = Enumerable.Range(1, _pageCnt).ToList();
                     }
                     PoetryResultVisibility = Visibility.Visible;
+                    await RefreshPage();
                 }
                 ProcessRingActive = false;
             }));
@@ -305,7 +312,7 @@ namespace DailyPoetry.ViewModel
         public async Task NextPage()
         {
             CurrentPage += 1;
-            if (CurrentPage + 1 == _pageCnt)
+            if (CurrentPage == _pageCnt)
                 NextButtonEnabled = false;
             PrevButtonEnabled = true;
             PoetryItems = await _poetryIntermediate.
@@ -315,7 +322,7 @@ namespace DailyPoetry.ViewModel
         public async Task PrevPage()
         {
             CurrentPage -= 1;
-            if (CurrentPage == 0)
+            if (CurrentPage == 1)
                 PrevButtonEnabled = false;
             NextButtonEnabled = true;
             PoetryItems = await _poetryIntermediate.
@@ -330,6 +337,27 @@ namespace DailyPoetry.ViewModel
                 NextButtonEnabled = false;
             PoetryItems = await _poetryIntermediate.
                 Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
+        }
+
+        public void SetPage()
+        {
+            PoetryItems = _poetryIntermediate.
+                Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFull();
+        }
+
+        public void SetContentQuery(string query)
+        {
+            if(FilterItems.Count() == 1)
+            {
+                if (FilterItems[0].FilterCategory == FilterCategory.CONTENT &&
+                    FilterItems[0].Value == "")
+                {
+                    FilterItems[0].Value = query;
+                    return;
+                }
+            }
+            FilterItems.Add(new FilterItem(FilterCategory.CONTENT, query));
+            _updateFilterIndex();
         }
     }
 
