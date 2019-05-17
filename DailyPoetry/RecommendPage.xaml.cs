@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -12,8 +13,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using DailyPoetry.Models.KnowledgeModels;
 using DailyPoetry.Services;
-using Edi.UWP.Helpers;
-using Edi.UWP.Helpers.Extensions;
+
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -26,8 +26,9 @@ namespace DailyPoetry
     {
         // get user's settings info
         private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-        private StorageFile _tempExportFile;
-
+        // time stamp
+        string prefix = DateTime.Today.ToShortDateString().Replace("/", "");
+        StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
         /// <summary>
         /// Init Page
         /// </summary>
@@ -88,7 +89,6 @@ namespace DailyPoetry
                                         "\n以便使我们的软件能够带给您更好的使用体验 \n谢谢！";
             }
 
-
             ProgressRingLoading.IsActive = false;
             GridLoading.Visibility = Visibility.Collapsed;
         }
@@ -98,48 +98,42 @@ namespace DailyPoetry
             Frame.Navigate(typeof(SearchResultPage), ShowPoetryArea.Text);
         }
 
-        /// <summary>
-        /// Rewrite the function of Util.LoadWritableBitmap.
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        public static async Task<WriteableBitmap> LoadWritableBitmap(string filename)
+        private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
-            var storageFile = await ApplicationData.Current.LocalFolder.GetFileAsync(filename);
-            var stream = await storageFile.OpenReadAsync();
-            var wb = new WriteableBitmap(1, 1);
-            wb.SetSource(stream);
-            return wb;
+            DataRequestDeferral deferral = args.Request.GetDeferral();
+            args.Request.Data.Properties.Title = "Sharing Title";
+            args.Request.Data.Properties.Description = "分享每日诗词";
+            args.Request.Data.SetText("我正在赏析 “" + ShowPoetryArea.Text + "”。");
+            var imageUri = "ms-appdata:///local/" + prefix + "Wallpaper.jpg";
+
+            args.Request.Data.SetBitmap(
+                Windows.Storage.Streams.RandomAccessStreamReference.CreateFromUri(new Uri(imageUri)));
+            deferral.Complete();
         }
 
+        /// <summary>
+        /// 分享每日诗词卡片。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void ShareButton_OnClick(object sender, RoutedEventArgs e)
         {
-            string prefix = DateTime.Today.ToShortDateString().Replace("/", "");
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            string path = storageFolder.Path + @"\"+ prefix + "Wallpaper.jpg";
-            if (File.Exists(path))
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            if (File.Exists(storageFolder.Path + @"\" + prefix + "Wallpaper.jpg"))
             {
-                var rmbp = await LoadWritableBitmap(prefix + "Wallpaper.jpg");
-                StorageFile tempFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(prefix + "share.jpg",
-                    CreationCollisionOption.ReplaceExisting);
-                await rmbp.SaveStorageFile(ImageFormat.Jpg, tempFile);
-                _tempExportFile = tempFile;
-
+                dataTransferManager.DataRequested += DataTransferManager_DataRequested;
                 DataTransferManager.ShowShareUI();
             }
             else
             {
-                ContentDialog noWifiDialog = new ContentDialog()
+                ContentDialog noFileDialog = new ContentDialog()
                 {
                     Title = "温馨提示：",
                     Content = "分享文件不存在，请先在设置页将图片设置为壁纸，再执行此操作！",
                     CloseButtonText = "Ok"
                 };
-
-                await noWifiDialog.ShowAsync();
+                await noFileDialog.ShowAsync();
             }
         }
-
-
     }
 }
