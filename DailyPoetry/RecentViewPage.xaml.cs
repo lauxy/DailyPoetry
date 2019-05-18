@@ -1,8 +1,11 @@
 ﻿using DailyPoetry.Models.KnowledgeModels;
 using System;
 using Windows.Storage;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -51,8 +54,21 @@ namespace DailyPoetry
         /// <param name="e"></param>
         private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            AppBarToggleButton b = sender as AppBarToggleButton;
-            var poetryItem = (PoetryItem)(e.OriginalSource as Button).DataContext;
+            // 每点击一次切换图标
+            // todo：在数据库更新完成后设置
+            ToggleButton b = sender as ToggleButton;
+            var fontIcon = (b.Content as FontIcon);
+            if (fontIcon.Glyph == "\uEB51")
+            {
+                fontIcon.Glyph = "\uEB52"; // 换成红心
+                fontIcon.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                fontIcon.Glyph = "\uEB51"; // 换成空心
+                fontIcon.Foreground = new SolidColorBrush(Colors.Black);
+            }
+            var poetryItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
             if (b != null)
             {
                  
