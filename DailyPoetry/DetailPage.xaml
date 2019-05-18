@@ -16,7 +16,7 @@
     <StackPanel>
         <ScrollViewer>
             <StackPanel Margin="48, 60, 48, 32">
-                <TextBlock Name="Title" HorizontalAlignment="Center" Text="Title"
+                <TextBlock Name="Title" HorizontalAlignment="Center" Text="Title" FontSize="48"
                            Style="{StaticResource HeaderTextBlockStyle}" TextWrapping="WrapWholeWords"/>
                 <Grid HorizontalAlignment="Center" Margin="0,16,0,0">
                     <Grid.ColumnDefinitions>
@@ -30,7 +30,7 @@
                 </Grid>
 
                 <TextBlock Name="Content" Text="CONTENT" 
-                           Margin="0,16,0,0" FontSize="20" 
+                           Margin="16,16,16,0" FontSize="20" 
                            TextWrapping="Wrap" HorizontalAlignment="Center"/>
 
                 <Pivot Margin="0,16,0,0">

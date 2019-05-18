@@ -380,7 +380,7 @@ namespace DailyPoetry.ViewModel
                     if (SearchCommand.CanExecute(null))
                     {
                         SearchCommand.Execute(null);
-                        return PoetryItems.Count() == 1?PoetryItems[0]:null;
+                        return PoetryItems?.Count() == 1?PoetryItems[0]:null;
                     }
                     return null;
                 }
@@ -390,7 +390,7 @@ namespace DailyPoetry.ViewModel
             if (SearchCommand.CanExecute(null))
             {
                 SearchCommand.Execute(null);
-                return PoetryItems.Count() == 1 ? PoetryItems[0] : null;
+                return PoetryItems?.Count() == 1 ? PoetryItems[0] : null;
             }
             return null;
         }
