@@ -170,7 +170,6 @@ namespace DailyPoetry
         {
             DeleteFile();
             // DEMO, DELETE THIS !!!
-            Frame.Navigate(typeof(SearchResultPage), "hello");
         }
     }
 }

@@ -89,6 +89,13 @@ namespace DailyPoetry
             var poetryItem = e.ClickedItem;
             Frame.Navigate(typeof(DetailPage), poetryItem);
         }
+
+        private void PageIndex_DragLeave(object sender, DragEventArgs e)
+        {
+            if (DataContext == null)
+                return;
+            (DataContext as SearchResultViewModel).SetPage();
+        }
     }
 
 }

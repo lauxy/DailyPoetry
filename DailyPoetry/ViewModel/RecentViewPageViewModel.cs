@@ -2,6 +2,7 @@
 using DailyPoetry.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -26,9 +27,9 @@ namespace DailyPoetry.ViewModel
             {
                 _recentViewItems.Add(_knowledgeService.GetPoetryItemById(recentViewItem.PoetryItemId));
             }
+            _knowledgeService.PoetryIsLikedTagger(ref _recentViewItems);
             _knowledgeService.Dispose(); //手动释放资源
         }
-
 
         /// <summary>
         /// 删除命令。

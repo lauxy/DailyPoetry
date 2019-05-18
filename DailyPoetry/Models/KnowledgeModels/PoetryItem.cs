@@ -32,7 +32,7 @@ namespace DailyPoetry.Models.KnowledgeModels
         [Column("famous_reviews")]
         public string FamousReviews { get; set; }  // 评论
         public string Layout { get; set; }  // 显示布局
-
+        [NotMapped]
         private string _abstract = null;
 
         [NotMapped]
@@ -45,6 +45,9 @@ namespace DailyPoetry.Models.KnowledgeModels
                 return _abstract = Content.Split("。")[0];
             }
         }
+
+        [NotMapped]
+        public bool IsLiked = false;
 
         public SimplifiedPoetryItem ToSimplified()
         {

@@ -75,7 +75,7 @@
             <RowDefinition Height="auto" x:Name="FiltersRow"/>
             <RowDefinition Height="auto" x:Name="FilterSimplifiedRow"/>
             <RowDefinition Height="auto" x:Name="ButtonRow"/>
-            <RowDefinition Height="auto" x:Name="ResultRow"/>
+            <RowDefinition Height="*" x:Name="ResultRow"/>
             <RowDefinition Height="auto" x:Name="ResultNavigateRow"/>
         </Grid.RowDefinitions>
 
@@ -141,12 +141,20 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" 
+        <Grid HorizontalAlignment="Center" 
                     Visibility="{Binding ResultNavigateBarVisibility}"
                     Grid.Row="4">
-            <Button Name="PrevButton" Content="上一页" IsEnabled="{Binding PrevButtonEnabled}" Command="{Binding PrevPageCommand}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="PrevButton" Content="上一页" IsEnabled="{Binding PrevButtonEnabled}" 
+                    Command="{Binding PrevPageCommand}" Grid.Column="0" Margin="16,0,16,0"/>
             <Slider Name="PageIndex" Minimum="1" Maximum="{Binding PageCnt,Mode=OneWay}" 
-                    Value="{Binding CurrentPage, Mode=TwoWay}" ValueChanged="PageIndex_ValueChanged" Width="200"/>
+                    Value="{Binding CurrentPage, Mode=TwoWay}" Width="200"
+                    Grid.Column="1" DragLeave="PageIndex_DragLeave"
+                    />
             <!-- 先用slider 凑活一下，因为显示序号的话，得处理长度的问题 -->
             <!--<ListView Name="PageIndex" SelectionMode="Single" IsItemClickEnabled="True" ItemsSource="{Binding PageIndex}"
                       SelectedIndex='{Binding CurrentPage}' SelectionChanged="PageIndex_SelectionChanged">
@@ -156,8 +164,9 @@
                     </ItemsPanelTemplate >
                 </ListView.ItemsPanel>
             </ListView>-->
-            <Button Name="NextButton" Content="下一页" IsEnabled="{Binding NextButtonEnabled}" Command="{Binding NextPageCommand}"/>
-        </StackPanel>
+            <Button Name="NextButton" Content="下一页" IsEnabled="{Binding NextButtonEnabled}" 
+                    Command="{Binding NextPageCommand}" Grid.Column="2" Margin="16,0,16,0"/>
+        </Grid>
         
         <ProgressRing Name="SearchRing" IsActive="{Binding ProcessRingActivte}" Grid.Row="4" Height="100" Width="100"/>
     </Grid>

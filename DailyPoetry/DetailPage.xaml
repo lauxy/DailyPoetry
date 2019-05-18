@@ -5,27 +5,59 @@
     xmlns:local="using:DailyPoetry"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Page.Resources>
+        
+    </Page.Resources>
+    
+    <StackPanel>
         <ScrollViewer>
-            <StackPanel Margin="20">
-                <TextBlock Name="Title"/>
-                <TextBlock Name="Dynasty"/>
-                <TextBlock Name="Writer"/>
-                <controls:Expander x:Name="ContentExpander" Header="正文" IsExpanded="True">
-                    <TextBlock Name="Content" Text="CONTENT"/>
-                </controls:Expander>
-                <controls:Expander x:Name="AnnotationExpander" Header="注释">
-                    <TextBlock Name="Annotation" Text="Annotation"/>
-                </controls:Expander>
-                <controls:Expander x:Name="TranslationExpander" Header="翻译">
-                    <TextBlock Name="Translation" Text="Translation"/>
-                </controls:Expander>
-                
+            <StackPanel Margin="48, 60, 48, 32">
+                <TextBlock Name="Title" HorizontalAlignment="Center" Text="Title"
+                           Style="{StaticResource HeaderTextBlockStyle}"/>
+                <Grid HorizontalAlignment="Center" Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="Dynasty" Grid.Column="0" Text="Dynasty" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBlock Text="·" Margin="12,0,12,0" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    <TextBlock Name="Writer" Grid.Column="2" Text="Writer" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                </Grid>
+
+                <TextBlock Name="Content" Text="CONTENT" 
+                           Margin="0,16,0,0" FontSize="20" 
+                           TextWrapping="Wrap"/>
+
+                <Pivot Margin="0,16,0,0">
+                    <PivotItem Header="注释">
+                        <TextBlock Name="Annotation" Text="Annotation"
+                                   Margin="12,8,12,8" FontSize="16"
+                                   TextWrapping="Wrap" LineHeight="32"/>
+                    </PivotItem>
+                    <PivotItem Header="翻译">
+                        <TextBlock Name="Translation" Text="Translation" 
+                                   Margin="12,8,12,8" FontSize="16"
+                                   TextWrapping="Wrap"/>
+                    </PivotItem>
+                    <PivotItem Header="赏析">
+                        <TextBlock Name="Appreciation" Text="Appreciation"
+                                   Margin="12,8,12,8" FontSize="16"
+                                   TextWrapping="Wrap"/>
+                    </PivotItem>
+                </Pivot>
+
+                <TextBlock Name="LayoutDebug"/>
             </StackPanel>
         </ScrollViewer>
-    </Grid>
+        <controls:TeachingTip x:Name="LayoutNotDefinedTip"                   
+	        Title="未定义的Layout，请联系开发人员"                                          
+	        PlacementMargin="20"
+	        CloseButtonContent="Got it!">   
+        </controls:TeachingTip>
+    </StackPanel>
 </Page>

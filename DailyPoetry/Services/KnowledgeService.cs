@@ -15,6 +15,7 @@ namespace DailyPoetry.Services
     using PoetryIntermediateType = IntermediateResult<PoetryItem, SimplifiedPoetryItem>;
     using WriterIntermediateType = IntermediateResult<WriterItem, SimplifiedWriterItem>;
     using CategoryIntermediateType = IntermediateResult<CategoryItem, SimplifiedCategoryItem>;
+    using System.Collections.ObjectModel;
 
     /// <summary>
     /// 诗词、作者等固定内容的服务
@@ -34,6 +35,9 @@ namespace DailyPoetry.Services
         public static async Task InitDatabase()
         {
             var dbFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync("db.sqlite3") as StorageFile;
+#if DEBUG
+            dbFile = null;
+#endif
             if (dbFile == null)
             {
                 var localFolder = ApplicationData.Current.LocalFolder;
@@ -200,8 +204,32 @@ namespace DailyPoetry.Services
                 GetWhereFunc<PoetryItem>("Content", query, exactMode));
         }
 
+        public bool PoetryIsLiked(int PoetryId)
+        {
+            return _knowledgeContext.FavoriteItems
+                .FirstOrDefault(p => p.PoetryId == PoetryId) != null;
+        }
+
+        public void PoetryIsLikedTagger(ref List<PoetryItem> poetryList)
+        {
+            int i = poetryList.Count() -1;
+            while (i >= 0)
+            {
+                poetryList[i].IsLiked = PoetryIsLiked(poetryList[i].Id);
+            }
+        }
+
+        public void PoetryIsLikedTagger(ref ObservableCollection<PoetryItem> poetryList)
+        {
+            int i = poetryList.Count() - 1;
+            while (i >= 0)
+            {
+                poetryList[i].IsLiked = PoetryIsLiked(poetryList[i].Id);
+                --i;
+            }
+        }
         /// 增加删除
-        
+
         public void AddFavoriteItem(int PoetryId)
         {
             var favoriteItem = new FavoriteItem { PoetryId = PoetryId };
@@ -242,6 +270,7 @@ namespace DailyPoetry.Services
             _knowledgeContext.FavoriteItems.Remove(favoriteItem);
             _knowledgeContext.SaveChanges();
         }
+
         public void DeleteRecentViewItemById(int itemId)
         {
             var recentViewItem = _knowledgeContext.RecentViewItems.Find(itemId);

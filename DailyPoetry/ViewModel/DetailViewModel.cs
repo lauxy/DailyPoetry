@@ -14,6 +14,7 @@ namespace DailyPoetry.ViewModel
         {
             _knowledgeService = knowledgeService;
         }
+
         public void RecordRecentView(int PoetryId)
         {
             using (_knowledgeService.Entry())

@@ -1,4 +1,5 @@
 ﻿using DailyPoetry.Models.KnowledgeModels;
+using DailyPoetry.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,13 +32,24 @@ namespace DailyPoetry
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Title.Text = ((PoetryItem)e.Parameter).Name;
-            Content.Text = ((PoetryItem)e.Parameter).Content;
-            Dynasty.Text = ((PoetryItem)e.Parameter).Dynasty;
-            Writer.Text = ((PoetryItem)e.Parameter).AuthorName;
-            Annotation.Text = ((PoetryItem)e.Parameter).Annotation;
-            Translation.Text = ((PoetryItem)e.Parameter).Translation;
-            
+            PoetryItem poetryItem = (PoetryItem)e.Parameter;
+            Title.Text = poetryItem.Name;
+            Content.Text = poetryItem.Content;
+            Dynasty.Text = poetryItem.Dynasty;
+            Writer.Text = poetryItem.AuthorName;
+            Annotation.Text = poetryItem.Annotation;
+            Translation.Text = poetryItem.Translation;
+
+            if (poetryItem.Layout == "center")
+                Content.HorizontalAlignment = HorizontalAlignment.Center;
+            else if (poetryItem.Layout == "indent")
+                Content.HorizontalAlignment = HorizontalAlignment.Left;
+            else
+            {
+                LayoutNotDefinedTip.IsOpen = true;
+            }
+
+            (DataContext as DetailViewModel).RecordRecentView(poetryItem.Id);
         }
     }
 }

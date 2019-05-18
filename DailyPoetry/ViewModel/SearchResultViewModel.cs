@@ -232,6 +232,9 @@ namespace DailyPoetry.ViewModel
                 // set values
                 PageCnt = (_poetryIntermediate.Count() + _pageSize - 1) / _pageSize;
                 CurrentPage = 1;
+                await RefreshPage();
+                ProcessRingActive = false;
+                PoetryResultVisibility = Visibility.Visible;
                 if (_pageCnt == 0)
                 {
                 }
@@ -244,12 +247,8 @@ namespace DailyPoetry.ViewModel
                         NextButtonEnabled = true;
                         PageIndex = Enumerable.Range(1, _pageCnt).ToList();
                     }
-                    PoetryResultVisibility = Visibility.Visible;
-                    
                 }
-                await RefreshPage();
                 Debug.Write("exed");
-                ProcessRingActive = false;
             }));
 
         private RelayCommand _nextPageCommand;
