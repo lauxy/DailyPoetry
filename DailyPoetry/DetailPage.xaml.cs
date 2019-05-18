@@ -38,18 +38,31 @@ namespace DailyPoetry
             Dynasty.Text = poetryItem.Dynasty;
             Writer.Text = poetryItem.AuthorName;
             Annotation.Text = poetryItem.Annotation;
-            Translation.Text = poetryItem.Translation;
+            Translation.Text = OptimizeChineseText(poetryItem.Translation);
+            Appreciation.Text = OptimizeChineseText(poetryItem.Appreciation);
 
             if (poetryItem.Layout == "center")
-                Content.HorizontalAlignment = HorizontalAlignment.Center;
+                Content.HorizontalTextAlignment = TextAlignment.Center;
             else if (poetryItem.Layout == "indent")
-                Content.HorizontalAlignment = HorizontalAlignment.Left;
+                Content.HorizontalTextAlignment = TextAlignment.Left;
             else
             {
                 LayoutNotDefinedTip.IsOpen = true;
             }
 
             (DataContext as DetailViewModel).RecordRecentView(poetryItem.Id);
+
+        }
+
+        private string OptimizeChineseText(string rawString)
+        {
+            var splitted = rawString.Split('\n');
+            string result = "    " + splitted[0];
+            foreach(string part in splitted.Skip(1))
+            {
+                result += "\n    " + part;
+            }
+            return result;
         }
     }
 }

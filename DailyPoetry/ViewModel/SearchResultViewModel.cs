@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Controls;
 using System.Threading;
 using System.Collections.Specialized;
 using System.Collections;
+using Windows.System;
 
 namespace DailyPoetry.ViewModel
 {
@@ -68,6 +69,14 @@ namespace DailyPoetry.ViewModel
         {
             get => _resultNavigateBarVisibility;
             set => Set(nameof(ResultNavigateBarVisibility), ref _resultNavigateBarVisibility, value);
+        }
+
+        private Visibility _noResultTipVisibility;
+
+        public Visibility NoResultTipVisibility
+        {
+            get => _noResultTipVisibility;
+            set => Set(nameof(NoResultTipVisibility), ref _noResultTipVisibility, value);
         }
 
         private bool _processRingActive;
@@ -231,16 +240,19 @@ namespace DailyPoetry.ViewModel
 
                 // set values
                 PageCnt = (_poetryIntermediate.Count() + _pageSize - 1) / _pageSize;
+                PageCnt = PageCnt > 1 ? PageCnt : 1;
                 CurrentPage = 1;
                 await RefreshPage();
                 ProcessRingActive = false;
-                PoetryResultVisibility = Visibility.Visible;
-                if (_pageCnt == 0)
+                if (_poetryIntermediate.Count() == 0)
                 {
+                    NoResultTipVisibility = Visibility.Visible;
                 }
                 else
                 {
-                    if(_pageCnt > 1)
+                    PoetryResultVisibility = Visibility.Visible;
+
+                    if (_pageCnt > 1)
                     {
                         ResultNavigateBarVisibility = Visibility.Visible;
                         PrevButtonEnabled = false;
@@ -273,6 +285,18 @@ namespace DailyPoetry.ViewModel
             _refreshPageCommand ?? (_refreshPageCommand = new RelayCommand(async () =>
             {
                 await RefreshPage();
+            }));
+
+        public RelayCommand _searchFallbackCommand;
+
+        public RelayCommand SearchFallbackCommand =>
+            _searchFallbackCommand ?? (_searchFallbackCommand = new RelayCommand(async () =>
+            {
+                string query = "";
+                foreach (var filteritem in FilterItems)
+                    query += filteritem.Value;
+                var uriBing = new Uri(@"https://cn.bing.com/search?q=" + query);
+                var success = await Launcher.LaunchUriAsync(uriBing);
             }));
 
         // helpers
@@ -311,32 +335,32 @@ namespace DailyPoetry.ViewModel
 
         public async Task NextPage()
         {
-            CurrentPage += 1;
-            if (CurrentPage == _pageCnt)
-                NextButtonEnabled = false;
             PrevButtonEnabled = true;
             PoetryItems = await _poetryIntermediate.
                 Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
+            CurrentPage += 1;
+            if (CurrentPage == _pageCnt)
+                NextButtonEnabled = false;
         }
 
         public async Task PrevPage()
         {
-            CurrentPage -= 1;
-            if (CurrentPage == 1)
-                PrevButtonEnabled = false;
             NextButtonEnabled = true;
             PoetryItems = await _poetryIntermediate.
                 Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
+            CurrentPage -= 1;
+            if (CurrentPage == 1)
+                PrevButtonEnabled = false;
         }
 
         public async Task RefreshPage()
         {
-            if (CurrentPage == 0)
+            if (CurrentPage == 1)
                 PrevButtonEnabled = false;
-            if (CurrentPage + 1 == _pageCnt)
+            if (CurrentPage == _pageCnt)
                 NextButtonEnabled = false;
             PoetryItems = await _poetryIntermediate.
-                Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
+                Skip((CurrentPage-1) * _pageSize).Take(_pageSize).ToListFullAsync();
         }
 
         public void SetPage()
@@ -345,7 +369,7 @@ namespace DailyPoetry.ViewModel
                 Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFull();
         }
 
-        public void SetContentQuery(string query)
+        public PoetryItem SetContentQuery(string query)
         {
             if(FilterItems.Count() == 1)
             {
@@ -354,14 +378,21 @@ namespace DailyPoetry.ViewModel
                 {
                     FilterItems[0].Value = query;
                     if (SearchCommand.CanExecute(null))
+                    {
                         SearchCommand.Execute(null);
-                    return;
+                        return PoetryItems.Count() == 1?PoetryItems[0]:null;
+                    }
+                    return null;
                 }
             }
             FilterItems.Add(new FilterItem(FilterCategory.CONTENT, query));
             _updateFilterIndex();
             if (SearchCommand.CanExecute(null))
+            {
                 SearchCommand.Execute(null);
+                return PoetryItems.Count() == 1 ? PoetryItems[0] : null;
+            }
+            return null;
         }
     }
 

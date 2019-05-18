@@ -32,6 +32,7 @@ namespace DailyPoetry
             this.InitializeComponent();
             DataContext = ViewModelLocator.Instance.SearchResultViewModel;
             (DataContext as SearchResultViewModel).ResultNavigateBarVisibility = Visibility.Collapsed;
+            (DataContext as SearchResultViewModel).NoResultTipVisibility = Visibility.Collapsed;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -39,7 +40,9 @@ namespace DailyPoetry
             var query = e.Parameter as string;
             if (query == null)
                 return;
-            (DataContext as SearchResultViewModel).SetContentQuery(query);
+            var searchResult = (DataContext as SearchResultViewModel).SetContentQuery(query);
+            if(searchResult != null)
+                Frame.Navigate(typeof(DetailPage), searchResult);
         }
 
         private void ChevronButton_Click(object sender, RoutedEventArgs e)
@@ -96,6 +99,7 @@ namespace DailyPoetry
                 return;
             (DataContext as SearchResultViewModel).SetPage();
         }
+
     }
 
 }

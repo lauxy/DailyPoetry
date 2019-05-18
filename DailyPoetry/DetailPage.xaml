@@ -17,7 +17,7 @@
         <ScrollViewer>
             <StackPanel Margin="48, 60, 48, 32">
                 <TextBlock Name="Title" HorizontalAlignment="Center" Text="Title"
-                           Style="{StaticResource HeaderTextBlockStyle}"/>
+                           Style="{StaticResource HeaderTextBlockStyle}" TextWrapping="WrapWholeWords"/>
                 <Grid HorizontalAlignment="Center" Margin="0,16,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
@@ -31,7 +31,7 @@
 
                 <TextBlock Name="Content" Text="CONTENT" 
                            Margin="0,16,0,0" FontSize="20" 
-                           TextWrapping="Wrap"/>
+                           TextWrapping="Wrap" HorizontalAlignment="Center"/>
 
                 <Pivot Margin="0,16,0,0">
                     <PivotItem Header="注释">
@@ -42,12 +42,12 @@
                     <PivotItem Header="翻译">
                         <TextBlock Name="Translation" Text="Translation" 
                                    Margin="12,8,12,8" FontSize="16"
-                                   TextWrapping="Wrap"/>
+                                   TextWrapping="Wrap" LineHeight="32"/>
                     </PivotItem>
                     <PivotItem Header="赏析">
                         <TextBlock Name="Appreciation" Text="Appreciation"
                                    Margin="12,8,12,8" FontSize="16"
-                                   TextWrapping="Wrap"/>
+                                   TextWrapping="Wrap" LineHeight="32"/>
                     </PivotItem>
                 </Pivot>
 
