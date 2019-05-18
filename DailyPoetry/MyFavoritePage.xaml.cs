@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using DailyPoetry.Models.KnowledgeModels;
 using DailyPoetry.Services;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -43,7 +44,8 @@ namespace DailyPoetry
 
         private void ListViewBase_OnItemClick(object sender, ItemClickEventArgs e)
         {
-            throw new NotImplementedException();
+            var selectedItem = (PoetryItem)e.ClickedItem; //获取当前被点击的对象的引用
+            Frame.Navigate(typeof(DetailPage), selectedItem);
         }
     }
 }
