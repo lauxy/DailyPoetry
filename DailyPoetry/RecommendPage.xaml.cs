@@ -28,6 +28,7 @@ namespace DailyPoetry
         private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         // time stamp
         string prefix = DateTime.Today.ToShortDateString().Replace("/", "");
+        // get local folder 
         StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
         /// <summary>
         /// Init Page
@@ -103,7 +104,7 @@ namespace DailyPoetry
             DataRequestDeferral deferral = args.Request.GetDeferral();
             args.Request.Data.Properties.Title = "Sharing Title";
             args.Request.Data.Properties.Description = "分享每日诗词";
-            args.Request.Data.SetText("我正在赏析 “" + ShowPoetryArea.Text + "”。");
+            args.Request.Data.SetText("我正在赏析 “" + ShowPoetryArea.Text + "”");
             var imageUri = "ms-appdata:///local/" + prefix + "Wallpaper.jpg";
 
             args.Request.Data.SetBitmap(

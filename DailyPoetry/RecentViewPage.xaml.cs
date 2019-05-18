@@ -40,8 +40,8 @@ namespace DailyPoetry
         /// <param name="e"></param>
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var selectedItem = (RecentViewItem)e.ClickedItem; //获取当前被点击的对象的引用
-
+            var selectedItem = (PoetryItem)e.ClickedItem; //获取当前被点击的对象的引用
+            Frame.Navigate(typeof(DetailPage), selectedItem);
         }
 
         /// <summary>
