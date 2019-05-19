@@ -64,12 +64,10 @@
             <TextBlock FontSize="18"
                        Margin="0,0,62,0"
                        Foreground="White"
-                       Name="TitleTextBlock"
                        Text="{Binding LocalInfoItems.region}"/>
             <TextBlock FontSize="18"
                        Margin="0,0,62,0"
                        Foreground="White"
-                       Name="AuthorTextBlock"
                        Text="{Binding LocalInfoItems.weatherData.weather}"/>
         </StackPanel>
 
