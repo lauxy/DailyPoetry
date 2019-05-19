@@ -33,6 +33,7 @@ namespace DailyPoetry
             DataContext = ViewModelLocator.Instance.SearchResultViewModel;
             (DataContext as SearchResultViewModel).ResultNavigateBarVisibility = Visibility.Collapsed;
             (DataContext as SearchResultViewModel).NoResultTipVisibility = Visibility.Collapsed;
+            this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
