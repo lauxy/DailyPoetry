@@ -113,6 +113,7 @@ namespace DailyPoetry.ViewModel
             FilterItems = new ObservableCollection<FilterItem>();
             FilterItems.Add(new FilterItem(FilterCategory.CONTENT, ""));
             CollapsedFilterItems = new ObservableCollection<FilterItem>();
+            NoResultTipVisibility = Visibility.Collapsed;
             _updateFilterIndex();
         }
 
@@ -211,38 +212,14 @@ namespace DailyPoetry.ViewModel
         private RelayCommand _searchCommand;
 
         public RelayCommand SearchCommand =>
-            _searchCommand ?? (_searchCommand = new RelayCommand(async () =>
-            {
+            _searchCommand ?? (_searchCommand = new RelayCommand(async () => {
                 // clean controls` status
                 PoetryResultVisibility = Visibility.Collapsed;
                 ResultNavigateBarVisibility = Visibility.Collapsed;
                 ProcessRingActive = true;
 
-                // build path
-                _poetryIntermediate = _knowledgeService.GetAllSimplifiedPoetryItems();
-                foreach (var filterItem in _filterItems)
-                {
-                    switch (filterItem.FilterCategory)
-                    {
-                        case FilterCategory.TITLE:
-                            _poetryIntermediate = _knowledgeService.GetPoetryItemsByName(_poetryIntermediate, filterItem.Value);
-                            break;
-                        case FilterCategory.CONTENT:
-                            _poetryIntermediate = _knowledgeService.GetPoetryItemsByContent(_poetryIntermediate, filterItem.Value);
-                            break;
-                        case FilterCategory.WRITER:
-                            _poetryIntermediate = _knowledgeService.GetPoetryItemsByWriter(_poetryIntermediate, filterItem.Value);
-                            break;
-                        default:
-                            break;
-                    }
-                }
+                await DoSearch();
 
-                // set values
-                PageCnt = (_poetryIntermediate.Count() + _pageSize - 1) / _pageSize;
-                PageCnt = PageCnt > 1 ? PageCnt : 1;
-                CurrentPage = 1;
-                await RefreshPage();
                 ProcessRingActive = false;
                 if (_poetryIntermediate.Count() == 0)
                 {
@@ -250,8 +227,8 @@ namespace DailyPoetry.ViewModel
                 }
                 else
                 {
+                    NoResultTipVisibility = Visibility.Collapsed;
                     PoetryResultVisibility = Visibility.Visible;
-
                     if (_pageCnt > 1)
                     {
                         ResultNavigateBarVisibility = Visibility.Visible;
@@ -261,6 +238,7 @@ namespace DailyPoetry.ViewModel
                     }
                 }
                 Debug.Write("exed");
+
             }));
 
         private RelayCommand _nextPageCommand;
@@ -372,28 +350,45 @@ namespace DailyPoetry.ViewModel
 
         public PoetryItem SetContentQuery(string query)
         {
-            if(FilterItems.Count() == 1)
-            {
-                if (FilterItems[0].FilterCategory == FilterCategory.CONTENT &&
-                    FilterItems[0].Value == "")
-                {
-                    FilterItems[0].Value = query;
-                    if (SearchCommand.CanExecute(null))
-                    {
-                        SearchCommand.Execute(null);
-                        return PoetryItems?.Count() == 1?PoetryItems[0]:null;
-                    }
-                    return null;
-                }
-            }
+            FilterItems = new ObservableCollection<FilterItem>();
             FilterItems.Add(new FilterItem(FilterCategory.CONTENT, query));
+            CollapsedFilterItems = new ObservableCollection<FilterItem>();
             _updateFilterIndex();
-            if (SearchCommand.CanExecute(null))
+            if(SearchCommand.CanExecute(null))
             {
                 SearchCommand.Execute(null);
                 return PoetryItems?.Count() == 1 ? PoetryItems[0] : null;
             }
             return null;
+        }
+
+        public async Task DoSearch()
+        {
+            // build path
+            _poetryIntermediate = _knowledgeService.GetAllSimplifiedPoetryItems();
+            foreach (var filterItem in _filterItems)
+            {
+                switch (filterItem.FilterCategory)
+                {
+                    case FilterCategory.TITLE:
+                        _poetryIntermediate = _knowledgeService.GetPoetryItemsByName(_poetryIntermediate, filterItem.Value);
+                        break;
+                    case FilterCategory.CONTENT:
+                        _poetryIntermediate = _knowledgeService.GetPoetryItemsByContent(_poetryIntermediate, filterItem.Value);
+                        break;
+                    case FilterCategory.WRITER:
+                        _poetryIntermediate = _knowledgeService.GetPoetryItemsByWriter(_poetryIntermediate, filterItem.Value);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            // set values
+            PageCnt = (_poetryIntermediate.Count() + _pageSize - 1) / _pageSize;
+            PageCnt = PageCnt > 1 ? PageCnt : 1;
+            CurrentPage = 1;
+            await RefreshPage();
         }
     }
 
