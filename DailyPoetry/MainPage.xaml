@@ -40,10 +40,8 @@
                 <NavigationViewItem Icon="OutlineStar" Content="我喜爱的诗词" Tag="favorite"/>
             </NavigationView.MenuItems>
 
-            <ScrollViewer>
-                <Frame x:Name="ContentFrame" Padding="0,0,0,0" IsTabStop="True"
+            <Frame x:Name="ContentFrame" Padding="0,0,0,0" IsTabStop="True"
                        NavigationFailed="ContentFrame_NavigationFailed"/>
-            </ScrollViewer>
 
         </NavigationView>
 

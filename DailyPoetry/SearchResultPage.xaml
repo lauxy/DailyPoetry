@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" 
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
-    Background="White">
+    Background="White" Loaded="Page_Loaded">
     
     <Page.Resources>
         <DataTemplate x:Name="FilterTemplate" x:DataType="viewmodel:FilterItem">
@@ -76,8 +76,7 @@
             <RowDefinition Height="auto" x:Name="FilterSimplifiedRow"/>
             <RowDefinition Height="auto" x:Name="ButtonRow"/>
             <RowDefinition Height="*" x:Name="ResultRow"/>
-            <RowDefinition Height="*" x:Name="NoResultRow"/>
-            <RowDefinition Height="auto" x:Name="ResultNavigateRow"/>
+            <RowDefinition Height="48" x:Name="ResultNavigateRow"/>
         </Grid.RowDefinitions>
 
         <ListView Name="FiltersList"
@@ -129,11 +128,11 @@
             </Button>
         </StackPanel>
 
-        <ListView Name="SearchResultList" 
-                  ItemsSource="{Binding PoetryItems, Mode=OneWay}"
+        <ListView Name="SearchResultList"
+            ItemsSource="{Binding PoetryItems, Mode=OneWay}"
                   ItemTemplate="{StaticResource PoetryItemTemplate}"
                   Visibility="{Binding PoetryResultVisibility}"
-                  Grid.Row="3" Margin="16" IsItemClickEnabled="True"
+                   Margin="16" IsItemClickEnabled="True" Grid.Row="3"
                   ItemClick="SearchResultList_ItemClick">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -142,7 +141,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <StackPanel Grid.Row="4" Orientation="Vertical" Visibility="{Binding NoResultTipVisibility}">
+        <StackPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center" Visibility="{Binding NoResultTipVisibility}">
             <TextBlock Text="无搜索结果" FontSize="20" HorizontalAlignment="Center"/>
             <Button Name="RequestButton" Content="在网络上搜索" 
                     HorizontalAlignment="Center" Command="{Binding SearchFallbackCommand}"/>
@@ -150,7 +149,7 @@
 
         <Grid HorizontalAlignment="Center" 
                     Visibility="{Binding ResultNavigateBarVisibility}"
-                    Grid.Row="5">
+                    Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="3*"/>

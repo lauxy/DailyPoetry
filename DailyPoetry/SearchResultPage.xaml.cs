@@ -27,9 +27,13 @@ namespace DailyPoetry
     public sealed partial class SearchResultPage : Page
     {
         private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+        private PoetryItem navigateTmp;
+
         public SearchResultPage()
         {
             this.InitializeComponent();
+            navigateTmp = null;
             DataContext = ViewModelLocator.Instance.SearchResultViewModel;
             (DataContext as SearchResultViewModel).ResultNavigateBarVisibility = Visibility.Collapsed;
             (DataContext as SearchResultViewModel).NoResultTipVisibility = Visibility.Collapsed;
@@ -38,12 +42,14 @@ namespace DailyPoetry
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            navigateTmp = null;
+            if (e.NavigationMode == NavigationMode.Back)
+                return;
             var query = e.Parameter as string;
             if (query == null)
                 return;
             var searchResult = (DataContext as SearchResultViewModel).SetContentQuery(query);
-            if(searchResult != null)
-                Frame.Navigate(typeof(DetailPage), searchResult);
+            navigateTmp = searchResult;
         }
 
         private void ChevronButton_Click(object sender, RoutedEventArgs e)
@@ -76,11 +82,6 @@ namespace DailyPoetry
         }
 
 
-        private void PageIndex_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            (DataContext as SearchResultViewModel).RefreshPage();
-        }
-
         private void PageIndex_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (DataContext == null)
@@ -94,13 +95,15 @@ namespace DailyPoetry
             Frame.Navigate(typeof(DetailPage), poetryItem);
         }
 
-        private void PageIndex_DragLeave(object sender, DragEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (DataContext == null)
-                return;
-            (DataContext as SearchResultViewModel).SetPage();
+            if (navigateTmp != null)
+            {
+                var tmp = navigateTmp;
+                navigateTmp = null;
+                Frame.Navigate(typeof(DetailPage), tmp);
+            }
         }
-
     }
 
 }
