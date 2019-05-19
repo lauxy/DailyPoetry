@@ -35,9 +35,7 @@ namespace DailyPoetry.Services
         public static async Task InitDatabase()
         {
             var dbFile = await ApplicationData.Current.LocalFolder.TryGetItemAsync("db.sqlite3") as StorageFile;
-#if DEBUG
-            dbFile = null;
-#endif
+
             if (dbFile == null)
             {
                 var localFolder = ApplicationData.Current.LocalFolder;

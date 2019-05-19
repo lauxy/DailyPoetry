@@ -5,7 +5,9 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using DailyPoetry.ViewModel;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -69,13 +71,24 @@ namespace DailyPoetry
                 fontIcon.Foreground = new SolidColorBrush(Colors.Black);
             }
             var poetryItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
+            (DataContext as RecentViewPageViewModel).AddItemsToFavoriteTable(poetryItem.Id);
             if (b != null)
             {
                  
 
             }
         }
-        
+
+        private void DeleteToggleButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var deleteItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
+            (DataContext as RecentViewPageViewModel).DeleteRecentViewItem(deleteItem.Id);
+        }
+
+        private void RecentViewPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            (DataContext as RecentViewPageViewModel).RefreshPage();
+        }
     }
 
       

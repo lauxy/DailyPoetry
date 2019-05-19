@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data1="using:DailyPoetry.Models.KnowledgeModels"
     mc:Ignorable="d"
+    Loaded="RecentViewPage_OnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -23,21 +24,29 @@
         </Style>
 
         <DataTemplate x:DataType="data1:PoetryItem" x:Key="RecentViewDataTemplate">
-            <StackPanel Orientation="Horizontal" Width="1920">
-                <TextBlock Text="{x:Bind Id}"
+            <RelativePanel>
+                <TextBlock Text="{x:Bind Id}" 
+                           x:Name="IdTextBlock"
                            VerticalAlignment="Center"
                            Margin="0,7,0,0" />
                 <ToggleButton Width="30" Height="30"
-                      Click="AppBarToggleButton_Click" Style="{StaticResource TransparentStyle}">
+                              Click="AppBarToggleButton_Click" 
+                              Style="{StaticResource TransparentStyle}"
+                              Name="LikeButton"
+                              RelativePanel.RightOf="IdTextBlock">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" />
                 </ToggleButton>
 
                 <TextBlock FontSize="16" Text="{x:Bind Name}"
                            FontWeight="Bold"
                            Margin="8,6,0,0"
-                           VerticalAlignment="Center" />
+                           VerticalAlignment="Center" 
+                           Name="NameTextBlock"
+                           RelativePanel.RightOf="LikeButton"/>
 
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" 
+                            x:Name="PoetryDetailBlock"
+                            RelativePanel.RightOf="NameTextBlock">
                     <TextBlock FontSize="14"
                                Text="{x:Bind AuthorName}"
                                Foreground="Gray"
@@ -49,7 +58,36 @@
                                Margin="24,6,0,0"
                                VerticalAlignment="Center" />
                 </StackPanel>
-            </StackPanel>
+
+                <ToggleButton Style="{StaticResource TransparentStyle}"
+                              Name="DeleteToggleButton"
+                              
+                              Click="DeleteToggleButton_OnClick"
+                    RelativePanel.AlignRightWithPanel="True">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;"/>
+                </ToggleButton>
+            </RelativePanel>
+
+            <!--<Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock FontSize="16" Text="{x:Bind Name}"
+                           FontWeight="Bold"
+                           Margin="8,6,0,0"
+                           VerticalAlignment="Center" Grid.Column="0"
+                           Name="NameTextBlock"/>
+
+
+                <ToggleButton Style="{StaticResource TransparentStyle}"
+                              Name="DeleteToggleButton"  Grid.Column="2"
+                              
+                              Click="DeleteToggleButton_OnClick">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;"/>
+                </ToggleButton>
+            </Grid>-->
         </DataTemplate>
     </Page.Resources>
 
@@ -57,49 +95,16 @@
         <TextBlock Text="最近浏览"
                    Margin="20,28,0,0"
                    FontSize="24" />
-        <Pivot x:Name="rootPivot" Margin="8,20,0,0">
-            <PivotItem Header="来自搜索">
-
-                <StackPanel Orientation="Vertical">
-
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="全部清空"
-                                Name="DeleteButton"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
-                                Command="{Binding DeleteCommand}" />
-                    </StackPanel>
-
-                    <StackPanel Name="panel1">
-                        <GridView ItemsSource="{Binding RecentViewItems}"
-                                  IsItemClickEnabled="True"
-                                  ItemClick="GridView_ItemClick"
-                                  ItemTemplate="{StaticResource RecentViewDataTemplate}"
-                                  Name="RecentViewGridView" />
-                    </StackPanel>
-
-                </StackPanel>
-            </PivotItem>
-
-            <PivotItem Header="来自推荐">
-                <StackPanel>
-                    <Image Source="/Assets/404.png"
-                           Height="300"
-                           Width="500"
-                           Margin="0,36,0,0"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center" />
-                    <TextBlock Text="页面找不到了"
-                               Foreground="Gray"
-                               FontSize="48"
-                               HorizontalAlignment="Center" />
-                    <TextBlock Text="前方施工，敬请期待"
-                               Foreground="Gray"
-                               FontSize="28"
-                               Margin="0,24,0,0"
-                               HorizontalAlignment="Center" />
-                </StackPanel>
-            </PivotItem>
-        </Pivot>
+        <ListView ItemsSource="{Binding RecentViewItems, Mode=TwoWay}"
+                      IsItemClickEnabled="True"
+                      ItemClick="GridView_ItemClick"
+                      ItemTemplate="{StaticResource RecentViewDataTemplate}"
+                      Name="RecentViewGridView"  Margin="20,20,0,0" >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </StackPanel>
 </Page>

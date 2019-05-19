@@ -7,21 +7,35 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:knowledgeModels="using:DailyPoetry.Models.KnowledgeModels"
     mc:Ignorable="d"
+    Loaded="MyFavoritePage_OnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
+
+        <Style x:Key="TransparentStyle" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <DataTemplate x:DataType="knowledgeModels:PoetryItem" x:Key="FavoriteDataTemplate">
             <StackPanel Orientation="Horizontal" Width="1920">
                 <TextBlock Text="{x:Bind Id}"
                            VerticalAlignment="Center"
                            Margin="0,7,0,0"/>
-                <AppBarToggleButton Label="SymbolIcon"
-                                    Width="30" 
-                                    Height="30">
-                    <AppBarToggleButton.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;"/>
-                    </AppBarToggleButton.Icon>
-                </AppBarToggleButton>
+                <ToggleButton Width="30" 
+                              Height="30"
+                              Click="ButtonBase_OnClick"
+                              Style="{StaticResource TransparentStyle}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB52;"
+                              Foreground="Red"/>
+                </ToggleButton>
 
                 <TextBlock FontSize="16" Text="{x:Bind Name}" 
                            FontWeight="Bold" 
@@ -53,6 +67,7 @@
                   ItemTemplate="{StaticResource FavoriteDataTemplate}"
                   ItemClick="ListViewBase_OnItemClick"
                   Margin="20,24,0,0"/>
-     
     </StackPanel>
+
+    
 </Page>

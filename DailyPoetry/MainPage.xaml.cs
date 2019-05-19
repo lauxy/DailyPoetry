@@ -126,36 +126,6 @@ namespace DailyPoetry
             }
         }
 
-        //private void NavView_OnSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        //{
-        //    if (args.IsSettingsSelected)
-        //    {
-        //        ContentFrame.Navigate(typeof(SettingsPage));
-        //    }
-        //    else
-        //    {
-        //        NavigationViewItem item = args.SelectedItem as NavigationViewItem;
-        //        switch (item.Tag)
-        //        {
-        //            case "search":
-        //                ContentFrame.Navigate(typeof(SearchResultPage));
-        //                break;
-        //            case "browse":
-        //                ContentFrame.Navigate(typeof(RecentViewPage));
-        //                break;
-        //            case "creations":
-        //                ContentFrame.Navigate(typeof(MyCreation));
-        //                break;
-        //            case "recommend":
-        //                ContentFrame.Navigate(typeof(RecommendPage));
-        //                break;
-        //            case "favorite":
-        //                ContentFrame.Navigate(typeof(MyFavoritePage));
-        //                break;
-        //        }
-        //    }
-        //}
-
         private void On_Navigated(object sender, NavigationEventArgs e)
         {
             NavView.IsBackEnabled = ContentFrame.CanGoBack;

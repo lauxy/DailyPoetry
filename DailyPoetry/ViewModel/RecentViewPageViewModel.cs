@@ -4,7 +4,9 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using Windows.ApplicationModel.Store.Preview.InstallControl;
 
 namespace DailyPoetry.ViewModel
 {
@@ -20,26 +22,9 @@ namespace DailyPoetry.ViewModel
         public RecentViewPageViewModel(KnowledgeService knowledgeService)
         {
             _knowledgeService = knowledgeService;
-            _knowledgeService.Entry();
-            _recentViewItems = new ObservableCollection<PoetryItem>();
-            var a = _knowledgeService._knowledgeContext.RecentViewItems.ToList();
-            foreach (var recentViewItem in a)
-            {
-                _recentViewItems.Add(_knowledgeService.GetPoetryItemById(recentViewItem.PoetryItemId));
-            }
-            _knowledgeService.PoetryIsLikedTagger(ref _recentViewItems);
-            _knowledgeService.Dispose(); //手动释放资源
+            RefreshPage();
         }
 
-        /// <summary>
-        /// 删除命令。
-        /// </summary>
-        private RelayCommand _deleteCommand;
-
-        /// <summary>
-        /// 将poetryItem添加到喜爱的诗词数据库。
-        /// </summary>
-        private RelayCommand _likeCommand;
 
         /// <summary>
         /// RecentViewItems 最近浏览记录的get/set方法
@@ -51,19 +36,40 @@ namespace DailyPoetry.ViewModel
         }
 
         /// <summary>
-        ///  删除命令。
+        /// 删除最近浏览记录
         /// </summary>
-        public RelayCommand DeleteCommand =>
-            _deleteCommand ?? (_deleteCommand = new RelayCommand(() =>
+        /// <param name="poetryId"></param>
+        public void DeleteRecentViewItem(int poetryId)
+        {
+            using (_knowledgeService.Entry())
             {
-                
-            }));
+                _knowledgeService.DeleteRecentViewItemByPoetryIdItem(poetryId);
+            }
+        }
 
-        public RelayCommand LikeCommand =>
-            _likeCommand ?? (_likeCommand = new RelayCommand(() =>
+        public void RefreshPage()
+        {
+            using (_knowledgeService.Entry())
             {
-                
-            }));
+                RecentViewItems = new ObservableCollection<PoetryItem>();
+                var recentViewCollection = _knowledgeService._knowledgeContext.RecentViewItems.ToList();
+                foreach (var recentViewItem in recentViewCollection)
+                {
+                    RecentViewItems.Add(_knowledgeService.GetPoetryItemById(recentViewItem.PoetryItemId));
+                }
+                _knowledgeService.PoetryIsLikedTagger(ref _recentViewItems);
+                Debug.WriteLine(RecentViewItems.Count());
+            }
+        }
 
+        public void AddItemsToFavoriteTable(int poetryId)
+        {
+            using (_knowledgeService.Entry())
+            {
+                _knowledgeService.AddFavoriteItem(poetryId);
+            }
+        }
+
+      
     }
 }
