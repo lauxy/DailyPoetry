@@ -359,8 +359,9 @@ namespace DailyPoetry.ViewModel
                 PrevButtonEnabled = false;
             if (CurrentPage == _pageCnt)
                 NextButtonEnabled = false;
-            PoetryItems = await _poetryIntermediate.
-                Skip((CurrentPage-1) * _pageSize).Take(_pageSize).ToListFullAsync();
+            if(_poetryIntermediate != null)
+                PoetryItems = await _poetryIntermediate.
+                    Skip((CurrentPage-1) * _pageSize).Take(_pageSize).ToListFullAsync();
         }
 
         public void SetPage()

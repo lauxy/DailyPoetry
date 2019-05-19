@@ -70,6 +70,15 @@
                     </Button.Flyout>
                 </Button>
 
+                <TextBlock Text="致谢" FontSize="20" Margin="0,24,0,0"/>
+                <TextBlock FontSize="16" Margin="0,8,0,0">
+                    此应用使用的诗词数据已获得了田文达先生的授权<LineBreak/>田文达先生开发的 晓诗 应用是 macOS 下制作精良的诗词应用<LineBreak/>
+                    <Hyperlink NavigateUri="https://itunes.apple.com/cn/app/e6-99-93-e8-af-97/id1452183596">
+                        了解更多
+                    </Hyperlink>
+                </TextBlock>
+                
+
             </StackPanel>
 
             <StackPanel Orientation="Vertical" 

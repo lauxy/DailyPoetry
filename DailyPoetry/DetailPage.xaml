@@ -10,54 +10,100 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        
+        <Style x:Key="TransparentStyle" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TransparentStyle2" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <!--<Border Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>-->
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
-    
-    <StackPanel>
-        <ScrollViewer>
-            <StackPanel Margin="48, 60, 48, 32">
-                <TextBlock Name="Title" HorizontalAlignment="Center" Text="Title"
-                           Style="{StaticResource HeaderTextBlockStyle}" TextWrapping="WrapWholeWords"/>
-                <Grid HorizontalAlignment="Center" Margin="0,16,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Name="Dynasty" Grid.Column="0" Text="Dynasty" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                    <TextBlock Text="·" Margin="12,0,12,0" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                    <TextBlock Name="Writer" Grid.Column="2" Text="Writer" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                </Grid>
 
-                <TextBlock Name="Content" Text="CONTENT" 
-                           Margin="0,16,0,0" FontSize="20" 
-                           TextWrapping="Wrap" HorizontalAlignment="Center"/>
+    <StackPanel Margin="48, 36, 48, 32" Name="viewer">
+        <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
+            <ToggleButton Name="FavoriteButton" Click="AppBarToggleButton_Click" Style="{StaticResource TransparentStyle}">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" />
+            </ToggleButton>
+            <Button Name="ShareButton" Click="ShareButton_OnClick" Style="{StaticResource TransparentStyle2}"
+                            Margin="16,0,0,0">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;"/>
+            </Button>
+            <Button Name="FontButton" Style="{StaticResource TransparentStyle2}"
+                            Margin="16,0,0,0">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8D2;" />
+                <Button.Flyout>
+                    <Flyout>
+                        <ListView Name="FontList" ItemsSource="{Binding Fonts}" SelectedValue="{Binding SelectedFont, Mode=TwoWay}"
+                                          DisplayMemberPath="Item1" SelectedValuePath="Item2" SelectionMode="Single"
+                                          SelectionChanged="FontList_SelectionChanged"/>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
+        <TextBlock Name="Title" HorizontalAlignment="Center" Text="Title" FontSize="48" 
+                           Style="{StaticResource HeaderTextBlockStyle}" TextWrapping="WrapWholeWords"
+                           FontFamily="{Binding SelectedFont, Mode=OneWay}"
+                           Margin="0,16,0,0"/>
+        <Grid HorizontalAlignment="Center" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Name="Dynasty" Grid.Column="0" Text="Dynasty" Style="{StaticResource SubtitleTextBlockStyle}" 
+                               FontFamily="{Binding SelectedFont, Mode=OneWay}"/>
+            <TextBlock Text="·" Margin="12,0,12,0" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" 
+                               FontFamily="{Binding SelectedFont, Mode=OneWay}"/>
+            <TextBlock Name="Writer" Grid.Column="2" Text="Writer" Style="{StaticResource SubtitleTextBlockStyle}" 
+                               FontFamily="{Binding SelectedFont, Mode=OneWay}"/>
+        </Grid>
 
-                <Pivot Margin="0,16,0,0">
-                    <PivotItem Header="注释">
-                        <TextBlock Name="Annotation" Text="Annotation"
-                                   Margin="12,8,12,8" FontSize="16"
-                                   TextWrapping="Wrap" LineHeight="32"/>
-                    </PivotItem>
-                    <PivotItem Header="翻译">
-                        <TextBlock Name="Translation" Text="Translation" 
-                                   Margin="12,8,12,8" FontSize="16"
-                                   TextWrapping="Wrap" LineHeight="32"/>
-                    </PivotItem>
-                    <PivotItem Header="赏析">
-                        <TextBlock Name="Appreciation" Text="Appreciation"
-                                   Margin="12,8,12,8" FontSize="16"
-                                   TextWrapping="Wrap" LineHeight="32"/>
-                    </PivotItem>
-                </Pivot>
+        <TextBlock Name="Content" Text="CONTENT" 
+                           Margin="24,16,24,0" FontSize="20" LineHeight="36"
+                           TextWrapping="Wrap" HorizontalAlignment="Center" 
+                           FontFamily="{Binding SelectedFont, Mode=OneWay}"/>
 
-                <TextBlock Name="LayoutDebug"/>
-            </StackPanel>
-        </ScrollViewer>
+        <Pivot Margin="0,16,0,0">
+            <PivotItem Header="注释">
+                <TextBlock Name="Annotation" Text="Annotation"
+                                   FontFamily="{Binding SelectedFont, Mode=OneWay}"
+                                   Margin="12,16,12,8" FontSize="16"
+                                   TextWrapping="Wrap" LineHeight="32"/>
+            </PivotItem>
+            <PivotItem Header="翻译">
+                <TextBlock Name="Translation" Text="Translation" 
+                                   FontFamily="{Binding SelectedFont, Mode=OneWay}"
+                                   Margin="12,16,12,8" FontSize="16"
+                                   TextWrapping="Wrap" LineHeight="32"/>
+            </PivotItem>
+            <PivotItem Header="赏析">
+                <TextBlock Name="Appreciation" Text="Appreciation"
+                                   FontFamily="{Binding SelectedFont, Mode=OneWay}"
+                                   Margin="12,16,12,8" FontSize="16"
+                                   TextWrapping="Wrap" LineHeight="32"/>
+            </PivotItem>
+        </Pivot>
+
+        <TextBlock Name="LayoutDebug"/>
         <controls:TeachingTip x:Name="LayoutNotDefinedTip"                   
 	        Title="未定义的Layout，请联系开发人员"                                          
 	        PlacementMargin="20"
-	        CloseButtonContent="Got it!">   
+	        CloseButtonContent="Got it!">
         </controls:TeachingTip>
     </StackPanel>
 </Page>

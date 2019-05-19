@@ -10,12 +10,16 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <Style x:Name="MyButtonStyle" TargetType="AppBarToggleButton">
-
-            <Setter Property="UseSystemFocusVisuals" Value="False" />
-            <Setter Property="FocusVisualMargin" Value="-2" />
-            <Setter Property="Background" Value="Transparent" />
-
+        <Style x:Key="TransparentStyle" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <DataTemplate x:DataType="data1:PoetryItem" x:Key="RecentViewDataTemplate">
@@ -23,14 +27,10 @@
                 <TextBlock Text="{x:Bind Id}"
                            VerticalAlignment="Center"
                            Margin="0,7,0,0" />
-                <AppBarToggleButton Label="SymbolIcon"
-                                    Width="30"
-                                    Height="30"
-                                    Click="AppBarToggleButton_Click" Style="{StaticResource MyButtonStyle}">
-                    <AppBarToggleButton.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" />
-                    </AppBarToggleButton.Icon>
-                </AppBarToggleButton>
+                <ToggleButton Width="30" Height="30"
+                      Click="AppBarToggleButton_Click" Style="{StaticResource TransparentStyle}">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" />
+                </ToggleButton>
 
                 <TextBlock FontSize="16" Text="{x:Bind Name}"
                            FontWeight="Bold"
