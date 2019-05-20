@@ -1,5 +1,7 @@
 ﻿using DailyPoetry.Models.KnowledgeModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -39,22 +41,11 @@ namespace DailyPoetry
         }
 
         /// <summary>
-        /// 点击记录项执行的事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var selectedItem = (PoetryItem)e.ClickedItem; //获取当前被点击的对象的引用
-            Frame.Navigate(typeof(DetailPage), selectedItem);
-        }
-
-        /// <summary>
         /// 点击心形按钮，将item加入“我喜欢的诗词”中
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
+        private void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
         {
             // 每点击一次切换图标
             // todo：在数据库更新完成后设置
@@ -74,36 +65,72 @@ namespace DailyPoetry
             (DataContext as RecentViewPageViewModel).AddItemsToFavoriteTable(poetryItem.Id);
             if (b != null)
             {
-                 
+
 
             }
+        }
+
+        /// <summary>
+        /// 点击记录项执行的事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedItem = (PoetryItem)e.ClickedItem; //获取当前被点击的对象的引用
+            Frame.Navigate(typeof(DetailPage), selectedItem);
         }
 
         private void DeleteToggleButton_OnClick(object sender, RoutedEventArgs e)
         {
             var deleteItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
             (DataContext as RecentViewPageViewModel).DeleteRecentViewItem(deleteItem.Id);
+            (DataContext as RecentViewPageViewModel).RefreshPage();
         }
 
+        [Obsolete]
         private void RecentViewPage_OnLoaded(object sender, RoutedEventArgs e)
         {
             (DataContext as RecentViewPageViewModel).RefreshPage();
 
-            //todo:页面加载时显示心形图标填充情况
-            //PoetryItem poetryItem = (PoetryItem) e;
-            //(DataContext as DetailViewModel).RecordRecentView(poetryItem.Id);
-            //var fontIcon = (FavoriteButton.Content as FontIcon);
-            //if ((DataContext as DetailViewModel).GetFavoriteStatus(poetryItem.Id))
-            //{
-            //    fontIcon.Glyph = "\uEB52"; // 换成红心
-            //    fontIcon.Foreground = new SolidColorBrush(Colors.Red);
-            //}
-            //else
-            //{
-            //    fontIcon.Glyph = "\uEB51"; // 换成空心
-            //    fontIcon.Foreground = new SolidColorBrush(Colors.Black);
-            //}
+            var _ListView = RecentViewListView as ListView;
+            foreach (PoetryItem item in _ListView.Items)
+            {
+                var _Container = RecentViewListView.ItemContainerGenerator
+                    .ContainerFromItem(item);
+                var _Children = AllChildren(_Container);
+                var _FavoriteButton = _Children
+                    // only interested in TextBlock
+                    .OfType<ToggleButton>()
+                    // only interested in FirstName
+                    .First(x => x.Name.Equals("FavoriteButton"));
+                var fontIcon = (_FavoriteButton.Content as FontIcon);
+                if ((DataContext as DetailViewModel).GetFavoriteStatus(item.Id))
+                {
+                    fontIcon.Glyph = "\uEB52"; // 换成红心
+                    fontIcon.Foreground = new SolidColorBrush(Colors.Red);
+                }
+                else
+                {
+                    fontIcon.Glyph = "\uEB51"; // 换成空心
+                    fontIcon.Foreground = new SolidColorBrush(Colors.Black);
+                }
+            }
         }
+
+        public List<Control> AllChildren(DependencyObject parent)
+        {
+            var _List = new List<Control>();
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var _Child = VisualTreeHelper.GetChild(parent, i);
+                if (_Child is Control)
+                    _List.Add(_Child as Control);
+                _List.AddRange(AllChildren(_Child));
+            }
+            return _List;
+        }
+
     }
 
       

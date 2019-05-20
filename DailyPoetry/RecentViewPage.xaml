@@ -24,12 +24,13 @@
 
         <DataTemplate x:DataType="data1:PoetryItem" x:Key="RecentViewDataTemplate">
             <RelativePanel>
-                <TextBlock Text="{x:Bind Id}" 
+                <TextBlock Text="{x:Bind Order}" 
                            x:Name="IdTextBlock"
                            VerticalAlignment="Center"
+                           TextAlignment="Right"
                            Margin="0,7,0,0" />
                 <ToggleButton Width="30" Height="30"
-                              Click="AppBarToggleButton_Click" 
+                              Click="FavoriteButton_OnClick"
                               Style="{StaticResource TransparentStyle}"
                               Name="FavoriteButton"
                               RelativePanel.RightOf="IdTextBlock">
@@ -42,7 +43,7 @@
                            Margin="8,6,0,0"
                            VerticalAlignment="Center" 
                            Name="NameTextBlock"
-                           RelativePanel.RightOf="LikeButton"/>
+                           RelativePanel.RightOf="FavoriteButton"/>
 
                 <StackPanel Orientation="Horizontal" 
                             x:Name="PoetryDetailBlock"
@@ -61,9 +62,8 @@
 
                 <ToggleButton Style="{StaticResource TransparentStyle}"
                               Name="DeleteToggleButton"
-                              
                               Click="DeleteToggleButton_OnClick"
-                    RelativePanel.AlignRightWithPanel="True">
+                              RelativePanel.AlignRightWithPanel="True">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;"/>
                 </ToggleButton>
             </RelativePanel>
@@ -78,7 +78,7 @@
                       IsItemClickEnabled="True"
                       ItemClick="GridView_ItemClick"
                       ItemTemplate="{StaticResource RecentViewDataTemplate}"
-                      Name="RecentViewGridView"  Margin="20,20,0,0" >
+                      Name="RecentViewListView"  Margin="20,20,0,0" >
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

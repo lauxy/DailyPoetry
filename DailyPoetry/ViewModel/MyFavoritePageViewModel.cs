@@ -17,6 +17,8 @@ namespace DailyPoetry.ViewModel
 
         private ObservableCollection<PoetryItem> _favoriteItems;
 
+        private ObservableCollection<int> _order;
+
         public MyFavoritePageViewModel(KnowledgeService knowledgeService)
         {
             _knowledgeService = knowledgeService;
@@ -29,17 +31,28 @@ namespace DailyPoetry.ViewModel
             set => Set(nameof(FavoriteItems), ref _favoriteItems, value);
         }
 
+        public ObservableCollection<int> Order
+        {
+            get => _order;
+            set => Set(nameof(Order), ref _order, value);
+        }
+
         public void RefreshPage()
         {
             using (_knowledgeService.Entry())
             {
                 FavoriteItems = new ObservableCollection<PoetryItem>();
+                Order = new ObservableCollection<int>();
                 var a = _knowledgeService._knowledgeContext.FavoriteItems.ToList();
                 foreach (var favoriteItem in a)
                 {
                     FavoriteItems.Add(_knowledgeService.GetPoetryItemById(favoriteItem.PoetryId));
                 }
-                Debug.WriteLine(FavoriteItems.Count());
+
+                foreach (var i in Enumerable.Range(1, a.Count))
+                {
+                    FavoriteItems[i - 1].Order = i;
+                }
             }
         }
 

@@ -70,6 +70,7 @@ namespace DailyPoetry
             }
             var poetryItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
             (DataContext as MyFavoritePageViewModel).DeleteFavoritePoetry(poetryItem.Id);
+            (DataContext as MyFavoritePageViewModel).RefreshPage();
             if (b != null)
             {
 

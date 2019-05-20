@@ -35,6 +35,17 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="TransparentStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="Transparent">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Page.Background>
@@ -90,12 +101,16 @@
                         Margin="0,0,8,0" >
                 <Button Name="SearchButton"
                         Foreground="White"
+                        Margin="0,0,12,0"
+                        Style="{StaticResource TransparentStyle}"
                         Click="SearchButton_OnClick">
                     <FontIcon FontFamily="Segoe MDL2 Assets" 
                           Glyph="&#xE761;"/>
                 </Button>
                 <Button Name="ShareButton"
                         Foreground="White"
+                        Margin="0,0,8,0"
+                        Style="{StaticResource TransparentStyle}"
                         Click="ShareButton_OnClick">
                     <FontIcon FontFamily="Segoe MDL2 Assets" 
                               Glyph="&#xE72D;"/>

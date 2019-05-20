@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using Windows.ApplicationModel.Store.Preview.InstallControl;
 
 namespace DailyPoetry.ViewModel
@@ -16,8 +17,6 @@ namespace DailyPoetry.ViewModel
 
         private ObservableCollection<PoetryItem> _recentViewItems;
 
-        //private ObservableCollection<int> _order;
-
         /// <summary>
         /// 构造函数。
         /// </summary>
@@ -27,8 +26,6 @@ namespace DailyPoetry.ViewModel
             RefreshPage();
         }
 
-        
-
         /// <summary>
         /// RecentViewItems 最近浏览记录的get/set方法
         /// </summary>
@@ -37,12 +34,6 @@ namespace DailyPoetry.ViewModel
             get => _recentViewItems;
             set => Set(nameof(RecentViewItems), ref _recentViewItems, value);
         }
-
-        //public ObservableCollection<int> Order
-        //{
-        //    get => _order;
-        //    set => Set(nameof(Order), ref _order, value);
-        //}
 
         /// <summary>
         /// 删除最近浏览记录
@@ -67,11 +58,12 @@ namespace DailyPoetry.ViewModel
                 {
                     RecentViewItems.Add(_knowledgeService.GetPoetryItemById(recentViewItem.PoetryItemId));
                 }
-                //Order = new ObservableCollection<int>();
-                //foreach (var i in Enumerable.Range(1, RecentViewItems.Count))
-                //{
-                //    Order.Add(i);
-                //}
+
+                foreach (var i in Enumerable.Range(1, RecentViewItems.Count))
+                {
+                    RecentViewItems[i - 1].Order = i;
+                }
+
                 _knowledgeService.PoetryIsLikedTagger(ref _recentViewItems);
             }
         }
@@ -84,6 +76,15 @@ namespace DailyPoetry.ViewModel
             }
         }
 
-      
+        public void RefreshOrder()
+        {
+            using (_knowledgeService.Entry())
+            {
+                foreach (var i in Enumerable.Range(1, RecentViewItems.Count))
+                {
+                    RecentViewItems[i - 1].Order = i;
+                }
+            }
+        }
     }
 }
