@@ -88,6 +88,21 @@ namespace DailyPoetry
         private void RecentViewPage_OnLoaded(object sender, RoutedEventArgs e)
         {
             (DataContext as RecentViewPageViewModel).RefreshPage();
+
+            //todo:页面加载时显示心形图标填充情况
+            //PoetryItem poetryItem = (PoetryItem) e;
+            //(DataContext as DetailViewModel).RecordRecentView(poetryItem.Id);
+            //var fontIcon = (FavoriteButton.Content as FontIcon);
+            //if ((DataContext as DetailViewModel).GetFavoriteStatus(poetryItem.Id))
+            //{
+            //    fontIcon.Glyph = "\uEB52"; // 换成红心
+            //    fontIcon.Foreground = new SolidColorBrush(Colors.Red);
+            //}
+            //else
+            //{
+            //    fontIcon.Glyph = "\uEB51"; // 换成空心
+            //    fontIcon.Foreground = new SolidColorBrush(Colors.Black);
+            //}
         }
     }
 

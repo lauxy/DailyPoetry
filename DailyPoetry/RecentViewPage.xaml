@@ -2,7 +2,6 @@
     x:Class="DailyPoetry.RecentViewPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:DailyPoetry"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data1="using:DailyPoetry.Models.KnowledgeModels"
@@ -32,12 +31,13 @@
                 <ToggleButton Width="30" Height="30"
                               Click="AppBarToggleButton_Click" 
                               Style="{StaticResource TransparentStyle}"
-                              Name="LikeButton"
+                              Name="FavoriteButton"
                               RelativePanel.RightOf="IdTextBlock">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" />
                 </ToggleButton>
-
-                <TextBlock FontSize="16" Text="{x:Bind Name}"
+                
+                <TextBlock FontSize="16" 
+                           Text="{x:Bind Name}"
                            FontWeight="Bold"
                            Margin="8,6,0,0"
                            VerticalAlignment="Center" 
@@ -67,27 +67,6 @@
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;"/>
                 </ToggleButton>
             </RelativePanel>
-
-            <!--<Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <TextBlock FontSize="16" Text="{x:Bind Name}"
-                           FontWeight="Bold"
-                           Margin="8,6,0,0"
-                           VerticalAlignment="Center" Grid.Column="0"
-                           Name="NameTextBlock"/>
-
-
-                <ToggleButton Style="{StaticResource TransparentStyle}"
-                              Name="DeleteToggleButton"  Grid.Column="2"
-                              
-                              Click="DeleteToggleButton_OnClick">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;"/>
-                </ToggleButton>
-            </Grid>-->
         </DataTemplate>
     </Page.Resources>
 
@@ -95,7 +74,7 @@
         <TextBlock Text="最近浏览"
                    Margin="20,28,0,0"
                    FontSize="24" />
-        <ListView ItemsSource="{Binding RecentViewItems, Mode=TwoWay}"
+        <ListView ItemsSource="{Binding RecentViewItems, Mode=OneWay}"
                       IsItemClickEnabled="True"
                       ItemClick="GridView_ItemClick"
                       ItemTemplate="{StaticResource RecentViewDataTemplate}"

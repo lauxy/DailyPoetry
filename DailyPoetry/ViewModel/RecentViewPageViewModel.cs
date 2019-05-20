@@ -16,6 +16,8 @@ namespace DailyPoetry.ViewModel
 
         private ObservableCollection<PoetryItem> _recentViewItems;
 
+        //private ObservableCollection<int> _order;
+
         /// <summary>
         /// 构造函数。
         /// </summary>
@@ -25,6 +27,7 @@ namespace DailyPoetry.ViewModel
             RefreshPage();
         }
 
+        
 
         /// <summary>
         /// RecentViewItems 最近浏览记录的get/set方法
@@ -35,6 +38,12 @@ namespace DailyPoetry.ViewModel
             set => Set(nameof(RecentViewItems), ref _recentViewItems, value);
         }
 
+        //public ObservableCollection<int> Order
+        //{
+        //    get => _order;
+        //    set => Set(nameof(Order), ref _order, value);
+        //}
+
         /// <summary>
         /// 删除最近浏览记录
         /// </summary>
@@ -44,6 +53,7 @@ namespace DailyPoetry.ViewModel
             using (_knowledgeService.Entry())
             {
                 _knowledgeService.DeleteRecentViewItemByPoetryIdItem(poetryId);
+                RecentViewItems.Remove(RecentViewItems.Single(fi => fi.Id == poetryId));
             }
         }
 
@@ -57,8 +67,12 @@ namespace DailyPoetry.ViewModel
                 {
                     RecentViewItems.Add(_knowledgeService.GetPoetryItemById(recentViewItem.PoetryItemId));
                 }
+                //Order = new ObservableCollection<int>();
+                //foreach (var i in Enumerable.Range(1, RecentViewItems.Count))
+                //{
+                //    Order.Add(i);
+                //}
                 _knowledgeService.PoetryIsLikedTagger(ref _recentViewItems);
-                Debug.WriteLine(RecentViewItems.Count());
             }
         }
 
