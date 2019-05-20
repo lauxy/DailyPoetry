@@ -86,7 +86,7 @@ namespace DailyPoetry
         {
             if (DataContext == null)
                 return;
-            (DataContext as SearchResultViewModel).SetPage();
+            (DataContext as SearchResultViewModel).RefreshPage();
         }
 
         private void SearchResultList_ItemClick(object sender, ItemClickEventArgs e)
@@ -103,6 +103,13 @@ namespace DailyPoetry
                 navigateTmp = null;
                 Frame.Navigate(typeof(DetailPage), tmp);
             }
+        }
+
+        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            var viewModel = (SearchResultViewModel)DataContext;
+            if (viewModel.SearchCommand.CanExecute(null))
+                viewModel.SearchCommand.Execute(null);
         }
     }
 

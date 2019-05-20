@@ -212,13 +212,13 @@ namespace DailyPoetry.ViewModel
         private RelayCommand _searchCommand;
 
         public RelayCommand SearchCommand =>
-            _searchCommand ?? (_searchCommand = new RelayCommand(async () => {
+            _searchCommand ?? (_searchCommand = new RelayCommand(() => {
                 // clean controls` status
                 PoetryResultVisibility = Visibility.Collapsed;
                 ResultNavigateBarVisibility = Visibility.Collapsed;
                 ProcessRingActive = true;
 
-                await DoSearch();
+                DoSearch();
 
                 ProcessRingActive = false;
                 if (_poetryIntermediate.Count() == 0)
@@ -246,7 +246,7 @@ namespace DailyPoetry.ViewModel
         public RelayCommand NextPageCommand =>
             _nextPageCommand ?? (_nextPageCommand = new RelayCommand(async () =>
             {
-                await NextPage();
+                NextPage();
             }));
 
         private RelayCommand _prevPageCommand;
@@ -254,7 +254,7 @@ namespace DailyPoetry.ViewModel
         public RelayCommand PrevPageCommand =>
             _prevPageCommand ?? (_prevPageCommand = new RelayCommand(async () =>
             {
-                await PrevPage();
+                PrevPage();
             }));
 
         private RelayCommand _refreshPageCommand;
@@ -262,7 +262,7 @@ namespace DailyPoetry.ViewModel
         public RelayCommand RefreshPageCommand =>
             _refreshPageCommand ?? (_refreshPageCommand = new RelayCommand(async () =>
             {
-                await RefreshPage();
+                RefreshPage();
             }));
 
         public RelayCommand _searchFallbackCommand;
@@ -311,42 +311,39 @@ namespace DailyPoetry.ViewModel
             FilterItems[index].FilterCategory = (FilterCategory)new_choice;
         }
 
-        public async Task NextPage()
+        public void NextPage()
         {
-            PrevButtonEnabled = true;
-            PoetryItems = await _poetryIntermediate.
-                Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
             CurrentPage += 1;
             if (CurrentPage == _pageCnt)
                 NextButtonEnabled = false;
+            PrevButtonEnabled = true;
+            PoetryItems = _poetryIntermediate.
+                Skip((CurrentPage - 1) * _pageSize).Take(_pageSize).ToListFull();
+            
+
         }
 
-        public async Task PrevPage()
+        public void PrevPage()
         {
-            NextButtonEnabled = true;
-            PoetryItems = await _poetryIntermediate.
-                Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFullAsync();
             CurrentPage -= 1;
             if (CurrentPage == 1)
                 PrevButtonEnabled = false;
+            NextButtonEnabled = true;
+            PoetryItems = _poetryIntermediate.
+                Skip((CurrentPage - 1) * _pageSize).Take(_pageSize).ToListFull();
         }
 
-        public async Task RefreshPage()
+        public void RefreshPage()
         {
             if (CurrentPage == 1)
                 PrevButtonEnabled = false;
             if (CurrentPage == _pageCnt)
                 NextButtonEnabled = false;
             if(_poetryIntermediate != null)
-                PoetryItems = await _poetryIntermediate.
-                    Skip((CurrentPage-1) * _pageSize).Take(_pageSize).ToListFullAsync();
+                PoetryItems = _poetryIntermediate.
+                    Skip((CurrentPage-1) * _pageSize).Take(_pageSize).ToListFull();
         }
 
-        public void SetPage()
-        {
-            PoetryItems = _poetryIntermediate.
-                Skip(CurrentPage * _pageSize).Take(_pageSize).ToListFull();
-        }
 
         public PoetryItem SetContentQuery(string query)
         {
@@ -362,7 +359,7 @@ namespace DailyPoetry.ViewModel
             return null;
         }
 
-        public async Task DoSearch()
+        public void DoSearch()
         {
             // build path
             _poetryIntermediate = _knowledgeService.GetAllSimplifiedPoetryItems();
@@ -388,7 +385,7 @@ namespace DailyPoetry.ViewModel
             PageCnt = (_poetryIntermediate.Count() + _pageSize - 1) / _pageSize;
             PageCnt = PageCnt > 1 ? PageCnt : 1;
             CurrentPage = 1;
-            await RefreshPage();
+            RefreshPage();
         }
     }
 
