@@ -58,8 +58,8 @@ namespace DailyPoetry
 
                 string text = ShowPoetryArea.Text;
 
-
-                if (localSettings.Values["SetWallpaper"].Equals(true))
+                if (localSettings.Values["SetWallpaper"]!=null &&
+                    localSettings.Values["SetWallpaper"].Equals(true))
                 {
                     // 用户允许将每日推荐图片设置为壁纸
                     await generateBgService.CreateBackgroundImageAsync(text);
@@ -69,7 +69,8 @@ namespace DailyPoetry
                         // Todo: 当设置壁纸失败时异常处理。
                     }
                 }
-                else if (localSettings.Values["SetLockScreen"].Equals(true))
+                else if (localSettings.Values["SetLockScreen"]!=null && 
+                         localSettings.Values["SetLockScreen"].Equals(true))
                 {
                     // 用户允许将每日推荐图片设置为锁屏
                     await generateBgService.CreateBackgroundImageAsync(text);
