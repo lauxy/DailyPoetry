@@ -98,7 +98,7 @@ namespace DailyPoetry
             Frame.Navigate(typeof(SearchResultPage), ShowPoetryArea.Text);
         }
 
-        private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequestDeferral deferral = args.Request.GetDeferral();
             args.Request.Data.Properties.Title = "Sharing Title";
@@ -107,7 +107,7 @@ namespace DailyPoetry
             var imageUri = "ms-appdata:///local/" + prefix + "Wallpaper.jpg";
 
             args.Request.Data.SetBitmap(
-                Windows.Storage.Streams.RandomAccessStreamReference.CreateFromUri(new Uri(imageUri)));
+                RandomAccessStreamReference.CreateFromUri(new Uri(imageUri)));
             deferral.Complete();
         }
 
