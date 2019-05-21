@@ -1,13 +1,9 @@
 ﻿using DailyPoetry.Models.KnowledgeModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using DailyPoetry.ViewModel;
 
@@ -92,6 +88,7 @@ namespace DailyPoetry
         {
             ToggleButton button = sender as ToggleButton;
             PoetryItem poetryItem = button.DataContext as PoetryItem;
+            if (poetryItem == null) return;
             var fontIcon = (button.Content as FontIcon);
             using ((DataContext as RecentViewPageViewModel)._knowledgeService.Entry())
             {
@@ -108,6 +105,11 @@ namespace DailyPoetry
                 fontIcon.Glyph = "\uEB51";
                 fontIcon.Foreground = new SolidColorBrush(Colors.Black);
             }
+        }
+
+        private void RecentViewPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            (DataContext as RecentViewPageViewModel).RefreshPage();
         }
     }
 }
