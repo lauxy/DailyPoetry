@@ -25,9 +25,10 @@
         </Style>
 
         <DataTemplate x:DataType="knowledgeModels:PoetryItem" x:Key="FavoriteDataTemplate">
-            <StackPanel Orientation="Horizontal" Width="1920">
-                <TextBlock Text="{x:Bind Id}"
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{x:Bind Order}"
                            VerticalAlignment="Center"
+                           TextAlignment="Right"
                            Margin="0,7,0,0"/>
                 <ToggleButton Width="30" 
                               Height="30"
@@ -62,11 +63,17 @@
         <TextBlock Text="我喜爱的诗词"
                    Margin="20,28,0,0"
                    FontSize="24"/>
-        <GridView ItemsSource="{Binding FavoriteItems}" 
+        <ListView ItemsSource="{Binding FavoriteItems}" 
                   IsItemClickEnabled="True" 
                   ItemTemplate="{StaticResource FavoriteDataTemplate}"
                   ItemClick="ListViewBase_OnItemClick"
-                  Margin="20,24,0,0"/>
+                  Margin="20,24,0,0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </StackPanel>
 
     

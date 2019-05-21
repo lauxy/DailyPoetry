@@ -161,7 +161,7 @@ namespace DailyPoetry.ViewModel
             set => Set(nameof(CurrentPage), ref _currentPage, value);
         }
 
-        private int _pageSize = 20;
+        private int _pageSize = 15;
 
         private int _pageCnt;
 
@@ -260,7 +260,7 @@ namespace DailyPoetry.ViewModel
         private RelayCommand _refreshPageCommand;
 
         public RelayCommand RefreshPageCommand =>
-            _refreshPageCommand ?? (_refreshPageCommand = new RelayCommand(async () =>
+            _refreshPageCommand ?? (_refreshPageCommand = new RelayCommand( () =>
             {
                 RefreshPage();
             }));

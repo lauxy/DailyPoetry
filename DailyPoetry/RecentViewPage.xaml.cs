@@ -1,5 +1,7 @@
 ﻿using DailyPoetry.Models.KnowledgeModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -39,6 +41,36 @@ namespace DailyPoetry
         }
 
         /// <summary>
+        /// 点击心形按钮，将item加入“我喜欢的诗词”中
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FavoriteButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            // 每点击一次切换图标
+            // todo：在数据库更新完成后设置
+            ToggleButton b = sender as ToggleButton;
+            var fontIcon = (b.Content as FontIcon);
+            var poetryItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
+            if (fontIcon.Glyph == "\uEB51")
+            {
+                fontIcon.Glyph = "\uEB52"; // 换成红心
+                fontIcon.Foreground = new SolidColorBrush(Colors.Red);
+                (DataContext as RecentViewPageViewModel).AddItemsToFavoriteTable(poetryItem.Id);
+            }
+            else
+            {
+                fontIcon.Glyph = "\uEB51"; // 换成空心
+                fontIcon.Foreground = new SolidColorBrush(Colors.Black);
+                (DataContext as RecentViewPageViewModel).DeleteItemsFromFavoriteTable(poetryItem.Id);
+            }
+            if (b != null)
+            {
+
+            }
+        }
+
+        /// <summary>
         /// 点击记录项执行的事件
         /// </summary>
         /// <param name="sender"></param>
@@ -49,47 +81,33 @@ namespace DailyPoetry
             Frame.Navigate(typeof(DetailPage), selectedItem);
         }
 
-        /// <summary>
-        /// 点击心形按钮，将item加入“我喜欢的诗词”中
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AppBarToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            // 每点击一次切换图标
-            // todo：在数据库更新完成后设置
-            ToggleButton b = sender as ToggleButton;
-            var fontIcon = (b.Content as FontIcon);
-            if (fontIcon.Glyph == "\uEB51")
-            {
-                fontIcon.Glyph = "\uEB52"; // 换成红心
-                fontIcon.Foreground = new SolidColorBrush(Colors.Red);
-            }
-            else
-            {
-                fontIcon.Glyph = "\uEB51"; // 换成空心
-                fontIcon.Foreground = new SolidColorBrush(Colors.Black);
-            }
-            var poetryItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
-            (DataContext as RecentViewPageViewModel).AddItemsToFavoriteTable(poetryItem.Id);
-            if (b != null)
-            {
-                 
-
-            }
-        }
-
         private void DeleteToggleButton_OnClick(object sender, RoutedEventArgs e)
         {
             var deleteItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
             (DataContext as RecentViewPageViewModel).DeleteRecentViewItem(deleteItem.Id);
-        }
-
-        private void RecentViewPage_OnLoaded(object sender, RoutedEventArgs e)
-        {
             (DataContext as RecentViewPageViewModel).RefreshPage();
         }
-    }
 
-      
+        private void FavoriteButton_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            ToggleButton button = sender as ToggleButton;
+            PoetryItem poetryItem = button.DataContext as PoetryItem;
+            var fontIcon = (button.Content as FontIcon);
+            using ((DataContext as RecentViewPageViewModel)._knowledgeService.Entry())
+            {
+                poetryItem.IsLiked =
+                    (DataContext as RecentViewPageViewModel)._knowledgeService.PoetryIsLiked(poetryItem.Id);
+            }
+            if (poetryItem.IsLiked)
+            {
+                fontIcon.Glyph = "\uEB52";
+                fontIcon.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                fontIcon.Glyph = "\uEB51";
+                fontIcon.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+    }
 }

@@ -17,6 +17,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using DailyPoetry.Services;
+using Microsoft.Toolkit.Uwp.UI.Animations;
+
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -138,6 +141,13 @@ namespace DailyPoetry
             //    documentRange.CharacterFormat.BackgroundColor = background.Color;
             //    documentRange.CharacterFormat.ForegroundColor = foreground.Color;
             //}
+        }
+
+        private async void MyCreation_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            GenerateBgService generateBgService = new GenerateBgService();
+            MyCreationPageBg.ImageSource = await generateBgService.GetBitmapImageAsync();
+            //await MyCreationPageBg.Blur(value: 10, duration: 10, delay: 0).StartAsync();
         }
     }
 }

@@ -40,8 +40,7 @@
 
                 <TextBlock  Text="应用主题"
                             Margin="0,24,0,8"
-                            FontSize="20"
-                            Style="{ThemeResource BaseTextBlockStyle}"/>
+                            FontSize="20"/>
                 <RadioButton x:Name="LightColorRadioButton" 
                              Content="浅色" 
                              Checked="LightColorRadioButton_OnChecked"/>
@@ -78,7 +77,6 @@
                     </Hyperlink>
                 </TextBlock>
                 
-
             </StackPanel>
 
             <StackPanel Orientation="Vertical" 

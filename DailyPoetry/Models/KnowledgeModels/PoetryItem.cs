@@ -12,6 +12,8 @@ namespace DailyPoetry.Models.KnowledgeModels
     public class PoetryItem : IDbItem<SimplifiedPoetryItem>
     {
         public int Id { get; set; }
+        [NotMapped]
+        public int Order { get; set; }
         public string Name { get; set; }
         [Column("rhesises_count")]
         public string RhesisesCount { get; set; }

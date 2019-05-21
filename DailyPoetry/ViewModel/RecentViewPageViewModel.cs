@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using Windows.ApplicationModel.Store.Preview.InstallControl;
 
 namespace DailyPoetry.ViewModel
 {
     public class RecentViewPageViewModel : ViewModelBase
     {
-        private KnowledgeService _knowledgeService;
+        public KnowledgeService _knowledgeService;
 
         private ObservableCollection<PoetryItem> _recentViewItems;
 
@@ -24,7 +25,6 @@ namespace DailyPoetry.ViewModel
             _knowledgeService = knowledgeService;
             RefreshPage();
         }
-
 
         /// <summary>
         /// RecentViewItems 最近浏览记录的get/set方法
@@ -44,6 +44,7 @@ namespace DailyPoetry.ViewModel
             using (_knowledgeService.Entry())
             {
                 _knowledgeService.DeleteRecentViewItemByPoetryIdItem(poetryId);
+                RecentViewItems.Remove(RecentViewItems.Single(fi => fi.Id == poetryId));
             }
         }
 
@@ -57,8 +58,13 @@ namespace DailyPoetry.ViewModel
                 {
                     RecentViewItems.Add(_knowledgeService.GetPoetryItemById(recentViewItem.PoetryItemId));
                 }
+
+                foreach (var i in Enumerable.Range(1, RecentViewItems.Count))
+                {
+                    RecentViewItems[i - 1].Order = i;
+                }
+
                 _knowledgeService.PoetryIsLikedTagger(ref _recentViewItems);
-                Debug.WriteLine(RecentViewItems.Count());
             }
         }
 
@@ -70,6 +76,23 @@ namespace DailyPoetry.ViewModel
             }
         }
 
-      
+        public void DeleteItemsFromFavoriteTable(int poetryId)
+        {
+            using (_knowledgeService.Entry())
+            {
+                _knowledgeService.DeleteFavoriteItemByPoetryIdItem(poetryId);
+            }
+        }
+
+        public void RefreshOrder()
+        {
+            using (_knowledgeService.Entry())
+            {
+                foreach (var i in Enumerable.Range(1, RecentViewItems.Count))
+                {
+                    RecentViewItems[i - 1].Order = i;
+                }
+            }
+        }
     }
 }
