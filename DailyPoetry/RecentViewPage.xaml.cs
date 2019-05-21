@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media;
 using DailyPoetry.ViewModel;
+using System.Diagnostics;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -118,8 +119,8 @@ namespace DailyPoetry
 
         private void Page_ActualThemeChanged(FrameworkElement sender, object args)
         {
-            Frame.Navigate(typeof(RecentViewPage));
-            Frame.GoBack();
+            textColor = this.ActualTheme == ElementTheme.Dark ? Colors.White : Colors.Black;
+            (DataContext as RecentViewPageViewModel).RefreshPage();
         }
     }
 }
