@@ -115,5 +115,11 @@ namespace DailyPoetry
             textColor = this.ActualTheme == ElementTheme.Dark ? Colors.White : Colors.Black;
             (DataContext as RecentViewPageViewModel).RefreshPage();
         }
+
+        private void Page_ActualThemeChanged(FrameworkElement sender, object args)
+        {
+            Frame.Navigate(typeof(RecentViewPage));
+            Frame.GoBack();
+        }
     }
 }

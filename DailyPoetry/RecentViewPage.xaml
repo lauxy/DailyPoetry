@@ -7,7 +7,8 @@
     xmlns:data1="using:DailyPoetry.Models.KnowledgeModels"
     mc:Ignorable="d"
     Loaded="RecentViewPage_OnLoaded"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    ActualThemeChanged="Page_ActualThemeChanged">
 
     <Page.Resources>
         <Style x:Key="TransparentStyle" TargetType="ToggleButton">

@@ -15,7 +15,6 @@
     <StackPanel Orientation="Vertical">
         <StackPanel>
             <TextBlock Text="我的创作"
-                       Foreground="Black"
                        FontSize="24"
                        Margin="20,28,0,12"/>
         </StackPanel>
