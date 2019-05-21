@@ -47,7 +47,7 @@ namespace DailyPoetry
                 return;
             var query = e.Parameter as string;
             if (query == null)
-                return;
+                query = "";
             var searchResult = (DataContext as SearchResultViewModel).SetContentQuery(query);
             navigateTmp = searchResult;
         }
