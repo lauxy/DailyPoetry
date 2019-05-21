@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data1="using:DailyPoetry.Models.KnowledgeModels"
     mc:Ignorable="d"
-    Loaded="RecentViewPage_OnLoaded"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
@@ -33,6 +32,7 @@
                               Click="FavoriteButton_OnClick"
                               Style="{StaticResource TransparentStyle}"
                               Name="FavoriteButton"
+                              Loaded="FavoriteButton_OnLoaded"
                               RelativePanel.RightOf="IdTextBlock">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB51;" />
                 </ToggleButton>

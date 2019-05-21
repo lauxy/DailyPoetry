@@ -13,7 +13,7 @@ namespace DailyPoetry.ViewModel
 {
     public class RecentViewPageViewModel : ViewModelBase
     {
-        private KnowledgeService _knowledgeService;
+        public KnowledgeService _knowledgeService;
 
         private ObservableCollection<PoetryItem> _recentViewItems;
 
@@ -73,6 +73,14 @@ namespace DailyPoetry.ViewModel
             using (_knowledgeService.Entry())
             {
                 _knowledgeService.AddFavoriteItem(poetryId);
+            }
+        }
+
+        public void DeleteItemsFromFavoriteTable(int poetryId)
+        {
+            using (_knowledgeService.Entry())
+            {
+                _knowledgeService.DeleteFavoriteItemByPoetryIdItem(poetryId);
             }
         }
 

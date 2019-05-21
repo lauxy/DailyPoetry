@@ -51,21 +51,21 @@ namespace DailyPoetry
             // todo：在数据库更新完成后设置
             ToggleButton b = sender as ToggleButton;
             var fontIcon = (b.Content as FontIcon);
+            var poetryItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
             if (fontIcon.Glyph == "\uEB51")
             {
                 fontIcon.Glyph = "\uEB52"; // 换成红心
                 fontIcon.Foreground = new SolidColorBrush(Colors.Red);
+                (DataContext as RecentViewPageViewModel).AddItemsToFavoriteTable(poetryItem.Id);
             }
             else
             {
                 fontIcon.Glyph = "\uEB51"; // 换成空心
                 fontIcon.Foreground = new SolidColorBrush(Colors.Black);
+                (DataContext as RecentViewPageViewModel).DeleteItemsFromFavoriteTable(poetryItem.Id);
             }
-            var poetryItem = (PoetryItem)(e.OriginalSource as ToggleButton).DataContext;
-            (DataContext as RecentViewPageViewModel).AddItemsToFavoriteTable(poetryItem.Id);
             if (b != null)
             {
-
 
             }
         }
@@ -88,50 +88,26 @@ namespace DailyPoetry
             (DataContext as RecentViewPageViewModel).RefreshPage();
         }
 
-        [Obsolete]
-        private void RecentViewPage_OnLoaded(object sender, RoutedEventArgs e)
+        private void FavoriteButton_OnLoaded(object sender, RoutedEventArgs e)
         {
-            (DataContext as RecentViewPageViewModel).RefreshPage();
-
-            var _ListView = RecentViewListView as ListView;
-            foreach (PoetryItem item in _ListView.Items)
+            ToggleButton button = sender as ToggleButton;
+            PoetryItem poetryItem = button.DataContext as PoetryItem;
+            var fontIcon = (button.Content as FontIcon);
+            using ((DataContext as RecentViewPageViewModel)._knowledgeService.Entry())
             {
-                var _Container = RecentViewListView.ItemContainerGenerator
-                    .ContainerFromItem(item);
-                var _Children = AllChildren(_Container);
-                var _FavoriteButton = _Children
-                    // only interested in TextBlock
-                    .OfType<ToggleButton>()
-                    // only interested in FirstName
-                    .First(x => x.Name.Equals("FavoriteButton"));
-                var fontIcon = (_FavoriteButton.Content as FontIcon);
-                if ((DataContext as DetailViewModel).GetFavoriteStatus(item.Id))
-                {
-                    fontIcon.Glyph = "\uEB52"; // 换成红心
-                    fontIcon.Foreground = new SolidColorBrush(Colors.Red);
-                }
-                else
-                {
-                    fontIcon.Glyph = "\uEB51"; // 换成空心
-                    fontIcon.Foreground = new SolidColorBrush(Colors.Black);
-                }
+                poetryItem.IsLiked =
+                    (DataContext as RecentViewPageViewModel)._knowledgeService.PoetryIsLiked(poetryItem.Id);
+            }
+            if (poetryItem.IsLiked)
+            {
+                fontIcon.Glyph = "\uEB52";
+                fontIcon.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                fontIcon.Glyph = "\uEB51";
+                fontIcon.Foreground = new SolidColorBrush(Colors.Black);
             }
         }
-
-        public List<Control> AllChildren(DependencyObject parent)
-        {
-            var _List = new List<Control>();
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-            {
-                var _Child = VisualTreeHelper.GetChild(parent, i);
-                if (_Child is Control)
-                    _List.Add(_Child as Control);
-                _List.AddRange(AllChildren(_Child));
-            }
-            return _List;
-        }
-
     }
-
-      
 }
