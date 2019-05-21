@@ -79,19 +79,18 @@ namespace DailyPoetry
                         // Todo: 当设置锁屏失败时异常处理。
                     }
                 }
+                ProgressRingLoading.IsActive = false;
+                GridLoading.Visibility = Visibility.Collapsed;
             }
             catch (Exception imgOrTxtException)
             {
                 TextBlockLoading.FontSize = 20;
 
                 TextBlockLoading.Text = "ExceptionInfo: " + imgOrTxtException.Message +
-                                        "\n抱歉，这里出现了一些错误, 请您将页面截图后反馈给我们 " +
-                                        "\n我们会及时做出修改并将在下一个版本中改进该问题 " +
-                                        "\n以便使我们的软件能够带给您更好的使用体验 \n谢谢！";
+                                        "\n抱歉，这里发生了一些错误，请您确保网络连接正常 " +
+                                        "\n如果仍存在加载失败的情况，请您及时给予我们反馈" +
+                                        "\n我们将在新版本中解决该问题，以带给您更好的使用体验。谢谢！";
             }
-
-            ProgressRingLoading.IsActive = false;
-            GridLoading.Visibility = Visibility.Collapsed;
         }
 
         private void SearchButton_OnClick(object sender, RoutedEventArgs e)
