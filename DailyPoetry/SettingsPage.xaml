@@ -87,16 +87,16 @@
                 <HyperlinkButton Content="帮助" 
                                  Margin="0,12,0,0"
                                  FontSize="16"
-                                 NavigateUri="http://www.microsoft.com"/>
+                                 NavigateUri="https://github.com/LauXy/DailyPoetry"/>
                 <HyperlinkButton Content="反馈" 
                                  FontSize="16"
-                                 NavigateUri="http://www.microsoft.com"/>
+                                 NavigateUri="https://github.com/LauXy/DailyPoetry"/>
                 <HyperlinkButton Content="关于" 
                                  FontSize="16"
-                                 NavigateUri="http://www.microsoft.com"/>
+                                 NavigateUri="https://github.com/LauXy/DailyPoetry"/>
                 <HyperlinkButton Content="新功能" 
                                  FontSize="16"
-                                 NavigateUri="http://www.microsoft.com"/>
+                                 NavigateUri="https://github.com/LauXy/DailyPoetry"/>
             </StackPanel>
         </Grid>
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -112,6 +113,9 @@ namespace DailyPoetry
         {
             localSettings.Values["ThemeStyle"] = "Light";
             this.RequestedTheme = ElementTheme.Light;
+            Frame appFrame = Window.Current.Content as Frame;
+            MainPage mainPage = appFrame.Content as MainPage;
+            mainPage.RequestedTheme = ElementTheme.Light;
         }
 
         /// <summary>
@@ -123,6 +127,9 @@ namespace DailyPoetry
         {
             localSettings.Values["ThemeStyle"] = "Dark";
             this.RequestedTheme = ElementTheme.Dark;
+            Frame appFrame = Window.Current.Content as Frame;
+            MainPage mainPage = appFrame.Content as MainPage;
+            mainPage.RequestedTheme = ElementTheme.Dark;
         }
 
         /// <summary>
@@ -134,6 +141,9 @@ namespace DailyPoetry
         {
             localSettings.Values["ThemeStyle"] = "Default";
             this.RequestedTheme = ElementTheme.Default;
+            Frame appFrame = Window.Current.Content as Frame;
+            MainPage mainPage = appFrame.Content as MainPage;
+            mainPage.RequestedTheme = ElementTheme.Default;
         }
 
         /// <summary>
