@@ -17,6 +17,9 @@ namespace DailyPoetry
     public sealed partial class RecentViewPage : Page
     {
         private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+        private Color textColor;
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -57,7 +60,7 @@ namespace DailyPoetry
             else
             {
                 fontIcon.Glyph = "\uEB51"; // 换成空心
-                fontIcon.Foreground = new SolidColorBrush(Colors.Black);
+                fontIcon.Foreground = new SolidColorBrush(textColor);
                 (DataContext as RecentViewPageViewModel).DeleteItemsFromFavoriteTable(poetryItem.Id);
             }
             if (b != null)
@@ -103,12 +106,13 @@ namespace DailyPoetry
             else
             {
                 fontIcon.Glyph = "\uEB51";
-                fontIcon.Foreground = new SolidColorBrush(Colors.Black);
+                fontIcon.Foreground = new SolidColorBrush(textColor);
             }
         }
 
         private void RecentViewPage_OnLoaded(object sender, RoutedEventArgs e)
         {
+            textColor = this.ActualTheme == ElementTheme.Dark ? Colors.White : Colors.Black;
             (DataContext as RecentViewPageViewModel).RefreshPage();
         }
     }
