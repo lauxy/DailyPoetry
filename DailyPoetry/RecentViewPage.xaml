@@ -6,7 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data1="using:DailyPoetry.Models.KnowledgeModels"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+    Loaded="RecentViewPage_OnLoaded">
 
     <Page.Resources>
         <Style x:Key="TransparentStyle" TargetType="ToggleButton">

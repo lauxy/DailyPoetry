@@ -237,6 +237,12 @@ namespace DailyPoetry.Services
 
         public void AddRecentViewItem(int PoetryId)
         {
+            var existRecentViewItem = _knowledgeContext.RecentViewItems.FirstOrDefault(p => p.PoetryItemId == PoetryId);
+            if (existRecentViewItem != null)
+            {
+                DeleteRecentViewItemById(existRecentViewItem.Id);
+            }
+
             var recentViewItem = new RecentViewItem { PoetryItemId = PoetryId };
             _knowledgeContext.RecentViewItems.Add(recentViewItem);
             _knowledgeContext.SaveChanges();
@@ -253,7 +259,7 @@ namespace DailyPoetry.Services
 
         public void DeleteRecentViewItemByPoetryIdItem(int PoetryId)
         {
-            var recentViewItem = _knowledgeContext.RecentViewItems.Single(i => i.PoetryItemId == PoetryId);
+            var recentViewItem = _knowledgeContext.RecentViewItems.First(i => i.PoetryItemId == PoetryId);
             if (recentViewItem == null)
                 throw new InvalidOperationException();
             _knowledgeContext.RecentViewItems.Remove(recentViewItem);

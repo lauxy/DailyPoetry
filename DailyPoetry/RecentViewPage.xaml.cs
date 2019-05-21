@@ -88,10 +88,17 @@ namespace DailyPoetry
             (DataContext as RecentViewPageViewModel).RefreshPage();
         }
 
+        private void RecentViewPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            (DataContext as RecentViewPageViewModel).RefreshPage();
+        }
+
         private void FavoriteButton_OnLoaded(object sender, RoutedEventArgs e)
         {
             ToggleButton button = sender as ToggleButton;
             PoetryItem poetryItem = button.DataContext as PoetryItem;
+            if (poetryItem == null)
+                return;
             var fontIcon = (button.Content as FontIcon);
             using ((DataContext as RecentViewPageViewModel)._knowledgeService.Entry())
             {

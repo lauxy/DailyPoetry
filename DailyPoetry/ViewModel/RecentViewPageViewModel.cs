@@ -44,7 +44,7 @@ namespace DailyPoetry.ViewModel
             using (_knowledgeService.Entry())
             {
                 _knowledgeService.DeleteRecentViewItemByPoetryIdItem(poetryId);
-                RecentViewItems.Remove(RecentViewItems.Single(fi => fi.Id == poetryId));
+                RecentViewItems.Remove(RecentViewItems.First(fi => fi.Id == poetryId));
             }
         }
 
@@ -54,6 +54,7 @@ namespace DailyPoetry.ViewModel
             {
                 RecentViewItems = new ObservableCollection<PoetryItem>();
                 var recentViewCollection = _knowledgeService._knowledgeContext.RecentViewItems.ToList();
+                recentViewCollection.Reverse();
                 foreach (var recentViewItem in recentViewCollection)
                 {
                     RecentViewItems.Add(_knowledgeService.GetPoetryItemById(recentViewItem.PoetryItemId));
