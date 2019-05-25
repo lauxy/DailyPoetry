@@ -179,7 +179,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\404.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -221,7 +220,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="Logs\RecentViews.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -229,13 +227,6 @@
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="Wallpapers\AlpineSnow.jpg" />
-    <Content Include="Wallpapers\AutumnScenery.jpg" />
-    <Content Include="Wallpapers\Buildings.jpg" />
-    <Content Include="Wallpapers\MyCreationBg1.jpg" />
-    <Content Include="Wallpapers\MyCreationBg2.jpg" />
-    <Content Include="Wallpapers\MyCreationBg3.jpg" />
-    <Content Include="Wallpapers\MyCreationBg4.jpg" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
