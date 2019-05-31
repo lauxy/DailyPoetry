@@ -20,7 +20,7 @@
                         SelectionChanged="NavView_OnSelectionChanged"
                         AlwaysShowHeader="False">
             <NavigationView.PaneHeader>
-                <TextBlock Text="每日诗词"
+                <TextBlock Text="每日词话"
                            FontSize="20"
                            Foreground="Gray"
                            FontFamily="华文行楷"

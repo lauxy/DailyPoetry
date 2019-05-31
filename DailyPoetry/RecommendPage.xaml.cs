@@ -103,7 +103,7 @@ namespace DailyPoetry
         {
             DataRequestDeferral deferral = args.Request.GetDeferral();
             args.Request.Data.Properties.Title = "Sharing Title";
-            args.Request.Data.Properties.Description = "分享每日诗词";
+            args.Request.Data.Properties.Description = "分享每日词话";
             args.Request.Data.SetText("我正在赏析 “" + ShowPoetryArea.Text + "”");
             var imageUri = "ms-appdata:///local/" + prefix + "Wallpaper.jpg";
 
@@ -113,7 +113,7 @@ namespace DailyPoetry
         }
 
         /// <summary>
-        /// 分享每日诗词卡片。
+        /// 分享每日词话卡片。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

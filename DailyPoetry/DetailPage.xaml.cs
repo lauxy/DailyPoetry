@@ -124,7 +124,7 @@ namespace DailyPoetry
         }
 
         /// <summary>
-        /// 分享每日诗词卡片。
+        /// 分享每日词话卡片。
         /// copy from RecommandPage.xaml.cs
         /// </summary>
         /// <param name="sender"></param>
